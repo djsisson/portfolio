@@ -7,7 +7,6 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-      network: dcgk88c
     env_file:
       - ./.env
     expose:
@@ -22,3 +21,7 @@ services:
     volumes:
       - .:/app
     restart: unless-stopped
+
+networks:
+  dcgk88c:
+    driver: bridge
