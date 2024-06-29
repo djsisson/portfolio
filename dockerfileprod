@@ -2,7 +2,7 @@ FROM node:latest
 
 RUN corepack enable && corepack prepare yarn@stable --activate
 
-WORKDIR /
+WORKDIR /app
 
 COPY package.json yarn.lock  ./
 
@@ -10,7 +10,7 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn build
+RUN yarn run build
 
 EXPOSE 3001
 
