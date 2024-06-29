@@ -1,13 +1,13 @@
 FROM node:22-alpine AS base
 
 ENV YARN_VERSION=4.3.1
+RUN corepack enable && corepack prepare yarn@${YARN_VERSION} --activate
+RUN yarn set version 4.3.1
 
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
-RUN corepack enable && corepack prepare yarn@${YARN_VERSION} --activate
-RUN yarn set version 4.3.1
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
