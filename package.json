@@ -11,6 +11,7 @@
     "driz-mig": "yarn drizzle-kit migrate"
   },
   "dependencies": {
+    "babel-plugin-react-compiler": "0.0.0-experimental-696af53-20240625",
     "drizzle-orm": "^0.31.2",
     "next": "15.0.0-rc.0",
     "postgres": "^3.4.4",
