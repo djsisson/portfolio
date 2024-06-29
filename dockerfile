@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .yarnrc.yml ./
-COPY .yarn ./.yarn
+
 RUN \
   if [ -f yarn.lock ]; then yarn install --immutable; \
   elif [ -f package-lock.json ]; then npm ci; \
