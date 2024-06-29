@@ -16,6 +16,8 @@ services:
     environment:
       - NODE_ENV=production
       - WATCHPACK_POLLING=true
+    networks:
+      - dcgk88c
     volumes:
       - .:/app
     restart: unless-stopped
