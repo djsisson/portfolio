@@ -2,7 +2,7 @@
 const nextConfig = {
   output: "standalone",
   experimental: {
-    reactCompiler: "true",
+    reactCompiler: true,
   },
 };
 
