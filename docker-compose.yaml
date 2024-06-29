@@ -6,7 +6,7 @@ services:
     tty: true
     build:
       context: .
-      dockerfile: dockerfileprod
+      dockerfile: dockerfile
     env_file:
       - ./.env
     expose:
