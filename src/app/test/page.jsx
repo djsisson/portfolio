@@ -1,6 +1,8 @@
 import { db } from "@/db/db";
 import { sql } from "drizzle-orm";
 
+const dynamic = "force-dynamic";
+
 export default async function Page() {
   const test = await db.execute(sql`SELECT now()`);
 
