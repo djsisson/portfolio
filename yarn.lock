@@ -3442,6 +3442,7 @@ __metadata:
     postgres: "npm:^3.4.4"
     react: "npm:19.0.0-rc-f994737d14-20240522"
     react-dom: "npm:19.0.0-rc-f994737d14-20240522"
+    sharp: "npm:^0.33.4"
     typescript: "npm:^5"
   languageName: unknown
   linkType: soft

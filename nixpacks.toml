@@ -3,6 +3,7 @@ CI = 'true'
 NIXPACKS_METADATA = 'node'
 NODE_ENV = 'production'
 NPM_CONFIG_PRODUCTION = 'false'
+YARN_VERSION='4.3.1'
 
 [phases.build]
 dependsOn = ['install']
@@ -16,7 +17,8 @@ cacheDirectories = [
 dependsOn = ['setup']
 cmds = [
 'npm install -g corepack@0.24.1 && corepack enable',
-'corepack install -g yarn@stable',
+'corepack prepare yarn@${YARN_VERSION} --activate',
+'yarn set version 4.3.1',
 'yarn install',
 ]
 cacheDirectories = ['/usr/local/share/.cache/yarn/v6']
