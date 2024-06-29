@@ -2,7 +2,7 @@ FROM node:latest
 
 RUN corepack enable && corepack prepare yarn@stable --activate
 
-WORKDIR /app
+WORKDIR /
 
 COPY package.json yarn.lock  ./
 
