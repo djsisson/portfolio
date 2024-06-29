@@ -1,0 +1,21 @@
+version: "1"
+
+services:
+  app:
+    container_name: app
+    tty: true
+    build:
+      context: .
+      dockerfile: dockerfile
+    env_file:
+      - ./.env
+    expose:
+      - 3001
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+    restart: unless-stopped
