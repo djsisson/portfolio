@@ -28,8 +28,6 @@ nixPkgs = [
 'yarn-berry',
 ]
 nixLibs = ['gcc-unwrapped']
-nixOverlays = ['https://github.com/railwayapp/nix-npm-overlay/archive/main.tar.gz']
-nixpkgsArchive = '21de2b973f9fee595a7a1ac4693efff791245c34'
 
 [start]
 cmd = 'yarn run start'
