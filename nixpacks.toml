@@ -1,0 +1,35 @@
+[variables]
+CI = 'true'
+NIXPACKS_METADATA = 'node'
+NODE_ENV = 'production'
+NPM_CONFIG_PRODUCTION = 'false'
+
+[phases.build]
+dependsOn = ['install']
+cmds = ['yarn run build']
+cacheDirectories = [
+'.next/cache',
+'node_modules/.cache',
+]
+
+[phases.install]
+dependsOn = ['setup']
+cmds = [
+'npm install -g corepack@0.24.1 && corepack enable',
+'corepack install -g yarn@stable'
+'yarn install',
+]
+cacheDirectories = ['/usr/local/share/.cache/yarn/v6']
+paths = ['/app/node_modules/.bin']
+
+[phases.setup]
+nixPkgs = [
+'nodejs_22',
+'yarn-4_x',
+]
+nixLibs = ['gcc-unwrapped']
+nixOverlays = ['https://github.com/railwayapp/nix-npm-overlay/archive/main.tar.gz']
+nixpkgsArchive = 'bdd2f439c62aa0b8aa97f5c784a965c23f968fe6'
+
+[start]
+cmd = 'yarn run start'
