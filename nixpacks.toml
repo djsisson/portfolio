@@ -16,7 +16,7 @@ cacheDirectories = [
 dependsOn = ['setup']
 cmds = [
 'npm install -g corepack@0.24.1 && corepack enable',
-'corepack install -g yarn@stable'
+'corepack install -g yarn@stable',
 'yarn install',
 ]
 cacheDirectories = ['/usr/local/share/.cache/yarn/v6']
