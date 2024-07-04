@@ -4,7 +4,7 @@ NIXPACKS_METADATA = 'node'
 NODE_ENV = 'production'
 NPM_CONFIG_PRODUCTION = 'false'
 YARN_VERSION = '4.3.1'
-NIXPACKS_NODE_VERSION = '22'
+NIXPACKS_NODE_VERSION = '20'
 
 [phases.build]
 dependsOn = ['install']
@@ -27,7 +27,7 @@ paths = ['/app/node_modules/.bin']
 
 [phases.setup]
 nixPkgs = [
-'nodejs_22',
+'nodejs_20',
 'yarn-berry',
 ]
 nixLibs = ['gcc-unwrapped']
