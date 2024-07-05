@@ -7,7 +7,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-      network: bgw80w0
+      network: Host
     env_file:
       - ./.env
     expose:
