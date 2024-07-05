@@ -76,6 +76,4 @@ ENV PORT 3001
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
 
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", "-f", "http://localhost:3001/" ]
-
 CMD HOSTNAME=${HOSTNAME} PORT=$PORT node server.js
