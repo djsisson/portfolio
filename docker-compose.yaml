@@ -7,7 +7,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-      network: Host
+      network: host
     env_file:
       - ./.env
     expose:
