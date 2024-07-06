@@ -20,12 +20,14 @@
     "sharp": "^0.33.4"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0-alpha.17",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "drizzle-kit": "^0.22.7",
     "eslint": "^8",
     "eslint-config-next": "15.0.0-rc.0",
+    "tailwindcss": "^4.0.0-alpha.17",
     "typescript": "^5"
   },
   "packageManager": "yarn@4.3.1+sha512.af78262d7d125afbfeed740602ace8c5e4405cd7f4735c08feb327286b2fdb2390fbca01589bfd1f50b1240548b74806767f5a063c94b67e431aabd0d86f7774"

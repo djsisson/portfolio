@@ -1,133 +1,163 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
+  "id": "f106d1e4-285e-4b7e-ab4c-b2f61c07fdbd",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.test": {
-      "name": "test",
+    "public.characters": {
+      "name": "characters",
       "schema": "",
-      "columns": {},
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "element_id": {
+          "name": "element_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "city_id": {
+          "name": "city_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "characters_element_id_elements_id_fk": {
+          "name": "characters_element_id_elements_id_fk",
+          "tableFrom": "characters",
+          "tableTo": "elements",
+          "columnsFrom": [
+            "element_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "characters_city_id_cities_id_fk": {
+          "name": "characters_city_id_cities_id_fk",
+          "tableFrom": "characters",
+          "tableTo": "cities",
+          "columnsFrom": [
+            "city_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "characters_name_unique": {
+          "name": "characters_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "public.cities": {
+      "name": "cities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "cities_name_unique": {
+          "name": "cities_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "public.elements": {
+      "name": "elements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "colour": {
+          "name": "colour",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "elements_name_unique": {
+          "name": "elements_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        },
+        "elements_colour_unique": {
+          "name": "elements_colour_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "colour"
+          ]
+        }
+      }
     }
   },
-  "enums": {
-    "auth.aal_level": {
-      "name": "aal_level",
-      "values": [
-        "aal1",
-        "aal2",
-        "aal3"
-      ],
-      "schema": "auth"
-    },
-    "auth.code_challenge_method": {
-      "name": "code_challenge_method",
-      "values": [
-        "s256",
-        "plain"
-      ],
-      "schema": "auth"
-    },
-    "auth.factor_status": {
-      "name": "factor_status",
-      "values": [
-        "unverified",
-        "verified"
-      ],
-      "schema": "auth"
-    },
-    "auth.factor_type": {
-      "name": "factor_type",
-      "values": [
-        "totp",
-        "webauthn"
-      ],
-      "schema": "auth"
-    },
-    "auth.one_time_token_type": {
-      "name": "one_time_token_type",
-      "values": [
-        "confirmation_token",
-        "reauthentication_token",
-        "recovery_token",
-        "email_change_token_new",
-        "email_change_token_current",
-        "phone_change_token"
-      ],
-      "schema": "auth"
-    },
-    "net.request_status": {
-      "name": "request_status",
-      "values": [
-        "PENDING",
-        "SUCCESS",
-        "ERROR"
-      ],
-      "schema": "net"
-    },
-    "pgsodium.key_status": {
-      "name": "key_status",
-      "values": [
-        "default",
-        "valid",
-        "invalid",
-        "expired"
-      ],
-      "schema": "pgsodium"
-    },
-    "pgsodium.key_type": {
-      "name": "key_type",
-      "values": [
-        "aead-ietf",
-        "aead-det",
-        "hmacsha512",
-        "hmacsha256",
-        "auth",
-        "shorthash",
-        "generichash",
-        "kdf",
-        "secretbox",
-        "secretstream",
-        "stream_xchacha20"
-      ],
-      "schema": "pgsodium"
-    },
-    "realtime.action": {
-      "name": "action",
-      "values": [
-        "INSERT",
-        "UPDATE",
-        "DELETE",
-        "TRUNCATE",
-        "ERROR"
-      ],
-      "schema": "realtime"
-    },
-    "realtime.equality_op": {
-      "name": "equality_op",
-      "values": [
-        "eq",
-        "neq",
-        "lt",
-        "lte",
-        "gt",
-        "gte",
-        "in"
-      ],
-      "schema": "realtime"
-    }
-  },
+  "enums": {},
   "schemas": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "internal": {
     "tables": {}
   }
 }

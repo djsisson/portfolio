@@ -1,17 +1,37 @@
-import { pgTable, pgEnum } from "drizzle-orm/pg-core"
-  import { sql } from "drizzle-orm"
-
-export const aal_level = pgEnum("aal_level", ['aal1', 'aal2', 'aal3'])
-export const code_challenge_method = pgEnum("code_challenge_method", ['s256', 'plain'])
-export const factor_status = pgEnum("factor_status", ['unverified', 'verified'])
-export const factor_type = pgEnum("factor_type", ['totp', 'webauthn'])
-export const one_time_token_type = pgEnum("one_time_token_type", ['confirmation_token', 'reauthentication_token', 'recovery_token', 'email_change_token_new', 'email_change_token_current', 'phone_change_token'])
-export const request_status = pgEnum("request_status", ['PENDING', 'SUCCESS', 'ERROR'])
-export const key_status = pgEnum("key_status", ['default', 'valid', 'invalid', 'expired'])
-export const key_type = pgEnum("key_type", ['aead-ietf', 'aead-det', 'hmacsha512', 'hmacsha256', 'auth', 'shorthash', 'generichash', 'kdf', 'secretbox', 'secretstream', 'stream_xchacha20'])
-export const action = pgEnum("action", ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'ERROR'])
-export const equality_op = pgEnum("equality_op", ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in'])
+import { pgTable, unique, pgEnum, serial, text, foreignKey, integer } from "drizzle-orm/pg-core"
 
 
-export const test = pgTable("test", {
+export const elements = pgTable("elements", {
+	id: serial("id").primaryKey().notNull(),
+	name: text("name").notNull(),
+	colour: text("colour").notNull(),
+},
+(table) => {
+	return {
+		elements_name_unique: unique("elements_name_unique").on(table.name),
+		elements_colour_unique: unique("elements_colour_unique").on(table.colour),
+	}
+});
+
+export const characters = pgTable("characters", {
+	id: serial("id").primaryKey().notNull(),
+	name: text("name").notNull(),
+	description: text("description").notNull(),
+	element_id: integer("element_id").references(() => elements.id),
+	city_id: integer("city_id").references(() => cities.id),
+},
+(table) => {
+	return {
+		characters_name_unique: unique("characters_name_unique").on(table.name),
+	}
+});
+
+export const cities = pgTable("cities", {
+	id: serial("id").primaryKey().notNull(),
+	name: text("name").notNull(),
+},
+(table) => {
+	return {
+		cities_name_unique: unique("cities_name_unique").on(table.name),
+	}
 });

@@ -4,29 +4,16 @@ services:
   app:
     container_name: app
     tty: true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001"]
-      interval: 30s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
     build:
       context: .
       dockerfile: dockerfile
-      network: host
     env_file:
       - ./.env
     expose:
       - 3001
     ports:
       - "3001:3001"
-    networks:
-      - portfolio
     environment:
       - NODE_ENV=production
       - WATCHPACK_POLLING=true
     restart: unless-stopped
-
-networks:
-  portfolio:
-    driver: bridge

@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
-import "./global.css";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
+  title: "Genshin Impact Character Viewer",
   description: "Created by DJ Sisson",
 };
 
-export default function RootLayout({
+export default function GenshinLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+  return children;
 }
