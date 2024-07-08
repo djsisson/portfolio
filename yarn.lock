@@ -4242,6 +4242,7 @@ __metadata:
     postgres: "npm:^3.4.4"
     react: "npm:19.0.0-rc-f994737d14-20240522"
     react-dom: "npm:19.0.0-rc-f994737d14-20240522"
+    server-only: "npm:^0.0.1"
     sharp: "npm:^0.33.4"
     tailwindcss: "npm:^4.0.0-alpha.17"
     typescript: "npm:^5"
@@ -4585,6 +4586,13 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 10c0/97d3441e97ace8be4b1976433d1c32658f6afaff09f143e52c593bae7eef33de19e3e369c88bd985ce1042c6f441c80c6803078d1de2a9988080b66684cbb30c
+  languageName: node
+  linkType: hard
+
+"server-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "server-only@npm:0.0.1"
+  checksum: 10c0/4704f0ef85da0be981af6d4ed8e739d39bcfd265b9c246a684060acda5642d0fdc6daffc2308e71e2682c5f508090978802eae0a77623c9b90a49f9ae68048d6
   languageName: node
   linkType: hard
 
