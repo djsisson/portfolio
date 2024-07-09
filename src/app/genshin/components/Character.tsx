@@ -33,10 +33,11 @@ export default function Character({
         {currentCharacter && (
           <div className="overflow-clip w-svw h-svh absolute">
             <Image
-              className="absolute left-[calc(50%-63vh)] top-0 w-auto h-svh z-0 aspect-[359/220] max-w-none"
+              className="absolute left-[calc(50%-63vh)] top-0 w-auto h-svh z-0 max-w-none"
               src={characters[currentCharacter as keyof typeof characters]}
               alt={currentCharacter}
               placeholder="blur"
+              priority={true}
             />
           </div>
         )}
