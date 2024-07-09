@@ -54,29 +54,37 @@ export default function Character({
           ))}
         </div>
         <div className="flex-1 h-full w-full flex items-end justify-center">
-          <div className="flex gap-2 items-center justify-center">
-            {data[currentCity].characters.map((character, i) => (
-              <Image
-                className="cursor-pointer rounded-full ring-1 ring-white hover:ring-red-500 z-20"
-                key={character.id}
-                src={
-                  icons[
-                    character.name
-                      .replace(" ", "_")
-                      .toLowerCase() as keyof typeof icons
-                  ]
+          <div className="flex gap-2 items-center justify-center flex-wrap">
+            {data[currentCity].characters
+              .sort((a, b) => {
+                if (a.name < b.name) {
+                  return -1;
+                } else {
+                  return 1;
                 }
-                alt={character.name}
-                width={64}
-                height={64}
-                onClick={() =>
-                  setCurrentCharacter(
-                    character.name.replace(" ", "_").toLowerCase()
-                  )
-                }
-                placeholder="blur"
-              />
-            ))}
+              })
+              .map((character, i) => (
+                <Image
+                  className="cursor-pointer rounded-full ring-1 ring-white hover:ring-red-500 z-20"
+                  key={character.id}
+                  src={
+                    icons[
+                      character.name
+                        .replace(" ", "_")
+                        .toLowerCase() as keyof typeof icons
+                    ]
+                  }
+                  alt={character.name}
+                  width={64}
+                  height={64}
+                  onClick={() =>
+                    setCurrentCharacter(
+                      character.name.replace(" ", "_").toLowerCase()
+                    )
+                  }
+                  placeholder="blur"
+                />
+              ))}
           </div>
         </div>
       </div>
