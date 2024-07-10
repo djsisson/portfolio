@@ -8,6 +8,7 @@ export const genshin_data = async () => {
         with: {
           element: true,
         },
+        orderBy: (characters, { asc }) => [asc(characters.name)],
       },
     },
   });

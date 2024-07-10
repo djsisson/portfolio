@@ -8,7 +8,7 @@ export default async function Genshin() {
   const data = await genshin_data();
 
   return (
-    <div className="relative w-svw h-svh flex flex-col">
+    <div className="relative flex h-svh w-svw flex-col">
       <Header />
       <div className="flex-1">
         <Suspense fallback="loading">
