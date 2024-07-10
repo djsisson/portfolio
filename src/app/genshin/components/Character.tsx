@@ -10,22 +10,13 @@ export default function Character({
   data: Awaited<ReturnType<typeof genshin_data>>;
 }) {
   const [currentCity, setCurrentCity] = useState(0);
-  const [currentCharacter, setCurrentCharacter] = useState(0);
-  const [currentCharacterName, setCurrentCharacterName] = useState("");
+  const [currentCharacter, setCurrentCharacter] = useState("");
   const [xdown, setXdown] = useState(0);
   const [ydown, setYdown] = useState(0);
 
   useEffect(() => {
-    setCurrentCharacter(0);
-  }, [currentCity]);
-
-  useEffect(() => {
-    setCurrentCharacterName(
-      data[currentCity].characters[currentCharacter].name
-        .replace(" ", "_")
-        .toLowerCase(),
-    );
-  }, [data, currentCity, currentCharacter]);
+    setCurrentCharacter(data[currentCity].characters[0].name);
+  }, [currentCity, data]);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setXdown(e.targetTouches[0].clientX);
@@ -49,15 +40,21 @@ export default function Character({
         setCurrentCity((city) => (city - 1 + data.length) % data.length);
       }
     } else {
+      const charIndex = data[currentCity].characters.findIndex(
+        (char) => char.name === currentCharacter,
+      );
       if (xDiff > 0) {
         setCurrentCharacter(
-          (char) => (char + 1) % data[currentCity].characters.length,
+          data[currentCity].characters[
+            (charIndex + 1) % data[currentCity].characters.length
+          ].name,
         );
       } else {
         setCurrentCharacter(
-          (char) =>
-            (char - 1 + data[currentCity].characters.length) %
-            data[currentCity].characters.length,
+          data[currentCity].characters[
+            (charIndex - 1 + data[currentCity].characters.length) %
+              data[currentCity].characters.length
+          ].name,
         );
       }
     }
@@ -80,15 +77,21 @@ export default function Character({
           fill={true}
         ></Image>
       </div>
-      {currentCharacterName && (
+      {currentCharacter && (
         <div className="absolute top-0 left-0 h-svh w-svw overflow-clip">
           <Image
             onTouchEnd={(e) => handleTouchEnd(e)}
             onTouchStart={(e) => handleTouchStart(e)}
-            key={currentCharacterName}
+            key={currentCharacter}
             className="absolute top-0 left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none object-cover"
-            src={characters[currentCharacterName as keyof typeof characters]}
-            alt={currentCharacterName}
+            src={
+              characters[
+                currentCharacter
+                  .replace(" ", "_")
+                  .toLowerCase() as keyof typeof characters
+              ]
+            }
+            alt={currentCharacter}
             placeholder="blur"
             priority={true}
           />
@@ -110,7 +113,7 @@ export default function Character({
           <div className="flex flex-wrap items-center justify-center gap-2">
             {data[currentCity].characters.map((character, i) => (
               <Image
-                className={`z-20 cursor-pointer rounded-full ring-1 ${i === currentCharacter ? "ring-blue-500" : "ring-white"} hover:ring-red-500`}
+                className={`z-20 cursor-pointer rounded-full ring-1 ${character.name === currentCharacter ? "ring-blue-500" : "ring-white"} hover:ring-red-500`}
                 key={character.id}
                 src={
                   icons[
@@ -122,7 +125,7 @@ export default function Character({
                 alt={character.name}
                 width={64}
                 height={64}
-                onClick={() => setCurrentCharacter(i)}
+                onClick={() => setCurrentCharacter(character.name)}
                 placeholder="blur"
               />
             ))}
