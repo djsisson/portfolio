@@ -1,7 +1,7 @@
 "use client";
 import { genshin_data } from "../data";
 import { backgrounds, icons, characters } from "../images";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 
 export default function Character({
@@ -13,10 +13,23 @@ export default function Character({
   const [currentCharacter, setCurrentCharacter] = useState("");
   const [xdown, setXdown] = useState(0);
   const [ydown, setYdown] = useState(0);
+  const [characterLoading, setCharacterLoading] = useState(false);
+  const characterRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    setCharacterLoading(true);
     setCurrentCharacter(data[currentCity].characters[0].name);
   }, [currentCity, data]);
+
+  useEffect(() => {
+    if (characterRef.current) {
+      characterRef.current!.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
+    }
+  }, [currentCharacter]);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setXdown(e.targetTouches[0].clientX);
@@ -29,7 +42,6 @@ export default function Character({
     const xDiff = xUp - xdown;
     const yDiff = yUp - ydown;
     const threshold = 80;
-    e.preventDefault();
     if (Math.abs(xDiff) <= threshold && Math.abs(yDiff) <= threshold) {
       return;
     }
@@ -43,6 +55,7 @@ export default function Character({
       const charIndex = data[currentCity].characters.findIndex(
         (char) => char.name === currentCharacter,
       );
+      setCharacterLoading(true);
       if (xDiff > 0) {
         setCurrentCharacter(
           data[currentCity].characters[
@@ -94,6 +107,7 @@ export default function Character({
             alt={currentCharacter}
             placeholder="blur"
             priority={true}
+            onLoad={() => setCharacterLoading(false)}
           />
         </div>
       )}
@@ -109,11 +123,11 @@ export default function Character({
             </div>
           ))}
         </div>
-        <div>
-          <div className="flex flex-wrap items-center justify-center gap-2">
+        <div className="flex justify-center">
+          <div className="z-30 flex snap-x snap-mandatory overflow-x-hidden">
             {data[currentCity].characters.map((character, i) => (
               <Image
-                className={`z-20 cursor-pointer rounded-full ring-1 ${character.name === currentCharacter ? "ring-blue-500" : "ring-white"} hover:ring-red-500`}
+                className={`z-20 m-2 cursor-pointer snap-center rounded-full ring-1 ${character.name === currentCharacter ? (characterLoading ? "ring-blue-500" : "ring-green-500") : "ring-white"} hover:ring-red-500`}
                 key={character.id}
                 src={
                   icons[
@@ -122,10 +136,14 @@ export default function Character({
                       .toLowerCase() as keyof typeof icons
                   ]
                 }
+                ref={character.name === currentCharacter ? characterRef : null}
                 alt={character.name}
                 width={64}
                 height={64}
-                onClick={() => setCurrentCharacter(character.name)}
+                onClick={() => {
+                  setCurrentCharacter(character.name);
+                  setCharacterLoading(true);
+                }}
                 placeholder="blur"
               />
             ))}
