@@ -1,8 +1,11 @@
 "use client";
 import { genshin_data } from "../data";
-import { backgrounds, icons, characters } from "../images";
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
+import Background from "./Background";
+import Profile from "./Profile";
+import CitySelector from "./City-Selector";
+import CharSelector from "./Char-Selector";
+import CharInfo from "./Char-Info";
 
 export default function Character({
   data,
@@ -10,15 +13,17 @@ export default function Character({
   data: Awaited<ReturnType<typeof genshin_data>>;
 }) {
   const [currentCity, setCurrentCity] = useState(0);
-  const [currentCharacter, setCurrentCharacter] = useState("");
+  const [currentCharacter, setCurrentCharacter] = useState(
+    {} as Awaited<ReturnType<typeof genshin_data>>[0]["characters"][0],
+  );
   const [xdown, setXdown] = useState(0);
   const [ydown, setYdown] = useState(0);
-  const [characterLoading, setCharacterLoading] = useState(false);
+  const [characterLoading, setCharacterLoading] = useState(true);
   const characterRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     setCharacterLoading(true);
-    setCurrentCharacter(data[currentCity].characters[0].name);
+    setCurrentCharacter(data[currentCity].characters[0]);
   }, [currentCity, data]);
 
   useEffect(() => {
@@ -45,6 +50,7 @@ export default function Character({
     if (Math.abs(xDiff) <= threshold && Math.abs(yDiff) <= threshold) {
       return;
     }
+    setCharacterLoading(true);
     if (Math.abs(xDiff) < Math.abs(yDiff)) {
       if (yDiff > 0) {
         setCurrentCity((city) => (city + 1) % data.length);
@@ -53,21 +59,20 @@ export default function Character({
       }
     } else {
       const charIndex = data[currentCity].characters.findIndex(
-        (char) => char.name === currentCharacter,
+        (char) => char.name === currentCharacter.name,
       );
-      setCharacterLoading(true);
       if (xDiff > 0) {
         setCurrentCharacter(
           data[currentCity].characters[
             (charIndex + 1) % data[currentCity].characters.length
-          ].name,
+          ],
         );
       } else {
         setCurrentCharacter(
           data[currentCity].characters[
             (charIndex - 1 + data[currentCity].characters.length) %
               data[currentCity].characters.length
-          ].name,
+          ],
         );
       }
     }
@@ -75,79 +80,33 @@ export default function Character({
 
   return (
     <>
-      <div className="absolute top-0 left-0 z-0 h-svh w-svw overflow-clip">
-        <Image
-          className={`max-w-none object-cover object-center`}
-          key={data[currentCity].name}
-          src={
-            backgrounds[
-              data[currentCity].name.toLowerCase() as keyof typeof backgrounds
-            ]
-          }
-          alt={data[currentCity].name}
-          placeholder="blur"
-          priority={true}
-          fill={true}
-        ></Image>
-      </div>
-      {currentCharacter && (
-        <div className="absolute top-0 left-0 h-svh w-svw overflow-clip">
-          <Image
-            onTouchEnd={(e) => handleTouchEnd(e)}
-            onTouchStart={(e) => handleTouchStart(e)}
-            key={currentCharacter}
-            className="absolute top-0 left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none object-cover"
-            src={
-              characters[
-                currentCharacter
-                  .replace(" ", "_")
-                  .toLowerCase() as keyof typeof characters
-              ]
-            }
-            alt={currentCharacter}
-            placeholder="blur"
-            priority={true}
-            onLoad={() => setCharacterLoading(false)}
-          />
-        </div>
+      <Background currentCity={data[currentCity].name} />
+      {currentCharacter.name && (
+        <Profile
+          currentCharacter={currentCharacter.name}
+          handleTouchEnd={handleTouchEnd}
+          handleTouchStart={handleTouchStart}
+          setCharacterLoading={setCharacterLoading}
+        />
       )}
+      <div className="absolute top-[20%] left-[25%] h-[30%] w-[30%] max-w-96">
+        {currentCharacter.name && <CharInfo character={currentCharacter} />}
+      </div>
       <div className="z-10 flex h-full w-full flex-col gap-2 p-4">
-        <div className="flex flex-1 flex-col justify-center gap-2">
-          {data.map((city, i) => (
-            <div
-              key={city.id}
-              onClick={() => setCurrentCity(i)}
-              className={`z-20 w-fit cursor-pointer ${i === currentCity ? "text-blue-500" : "text-white"} hover:text-red-500 md:text-xl lg:text-2xl`}
-            >
-              {city.name}
-            </div>
-          ))}
-        </div>
+        <CitySelector
+          cities={data}
+          currentCity={currentCity}
+          setCurrentCity={setCurrentCity}
+        />
         <div className="flex justify-center">
-          <div className="z-30 flex snap-x snap-mandatory overflow-x-hidden">
-            {data[currentCity].characters.map((character, i) => (
-              <Image
-                className={`z-20 m-2 cursor-pointer snap-center rounded-full ring-1 ${character.name === currentCharacter ? (characterLoading ? "ring-blue-500" : "ring-green-500") : "ring-white"} hover:ring-red-500`}
-                key={character.id}
-                src={
-                  icons[
-                    character.name
-                      .replace(" ", "_")
-                      .toLowerCase() as keyof typeof icons
-                  ]
-                }
-                ref={character.name === currentCharacter ? characterRef : null}
-                alt={character.name}
-                width={64}
-                height={64}
-                onClick={() => {
-                  setCurrentCharacter(character.name);
-                  setCharacterLoading(true);
-                }}
-                placeholder="blur"
-              />
-            ))}
-          </div>
+          <CharSelector
+            characters={data[currentCity].characters}
+            currentCharacter={currentCharacter.name}
+            setCurrentCharacter={setCurrentCharacter}
+            characterLoading={characterLoading}
+            setCharacterLoading={setCharacterLoading}
+            characterRef={characterRef}
+          />
         </div>
       </div>
     </>

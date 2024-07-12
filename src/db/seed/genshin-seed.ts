@@ -251,7 +251,7 @@ export const seed = async () => {
           `Though she is often strapped for cash and lives a life of thrift, she is resolved to never use astrology for profit...`,
           `It is this very resolution that has caused her to constantly fret about money.`,
         ],
-        element_id: element_result.find((e) => e.name === "Cryo")?.id!,
+        element_id: element_result.find((e) => e.name === "Hydro")?.id!,
         city_id: city_result.find((c) => c.name === "Mondstadt")?.id!,
       },
       {
