@@ -20,11 +20,11 @@ export default function CharSelector({
   characterRef: React.RefObject<HTMLImageElement>;
 }) {
   return (
-    <div className="z-30 flex h-full snap-x snap-mandatory gap-2 overflow-x-hidden p-2">
+    <div className="group z-30 flex h-full snap-x snap-mandatory gap-2 overflow-x-hidden p-2">
       {characters.map((character) => (
         <div
           key={character.id}
-          className={`relative z-10 aspect-square h-full rounded-full before:absolute before:inset-0 before:z-10 before:w-full before:rounded-full before:bg-[conic-gradient(from_135deg,var(--bgcolour),white,var(--bgcolour))] before:transition-all before:duration-1000 before:content-[''] after:absolute after:inset-0 after:z-20 after:w-full after:rounded-full after:bg-[conic-gradient(from_45deg,var(--bgcolour),white,var(--bgcolour))] after:opacity-0 after:transition-all after:duration-1000 after:content-[''] hover:after:opacity-100`}
+          className={`relative z-10 aspect-square h-full rounded-full group-has-hover:grayscale-100 before:absolute before:inset-0 before:z-10 before:w-full before:rounded-full before:bg-[conic-gradient(from_135deg,var(--bgcolour),white,var(--bgcolour))] before:transition-all before:duration-1000 before:content-[''] after:absolute after:inset-0 after:z-20 after:w-full after:rounded-full after:bg-[conic-gradient(from_45deg,var(--bgcolour),white,var(--bgcolour))] after:opacity-0 after:transition-all after:duration-1000 after:content-[''] hover:grayscale-0 hover:after:opacity-100`}
           style={
             { "--bgcolour": character.element.colour } as React.CSSProperties
           }

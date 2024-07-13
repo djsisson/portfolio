@@ -83,10 +83,10 @@ export default function Character({ data }: { data: Cities }) {
           setCharacterLoading={setCharacterLoading}
         />
       )}
-      <div className="absolute top-[20%] left-[25%] h-[30%] w-[30%] max-w-96">
+      <div className="absolute top-[20%] left-[30%] h-[30%] w-[30%] max-w-96 md:left-[20%]">
         {currentCharacter.name && <CharInfo character={currentCharacter} />}
       </div>
-      <div className="z-10 flex h-full w-full flex-col gap-2 p-4">
+      <div className="z-10 flex h-full w-full flex-col gap-2">
         <CitySelector
           cities={data}
           currentCity={currentCity}
