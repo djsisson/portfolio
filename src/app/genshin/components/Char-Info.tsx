@@ -1,29 +1,36 @@
 import Image from "next/image";
 import { elements } from "../images";
-import { genshin_data } from "../data";
+import { Characters } from "../data";
 
-export default function CharInfo({
-  character,
-}: {
-  character: Awaited<ReturnType<typeof genshin_data>>[0]["characters"][0];
-}) {
+export default function CharInfo({ character }: { character: Characters[0] }) {
   return (
     <div className="flex h-full flex-col">
-      <Image
-        className="absolute bottom-0 left-0 h-full object-contain opacity-50"
-        src={
-          elements[
-            character.element.name.toLowerCase() as keyof typeof elements
-          ]
-        }
-        alt={character.element.name}
-      />
-      <h1 className="bg-white/20 p-2 text-2xl backdrop-blur-sm">
-        {character.name}
-      </h1>
+      <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center">
+        <Image
+          className="aspect-square object-contain opacity-50"
+          src={
+            elements[
+              character.element.name.toLowerCase() as keyof typeof elements
+            ]
+          }
+          alt={character.element.name}
+          fill={true}
+        />
+      </div>
+      <div className="bg-white/20 backdrop-blur-sm">
+        <h1
+          className="bg-gradient-to-b from-white to-[var(--bgcolour)] bg-clip-text p-2 font-bold text-transparent md:text-2xl lg:text-4xl"
+          style={
+            { "--bgcolour": character.element.colour } as React.CSSProperties
+          }
+        >
+          {character.name}
+        </h1>
+      </div>
+
       <div className="h-full overflow-y-auto bg-white/20 p-2 text-black backdrop-blur-sm">
         {character.description.map((desc, i) => (
-          <div key={i}>
+          <div key={i} className="text-sm font-medium md:text-base lg:text-lg">
             <p>{desc}</p>
             {i !== character.description.length - 1 && <br />}
           </div>

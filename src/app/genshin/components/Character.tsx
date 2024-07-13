@@ -1,5 +1,5 @@
 "use client";
-import { genshin_data } from "../data";
+import { Cities, Characters } from "../data";
 import { useState, useEffect, useRef } from "react";
 import Background from "./Background";
 import Profile from "./Profile";
@@ -7,15 +7,9 @@ import CitySelector from "./City-Selector";
 import CharSelector from "./Char-Selector";
 import CharInfo from "./Char-Info";
 
-export default function Character({
-  data,
-}: {
-  data: Awaited<ReturnType<typeof genshin_data>>;
-}) {
+export default function Character({ data }: { data: Cities }) {
   const [currentCity, setCurrentCity] = useState(0);
-  const [currentCharacter, setCurrentCharacter] = useState(
-    {} as Awaited<ReturnType<typeof genshin_data>>[0]["characters"][0],
-  );
+  const [currentCharacter, setCurrentCharacter] = useState({} as Characters[0]);
   const [xdown, setXdown] = useState(0);
   const [ydown, setYdown] = useState(0);
   const [characterLoading, setCharacterLoading] = useState(true);
@@ -98,7 +92,7 @@ export default function Character({
           currentCity={currentCity}
           setCurrentCity={setCurrentCity}
         />
-        <div className="flex justify-center">
+        <div className="flex h-1/5 max-h-36 justify-center">
           <CharSelector
             characters={data[currentCity].characters}
             currentCharacter={currentCharacter.name}

@@ -10,19 +10,19 @@ export const seed = async () => {
     .values([
       {
         name: "Anemo",
-        colour: "74c2a8",
+        colour: "#74c2a8",
       },
       {
         name: "Cryo",
-        colour: "9fd6e3",
+        colour: "#9fd6e3",
       },
       {
         name: "Electro",
-        colour: "af8ec1",
+        colour: "#af8ec1",
       },
       {
         name: "Hydro",
-        colour: "4cc2f1",
+        colour: "#4cc2f1",
       },
       {
         name: "Pyro",
@@ -30,11 +30,11 @@ export const seed = async () => {
       },
       {
         name: "Dendro",
-        colour: "a5c83b",
+        colour: "#a5c83b",
       },
       {
         name: "Geo",
-        colour: "fab632",
+        colour: "#fab632",
       },
     ])
     .returning();

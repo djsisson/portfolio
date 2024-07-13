@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Character from "./components/Character";
-import { genshin_data } from "./data";
+import { genshin_data, Cities } from "./data";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -12,7 +12,7 @@ export default async function Genshin() {
       <Header />
       <div className="flex-1">
         <Suspense fallback="loading">
-          <Character data={data as Awaited<ReturnType<typeof genshin_data>>} />
+          <Character data={data as Cities} />
         </Suspense>
       </div>
       <Footer />
