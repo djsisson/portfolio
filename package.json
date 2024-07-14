@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "css": "yarn dlx @tailwindcss/cli@next -i ./src/app/global.css -o ./src/app/global.css -m -w",
+    "css": "yarn dlx @tailwindcss/cli@next -i ./src/app/global.css -o ./src/app/global.css -m",
+    "css-dev": "yarn dlx @tailwindcss/cli@next -i ./src/app/global.css -o ./src/app/global.css -m --watch",
     "driz-gen": "yarn drizzle-kit generate",
     "driz-mig": "yarn drizzle-kit migrate"
   },
