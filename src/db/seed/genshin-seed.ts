@@ -148,7 +148,7 @@ export const seed = async () => {
       {
         name: "Furina",
         description: [
-          `Regina of All Waters, Kindreds, Peoples and Laws" is deeply loved by her people.`,
+          `The "Regina of All Waters, Kindreds, Peoples and Laws" is deeply loved by her people.`,
           `She follows each and every trial held at the Opera Epiclese with an inextinguishable passion, and is always acutely aware of how the "audience" sees things.`,
         ],
         element_id: element_result.find((e) => e.name === "Hydro")?.id!,
@@ -430,7 +430,7 @@ export const seed = async () => {
       {
         name: "Zhongli",
         description: [
-          `>Wangsheng Funeral Parlor's mysterious consultant.`,
+          `Wangsheng Funeral Parlor's mysterious consultant.`,
           `Handsome, elegant, and surpassingly learned.`,
           `Though no one knows where Zhongli is from, he is a master of courtesy and rules.`,
           `From his seat at Wangsheng Funeral Parlor, he performs all manner of rituals.`,

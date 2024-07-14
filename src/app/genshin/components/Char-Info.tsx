@@ -19,7 +19,7 @@ export default function CharInfo({ character }: { character: Characters[0] }) {
       </div>
       <div className="bg-white/20 backdrop-blur-sm">
         <h1
-          className="bg-gradient-to-b from-white to-[var(--bgcolour)] bg-clip-text p-2 font-bold text-transparent md:text-2xl lg:text-4xl"
+          className="border-b-2 border-white/20 bg-gradient-to-b from-white to-[var(--bgcolour)] bg-clip-text p-2 font-bold text-transparent md:text-2xl lg:text-4xl"
           style={
             { "--bgcolour": character.element.colour } as React.CSSProperties
           }

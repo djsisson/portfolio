@@ -46,7 +46,7 @@ export default function Character({ data }: { data: Cities }) {
     }
     setCharacterLoading(true);
     if (Math.abs(xDiff) < Math.abs(yDiff)) {
-      if (yDiff > 0) {
+      if (yDiff < 0) {
         setCurrentCity((city) => (city + 1) % data.length);
       } else {
         setCurrentCity((city) => (city - 1 + data.length) % data.length);
@@ -55,7 +55,7 @@ export default function Character({ data }: { data: Cities }) {
       const charIndex = data[currentCity].characters.findIndex(
         (char) => char.name === currentCharacter.name,
       );
-      if (xDiff > 0) {
+      if (xDiff < 0) {
         setCurrentCharacter(
           data[currentCity].characters[
             (charIndex + 1) % data[currentCity].characters.length
@@ -83,7 +83,7 @@ export default function Character({ data }: { data: Cities }) {
           setCharacterLoading={setCharacterLoading}
         />
       )}
-      <div className="absolute top-[20%] left-[30%] h-[30%] w-[30%] max-w-96 md:left-[20%]">
+      <div className="absolute top-[20%] left-[30%] h-[30%] w-[30%] max-w-96 sm:left-[20%]">
         {currentCharacter.name && <CharInfo character={currentCharacter} />}
       </div>
       <div className="z-10 flex h-full w-full flex-col gap-2">
