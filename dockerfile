@@ -32,7 +32,7 @@ COPY src ./src
 COPY public ./public
 COPY next.config.mjs .
 COPY tsconfig.json .
-
+RUN yarn css
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
