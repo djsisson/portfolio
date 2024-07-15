@@ -7,10 +7,8 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "css": "yarn dlx @tailwindcss/cli@next -i ./src/app/global.css -o ./src/app/global.css -m",
-    "css-dev": "yarn dlx @tailwindcss/cli@next -i ./src/app/global.css -o ./src/app/global.css -m --watch",
-    "driz-gen": "yarn drizzle-kit generate",
-    "driz-mig": "yarn drizzle-kit migrate"
+    "driz-gen": "yarn @drizzle-kit generate",
+    "driz-mig": "yarn @drizzle-kit migrate"
   },
   "dependencies": {
     "babel-plugin-react-compiler": "0.0.0-experimental-696af53-20240625",
@@ -23,7 +21,6 @@
     "sharp": "^0.33.4"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.0.0-alpha.17",
     "@tailwindcss/postcss": "^4.0.0-alpha.17",
     "@types/node": "^20",
     "@types/react": "^18",

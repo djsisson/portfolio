@@ -10,11 +10,9 @@ export default async function Genshin() {
   return (
     <div className="relative flex h-svh w-svw flex-col">
       <Header />
-      <div className="flex-1">
-        <Suspense fallback="loading">
-          <Character data={data as Cities} />
-        </Suspense>
-      </div>
+      <Suspense fallback="loading">
+        <Character data={data as Cities} />
+      </Suspense>
       <Footer />
     </div>
   );

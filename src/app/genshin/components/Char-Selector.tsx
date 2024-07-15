@@ -33,19 +33,14 @@ export default function CharSelector({
       );
     }
     setCharacterLoading(true);
-    characterRef.current!.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center",
-    });
   };
   return (
-    <div className="flex h-full gap-2 overflow-x-hidden p-2">
+    <div className="flex h-full gap-2 overflow-x-hidden">
       <div
         className="hidden h-full items-center p-2 sm:flex"
         onClick={() => onClick("left")}
       >
-        <i className="inline-block rotate-45 cursor-pointer border-b-4 border-l-4 border-b-black border-l-black p-3 hover:scale-125"></i>
+        <i className="inline-block rotate-45 cursor-pointer border-b-4 border-l-4 border-b-black border-l-black p-3 transition duration-300 ease-in-out hover:scale-125"></i>
       </div>
       <div className="group z-30 flex h-full snap-x snap-mandatory gap-2 overflow-x-hidden p-2">
         {characters.map((character) => (
@@ -81,7 +76,7 @@ export default function CharSelector({
         className="hidden h-full items-center p-2 sm:flex"
         onClick={() => onClick("right")}
       >
-        <i className="inline-block -rotate-135 cursor-pointer border-b-4 border-l-4 border-b-black border-l-black p-3 hover:scale-125"></i>
+        <i className="inline-block -rotate-135 cursor-pointer border-b-4 border-l-4 border-b-black border-l-black p-3 transition duration-300 ease-in-out hover:scale-125"></i>
       </div>
     </div>
   );

@@ -83,25 +83,25 @@ export default function Character({ data }: { data: Cities }) {
           setCharacterLoading={setCharacterLoading}
         />
       )}
-      <div className="absolute top-[20%] left-[30%] h-[30%] w-[30%] max-w-96 sm:left-[20%]">
+      <div className="absolute top-[20%] left-[35%] h-[30%] w-[30%] max-w-96 sm:left-[25%]">
         {currentCharacter.name && <CharInfo character={currentCharacter} />}
       </div>
-      <div className="z-10 flex h-full w-full flex-col gap-2">
+      <div className="z-10 flex h-full w-full flex-col">
         <CitySelector
           cities={data}
           currentCity={currentCity}
           setCurrentCity={setCurrentCity}
         />
-        <div className="flex h-1/5 max-h-36 justify-center">
-          <CharSelector
-            characters={data[currentCity].characters}
-            currentCharacter={currentCharacter.name}
-            setCurrentCharacter={setCurrentCharacter}
-            characterLoading={characterLoading}
-            setCharacterLoading={setCharacterLoading}
-            characterRef={characterRef}
-          />
-        </div>
+      </div>
+      <div className="flex h-1/5 max-h-36 justify-center">
+        <CharSelector
+          characters={data[currentCity].characters}
+          currentCharacter={currentCharacter.name}
+          setCurrentCharacter={setCurrentCharacter}
+          characterLoading={characterLoading}
+          setCharacterLoading={setCharacterLoading}
+          characterRef={characterRef}
+        />
       </div>
     </>
   );
