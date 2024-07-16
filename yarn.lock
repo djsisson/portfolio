@@ -1653,22 +1653,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"drizzle-kit@npm:^0.22.7":
-  version: 0.22.8
-  resolution: "drizzle-kit@npm:0.22.8"
+"drizzle-kit@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "drizzle-kit@npm:0.23.0"
   dependencies:
     "@esbuild-kit/esm-loader": "npm:^2.5.5"
     esbuild: "npm:^0.19.7"
     esbuild-register: "npm:^3.5.0"
   bin:
     drizzle-kit: bin.cjs
-  checksum: 10c0/e3bbda283de8d3985644d771fe773fcee3f31dd485cb3d32af077c52a088580921fcaae3f7b383279f8799b223d74701ebc4866b6e4952c8c813cd0cb5f80908
+  checksum: 10c0/9939eeb29f2aa93b73560a9a7df4ebe487c30bddf7e6f0e6ab0550989f0c6afc150f587bf65a9c8c263dea41737b8ce8dcee09f830d6992fe78909f4d3469b12
   languageName: node
   linkType: hard
 
-"drizzle-orm@npm:^0.31.2":
-  version: 0.31.4
-  resolution: "drizzle-orm@npm:0.31.4"
+"drizzle-orm@npm:^0.32.0":
+  version: 0.32.0
+  resolution: "drizzle-orm@npm:0.32.0"
   peerDependencies:
     "@aws-sdk/client-rds-data": ">=3"
     "@cloudflare/workers-types": ">=3"
@@ -1754,7 +1754,7 @@ __metadata:
       optional: true
     sqlite3:
       optional: true
-  checksum: 10c0/2b7132f1d07039b159015a7c4e0da946ad9667a451f51be99c2704001c0ddc39cab71a26609643c4d8d954c56ffe0f4c65e488933d129cf4747bb6e41104d28b
+  checksum: 10c0/0aa915ec0a59efb6ac29817b57bc1a5a250b72650170fc1a3486efe7cad77062d893e14038a597e25cd59f256eafb36a512f36979f522ac0bd24b6b9864b7120
   languageName: node
   linkType: hard
 
@@ -3667,8 +3667,8 @@ __metadata:
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     babel-plugin-react-compiler: "npm:0.0.0-experimental-696af53-20240625"
-    drizzle-kit: "npm:^0.22.7"
-    drizzle-orm: "npm:^0.31.2"
+    drizzle-kit: "npm:^0.23.0"
+    drizzle-orm: "npm:^0.32.0"
     eslint: "npm:^8"
     eslint-config-next: "npm:15.0.0-rc.0"
     next: "npm:15.0.0-rc.0"

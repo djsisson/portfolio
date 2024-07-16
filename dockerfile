@@ -14,6 +14,7 @@ RUN apk add --no-cache libc6-compat
 FROM base AS builder
 
 WORKDIR /app
+ENV NODE_ENV=production
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .yarnrc.yml ./
@@ -38,8 +39,7 @@ COPY postcss.config.js .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
-RUN nslookup google.com
-RUN nslookup supabase-db
+
 RUN \
   if [ -f yarn.lock ]; then yarn build; \
   elif [ -f package-lock.json ]; then npm run build; \
