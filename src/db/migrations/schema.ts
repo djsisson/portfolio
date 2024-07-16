@@ -15,8 +15,12 @@ export const characters = pgTable(
       .generatedAlwaysAsIdentity({ startWith: 1, increment: 1 }),
     name: text("name").notNull(),
     description: text("description").array().notNull(),
-    element_id: integer("element_id").references(() => elements.id),
-    city_id: integer("city_id").references(() => cities.id),
+    element_id: integer("element_id")
+      .references(() => elements.id)
+      .notNull(),
+    city_id: integer("city_id")
+      .references(() => cities.id)
+      .notNull(),
   },
   (table) => {
     return {
@@ -63,7 +67,9 @@ export const upgrades = pgTable("upgrades", {
     .generatedAlwaysAsIdentity({ startWith: 1, increment: 1 }),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  effectItemId: integer("effectItemId").references(() => shopItems.id),
+  effectItemId: integer("effectItemId")
+    .references(() => shopItems.id)
+    .notNull(),
 });
 
 export const levels = pgTable("levels", {
@@ -71,7 +77,9 @@ export const levels = pgTable("levels", {
     .primaryKey()
     .generatedAlwaysAsIdentity({ startWith: 1, increment: 1 }),
   index: integer("index").notNull(),
-  upgrade_id: integer("upgrade_id").references(() => upgrades.id),
+  upgrade_id: integer("upgrade_id")
+    .references(() => upgrades.id)
+    .notNull(),
   cost: integer("cost").notNull(),
   baseValue: numeric("baseValue").notNull(),
   critChance: numeric("critChance").notNull(),
@@ -105,8 +113,12 @@ export const shopItems = pgTable("shop_items", {
 export const upgradeRequiredItems = pgTable(
   "upgrade_required_items",
   {
-    upgrade_id: integer("upgrade_id").references(() => upgrades.id),
-    item_id: integer("item_id").references(() => shopItems.id),
+    upgrade_id: integer("upgrade_id")
+      .references(() => upgrades.id)
+      .notNull(),
+    item_id: integer("item_id")
+      .references(() => shopItems.id)
+      .notNull(),
     quantity: integer("quantity").notNull(),
   },
   (table) => {
@@ -119,8 +131,12 @@ export const upgradeRequiredItems = pgTable(
 export const upgradeRequiredResearch = pgTable(
   "upgrade_required_research",
   {
-    upgrade_id: integer("upgrade_id").references(() => upgrades.id),
-    research_id: integer("research_id").references(() => research.id),
+    upgrade_id: integer("upgrade_id")
+      .references(() => upgrades.id)
+      .notNull(),
+    research_id: integer("research_id")
+      .references(() => research.id)
+      .notNull(),
   },
   (table) => {
     return {
@@ -132,8 +148,12 @@ export const upgradeRequiredResearch = pgTable(
 export const researchRequiredItems = pgTable(
   "research_required_items",
   {
-    research_id: integer("research_id").references(() => research.id),
-    item_id: integer("item_id").references(() => shopItems.id),
+    research_id: integer("research_id")
+      .references(() => research.id)
+      .notNull(),
+    item_id: integer("item_id")
+      .references(() => shopItems.id)
+      .notNull(),
     quantity: integer("quantity").notNull(),
   },
   (table) => {
@@ -146,8 +166,12 @@ export const researchRequiredItems = pgTable(
 export const researchRequiredResearch = pgTable(
   "research_required_research",
   {
-    research_id: integer("research_id").references(() => research.id),
-    required_id: integer("required_id").references(() => research.id),
+    research_id: integer("research_id")
+      .references(() => research.id)
+      .notNull(),
+    required_id: integer("required_id")
+      .references(() => research.id)
+      .notNull(),
   },
   (table) => {
     return {
@@ -159,8 +183,12 @@ export const researchRequiredResearch = pgTable(
 export const itemsRequiredResearch = pgTable(
   "items_required_research",
   {
-    item_id: integer("item_id").references(() => shopItems.id),
-    required_id: integer("required_id").references(() => research.id),
+    item_id: integer("item_id")
+      .references(() => shopItems.id)
+      .notNull(),
+    required_id: integer("required_id")
+      .references(() => research.id)
+      .notNull(),
   },
   (table) => {
     return {
@@ -172,8 +200,12 @@ export const itemsRequiredResearch = pgTable(
 export const itemsRequiredItems = pgTable(
   "items_required_items",
   {
-    item_id: integer("item_id").references(() => shopItems.id),
-    required_id: integer("required_id").references(() => shopItems.id),
+    item_id: integer("item_id")
+      .references(() => shopItems.id)
+      .notNull(),
+    required_id: integer("required_id")
+      .references(() => shopItems.id)
+      .notNull(),
     quantity: integer("quantity").notNull(),
   },
   (table) => {
