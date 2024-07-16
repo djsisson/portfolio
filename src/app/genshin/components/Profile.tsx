@@ -13,7 +13,7 @@ export default function Profile({
   setCharacterLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <div className="absolute top-0 left-0 h-svh w-svw overflow-clip">
+    <div className="absolute top-0 left-0 z-20 h-svh w-svw overflow-clip">
       <Image
         onTouchEnd={(e) => handleTouchEnd(e)}
         onTouchStart={(e) => handleTouchStart(e)}
