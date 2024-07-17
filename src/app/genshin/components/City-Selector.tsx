@@ -8,7 +8,7 @@ export default function CitySelector({
   setCurrentCity: React.Dispatch<React.SetStateAction<number>>;
 }) {
   return (
-    <div className="z-30 flex w-max flex-1 flex-col justify-center md:gap-2">
+    <div className="z-30 flex w-max flex-col justify-center md:gap-2">
       {cities.map((city, i) => (
         <div
           key={city.id}

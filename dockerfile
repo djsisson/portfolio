@@ -34,6 +34,10 @@ COPY public ./public
 COPY next.config.mjs .
 COPY tsconfig.json .
 COPY postcss.config.js .
+COPY drizzle.config.ts .
+
+RUN yarn driz-mig
+RUN yarn seed
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
