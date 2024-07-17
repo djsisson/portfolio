@@ -79,4 +79,4 @@ ENV PORT=3001
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
 
-CMD HOSTNAME=${HOSTNAME} PORT=$PORT node server.js
+CMD ["node", "server.js"]

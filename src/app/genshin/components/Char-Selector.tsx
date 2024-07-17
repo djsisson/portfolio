@@ -35,14 +35,14 @@ export default function CharSelector({
     setCharacterLoading(true);
   };
   return (
-    <div className="flex h-full gap-2 overflow-x-hidden">
+    <div className="z-20 flex h-full w-full justify-center gap-2">
       <div
         className="hidden h-full items-center p-2 sm:flex"
         onClick={() => onClick("left")}
       >
         <i className="inline-block rotate-45 cursor-pointer border-b-4 border-l-4 border-b-black border-l-black p-3 transition duration-300 ease-in-out hover:scale-125"></i>
       </div>
-      <div className="group z-30 flex h-full snap-x snap-mandatory gap-2 overflow-x-hidden p-2">
+      <div className="group z-30 flex h-full snap-x snap-mandatory gap-2 overflow-x-auto p-2">
         {characters.map((character) => (
           <div
             key={character.id}
