@@ -15,12 +15,12 @@ FROM base AS builder
 
 WORKDIR /app
 ENV NODE_ENV=production
-
+RUN yarn cache clean --force
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .yarnrc.yml ./
 
 RUN \
-  if [ -f yarn.lock ]; then yarn install --immutable; \
+  if [ -f yarn.lock ]; then yarn install --immutable --verbose; \
   elif [ -f package-lock.json ]; then npm ci; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
@@ -35,7 +35,7 @@ COPY next.config.mjs .
 COPY tsconfig.json .
 COPY postcss.config.js .
 COPY drizzle.config.ts .
-RUN yarn install --immutable
+
 RUN yarn driz-mig
 RUN yarn seed
 
