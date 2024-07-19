@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "driz-gen": "npx drizzle-kit generate",
-    "driz-mig": "npx drizzle-kit migrate",
-    "seed": "npx tsx ./src/db/seed/seed.ts"
+    "driz-gen": "yarn drizzle-kit generate",
+    "driz-mig": "yarn drizzle-kit migrate",
+    "seed": "yarn dlx tsx ./src/db/seed/seed.ts"
   },
   "dependencies": {
     "babel-plugin-react-compiler": "0.0.0-experimental-696af53-20240625",
+    "drizzle-kit": "^0.23.0",
     "drizzle-orm": "^0.32.0",
     "next": "15.0.0-rc.0",
     "postgres": "^3.4.4",
@@ -26,7 +27,6 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "drizzle-kit": "^0.23.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.0-rc.0",
     "prettier": "^3.3.2",
