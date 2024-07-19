@@ -9,7 +9,7 @@
     "lint": "next lint",
     "driz-gen": "yarn drizzle-kit generate",
     "driz-mig": "yarn drizzle-kit migrate",
-    "seed": "npx tsx ./src/db/seed/genshin-seed.ts"
+    "seed": "yarn dlx tsx ./src/db/seed/seed.ts"
   },
   "dependencies": {
     "babel-plugin-react-compiler": "0.0.0-experimental-696af53-20240625",

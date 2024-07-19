@@ -1,0 +1,1 @@
+ALTER TABLE "levels" RENAME COLUMN "index" TO "level";

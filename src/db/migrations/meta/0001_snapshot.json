@@ -1,0 +1,930 @@
+{
+  "id": "93bb0606-c853-403a-abb1-06ec5a2001b8",
+  "prevId": "ceb77c77-3e63-4dea-b58f-564b9a5c1601",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.characters": {
+      "name": "characters",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "characters_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "element_id": {
+          "name": "element_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "city_id": {
+          "name": "city_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "characters_element_id_elements_id_fk": {
+          "name": "characters_element_id_elements_id_fk",
+          "tableFrom": "characters",
+          "tableTo": "elements",
+          "columnsFrom": [
+            "element_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "characters_city_id_cities_id_fk": {
+          "name": "characters_city_id_cities_id_fk",
+          "tableFrom": "characters",
+          "tableTo": "cities",
+          "columnsFrom": [
+            "city_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "characters_name_unique": {
+          "name": "characters_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "public.cities": {
+      "name": "cities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "cities_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "cities_name_unique": {
+          "name": "cities_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        }
+      }
+    },
+    "public.elements": {
+      "name": "elements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "elements_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "colour": {
+          "name": "colour",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "elements_name_unique": {
+          "name": "elements_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "name"
+          ]
+        },
+        "elements_colour_unique": {
+          "name": "elements_colour_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "colour"
+          ]
+        }
+      }
+    },
+    "public.gamestate": {
+      "name": "gamestate",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "gamestats_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "playername": {
+          "name": "playername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "theme": {
+          "name": "theme",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currentscore": {
+          "name": "currentscore",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "totalclicks": {
+          "name": "totalclicks",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "totalspent": {
+          "name": "totalspent",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currentaveragecps": {
+          "name": "currentaveragecps",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "averageclickvalue": {
+          "name": "averageclickvalue",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "researched": {
+          "name": "researched",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "upgrades": {
+          "name": "upgrades",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "items": {
+          "name": "items",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.items_required_items": {
+      "name": "items_required_items",
+      "schema": "",
+      "columns": {
+        "item_id": {
+          "name": "item_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_id": {
+          "name": "required_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "items_required_items_item_id_shop_items_id_fk": {
+          "name": "items_required_items_item_id_shop_items_id_fk",
+          "tableFrom": "items_required_items",
+          "tableTo": "shop_items",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "items_required_items_required_id_shop_items_id_fk": {
+          "name": "items_required_items_required_id_shop_items_id_fk",
+          "tableFrom": "items_required_items",
+          "tableTo": "shop_items",
+          "columnsFrom": [
+            "required_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "items_required_items_item_id_required_id_pk": {
+          "name": "items_required_items_item_id_required_id_pk",
+          "columns": [
+            "item_id",
+            "required_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.items_required_research": {
+      "name": "items_required_research",
+      "schema": "",
+      "columns": {
+        "item_id": {
+          "name": "item_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_id": {
+          "name": "required_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "items_required_research_item_id_shop_items_id_fk": {
+          "name": "items_required_research_item_id_shop_items_id_fk",
+          "tableFrom": "items_required_research",
+          "tableTo": "shop_items",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "items_required_research_required_id_research_id_fk": {
+          "name": "items_required_research_required_id_research_id_fk",
+          "tableFrom": "items_required_research",
+          "tableTo": "research",
+          "columnsFrom": [
+            "required_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "items_required_research_item_id_required_id_pk": {
+          "name": "items_required_research_item_id_required_id_pk",
+          "columns": [
+            "item_id",
+            "required_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.levels": {
+      "name": "levels",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "levels_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "index": {
+          "name": "index",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "upgrade_id": {
+          "name": "upgrade_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cost": {
+          "name": "cost",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "baseValue": {
+          "name": "baseValue",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "critChance": {
+          "name": "critChance",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "critDamage": {
+          "name": "critDamage",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "levels_upgrade_id_upgrades_id_fk": {
+          "name": "levels_upgrade_id_upgrades_id_fk",
+          "tableFrom": "levels",
+          "tableTo": "upgrades",
+          "columnsFrom": [
+            "upgrade_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.research": {
+      "name": "research",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "research_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cost": {
+          "name": "cost",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.research_required_items": {
+      "name": "research_required_items",
+      "schema": "",
+      "columns": {
+        "research_id": {
+          "name": "research_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "research_required_items_research_id_research_id_fk": {
+          "name": "research_required_items_research_id_research_id_fk",
+          "tableFrom": "research_required_items",
+          "tableTo": "research",
+          "columnsFrom": [
+            "research_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "research_required_items_item_id_shop_items_id_fk": {
+          "name": "research_required_items_item_id_shop_items_id_fk",
+          "tableFrom": "research_required_items",
+          "tableTo": "shop_items",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "research_required_items_research_id_item_id_pk": {
+          "name": "research_required_items_research_id_item_id_pk",
+          "columns": [
+            "research_id",
+            "item_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.research_required_research": {
+      "name": "research_required_research",
+      "schema": "",
+      "columns": {
+        "research_id": {
+          "name": "research_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_id": {
+          "name": "required_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "research_required_research_research_id_research_id_fk": {
+          "name": "research_required_research_research_id_research_id_fk",
+          "tableFrom": "research_required_research",
+          "tableTo": "research",
+          "columnsFrom": [
+            "research_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "research_required_research_required_id_research_id_fk": {
+          "name": "research_required_research_required_id_research_id_fk",
+          "tableFrom": "research_required_research",
+          "tableTo": "research",
+          "columnsFrom": [
+            "required_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "research_required_research_research_id_required_id_pk": {
+          "name": "research_required_research_research_id_required_id_pk",
+          "columns": [
+            "research_id",
+            "required_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.shop_items": {
+      "name": "shop_items",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "shop_items_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cost": {
+          "name": "cost",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "maxQty": {
+          "name": "maxQty",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "multiplier": {
+          "name": "multiplier",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "baseValue": {
+          "name": "baseValue",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "critChance": {
+          "name": "critChance",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "critDamage": {
+          "name": "critDamage",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.upgrade_required_items": {
+      "name": "upgrade_required_items",
+      "schema": "",
+      "columns": {
+        "upgrade_id": {
+          "name": "upgrade_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "item_id": {
+          "name": "item_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "upgrade_required_items_upgrade_id_upgrades_id_fk": {
+          "name": "upgrade_required_items_upgrade_id_upgrades_id_fk",
+          "tableFrom": "upgrade_required_items",
+          "tableTo": "upgrades",
+          "columnsFrom": [
+            "upgrade_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "upgrade_required_items_item_id_shop_items_id_fk": {
+          "name": "upgrade_required_items_item_id_shop_items_id_fk",
+          "tableFrom": "upgrade_required_items",
+          "tableTo": "shop_items",
+          "columnsFrom": [
+            "item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "upgrade_required_items_upgrade_id_item_id_pk": {
+          "name": "upgrade_required_items_upgrade_id_item_id_pk",
+          "columns": [
+            "upgrade_id",
+            "item_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.upgrade_required_research": {
+      "name": "upgrade_required_research",
+      "schema": "",
+      "columns": {
+        "upgrade_id": {
+          "name": "upgrade_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "research_id": {
+          "name": "research_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "upgrade_required_research_upgrade_id_upgrades_id_fk": {
+          "name": "upgrade_required_research_upgrade_id_upgrades_id_fk",
+          "tableFrom": "upgrade_required_research",
+          "tableTo": "upgrades",
+          "columnsFrom": [
+            "upgrade_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "upgrade_required_research_research_id_research_id_fk": {
+          "name": "upgrade_required_research_research_id_research_id_fk",
+          "tableFrom": "upgrade_required_research",
+          "tableTo": "research",
+          "columnsFrom": [
+            "research_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "upgrade_required_research_upgrade_id_research_id_pk": {
+          "name": "upgrade_required_research_upgrade_id_research_id_pk",
+          "columns": [
+            "upgrade_id",
+            "research_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "public.upgrades": {
+      "name": "upgrades",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "upgrades_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "effectItemId": {
+          "name": "effectItemId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "upgrades_effectItemId_shop_items_id_fk": {
+          "name": "upgrades_effectItemId_shop_items_id_fk",
+          "tableFrom": "upgrades",
+          "tableTo": "shop_items",
+          "columnsFrom": [
+            "effectItemId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

@@ -1,20 +1,7 @@
 import { characters, cities, elements } from "../migrations/schema";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-import * as schema from "../migrations/schema";
-import * as relations from "../migrations/relations";
-import { loadEnvConfig } from "@next/env";
+import { Transaction } from "./seed";
 
-loadEnvConfig(process.cwd(), true);
-const connectionString = process.env.DATABASE_URL;
-
-const client = postgres(connectionString as string);
-
-const db = drizzle(client, {
-  schema: { ...schema, ...relations },
-  logger: true,
-});
-const genshinSeed = async () => {
+export const genshinSeed = async (db: Transaction) => {
   await db.delete(characters).execute();
   await db.delete(cities).execute();
   await db.delete(elements).execute();
@@ -454,23 +441,3 @@ const genshinSeed = async () => {
     ])
     .returning();
 };
-const main = async () => {
-  if (process.env.SEED !== "true") {
-    console.log("Skipping seed");
-    return;
-  }
-  console.log("Seeding database...");
-
-  try {
-    await db.transaction(async (db) => {
-      await genshinSeed();
-    });
-  } catch (e) {
-    console.error(e);
-    process.exit(1);
-  }
-  console.log("Seeding complete");
-  process.exit(0);
-};
-
-main();
