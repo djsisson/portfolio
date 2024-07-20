@@ -1,8 +1,8 @@
-import { gameObject, gameState } from "./data";
+import { gameObjectDB, gameStateDB } from "./data";
 
 export default async function Asteroidz() {
-  const gameObjects = await gameObject();
-  const newGameState = await gameState();
+  const gameObjects = await gameObjectDB();
+  const newGameState = await gameStateDB();
 
   return <div>Asteroidz</div>;
 }
