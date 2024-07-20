@@ -21,47 +21,64 @@ CREATE TABLE IF NOT EXISTS "elements" (
 	CONSTRAINT "elements_colour_unique" UNIQUE("colour")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "gamestate" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "gamestats_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"playername" text NOT NULL,
+	"theme" text NOT NULL,
+	"currentscore" bigint NOT NULL,
+	"totalclicks" bigint NOT NULL,
+	"totalspent" bigint NOT NULL,
+	"currentaveragecps" real NOT NULL,
+	"averageclickvalue" real NOT NULL,
+	"researched" integer[] NOT NULL,
+	"upgrades" json[] NOT NULL,
+	"items" json[] NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "items_required_items" (
 	"item_id" integer NOT NULL,
 	"required_id" integer NOT NULL,
 	"quantity" integer NOT NULL,
+	"description" text NOT NULL,
 	CONSTRAINT "items_required_items_item_id_required_id_pk" PRIMARY KEY("item_id","required_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "items_required_research" (
 	"item_id" integer NOT NULL,
 	"required_id" integer NOT NULL,
+	"description" text NOT NULL,
 	CONSTRAINT "items_required_research_item_id_required_id_pk" PRIMARY KEY("item_id","required_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "levels" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "levels_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"index" integer NOT NULL,
+	"level" integer NOT NULL,
 	"upgrade_id" integer NOT NULL,
 	"cost" integer NOT NULL,
-	"baseValue" numeric NOT NULL,
-	"critChance" numeric NOT NULL,
-	"critDamage" numeric NOT NULL
+	"baseValue" real NOT NULL,
+	"critChance" real NOT NULL,
+	"critDamage" real NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "research" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "research_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"name" text NOT NULL,
 	"description" text NOT NULL,
-	"cost" integer NOT NULL,
-	"requiredToolTip" text NOT NULL
+	"cost" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "research_required_items" (
 	"research_id" integer NOT NULL,
 	"item_id" integer NOT NULL,
 	"quantity" integer NOT NULL,
+	"description" text NOT NULL,
 	CONSTRAINT "research_required_items_research_id_item_id_pk" PRIMARY KEY("research_id","item_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "research_required_research" (
 	"research_id" integer NOT NULL,
 	"required_id" integer NOT NULL,
+	"description" text NOT NULL,
 	CONSTRAINT "research_required_research_research_id_required_id_pk" PRIMARY KEY("research_id","required_id")
 );
 --> statement-breakpoint
@@ -69,24 +86,25 @@ CREATE TABLE IF NOT EXISTS "shop_items" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "shop_items_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"name" text NOT NULL,
 	"cost" integer NOT NULL,
-	"requiredToolTip" text NOT NULL,
 	"maxQty" integer NOT NULL,
-	"multiplier" numeric NOT NULL,
-	"baseValue" numeric NOT NULL,
-	"critChance" numeric NOT NULL,
-	"critDamage" numeric NOT NULL
+	"multiplier" real NOT NULL,
+	"baseValue" real NOT NULL,
+	"critChance" real NOT NULL,
+	"critDamage" real NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "upgrade_required_items" (
 	"upgrade_id" integer NOT NULL,
 	"item_id" integer NOT NULL,
 	"quantity" integer NOT NULL,
+	"description" text NOT NULL,
 	CONSTRAINT "upgrade_required_items_upgrade_id_item_id_pk" PRIMARY KEY("upgrade_id","item_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "upgrade_required_research" (
 	"upgrade_id" integer NOT NULL,
 	"research_id" integer NOT NULL,
+	"description" text NOT NULL,
 	CONSTRAINT "upgrade_required_research_upgrade_id_research_id_pk" PRIMARY KEY("upgrade_id","research_id")
 );
 --> statement-breakpoint

@@ -7,7 +7,7 @@ const upgrades_object = async () => {
       levels: {
         orderBy: (levels, { asc }) => [asc(levels.level)],
       },
-      required_items: {
+      requiredItems: {
         columns: {
           upgrade_id: false,
         },
@@ -25,7 +25,7 @@ const upgrades_object = async () => {
 const research_object = async () => {
   const result = await db.query.research.findMany({
     with: {
-      required_items: {
+      requiredItems: {
         columns: {
           research_id: false,
         },
@@ -41,14 +41,14 @@ const research_object = async () => {
 };
 
 const shop_items_object = async () => {
-  const result = await db.query.shop_items.findMany({
+  const result = await db.query.shopItems.findMany({
     with: {
-      required_item_id: {
+      requiredItemId: {
         columns: {
           item_id: false,
         },
       },
-      required_research: {
+      requiredResearch: {
         columns: {
           item_id: false,
         },
@@ -58,15 +58,15 @@ const shop_items_object = async () => {
   return result;
 };
 
-export const gameState = async () => {
+export const gameStateDB = async () => {
   const result = await db.query.gamestate.findFirst();
-  return result;
+  return result!;
 };
 
-export const gameObject = async () => {
+export const gameObjectDB = async () => {
   const upgrades = await upgrades_object();
   const research = await research_object();
-  const shop_items = await shop_items_object();
+  const shopItems = await shop_items_object();
 
-  return { upgrades, research, shop_items };
+  return { upgrades, research, shopItems }!;
 };

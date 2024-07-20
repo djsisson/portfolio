@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1721227640381,
-      "tag": "0000_harsh_lethal_legion",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1721400033341,
-      "tag": "0001_blue_overlord",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1721400671950,
-      "tag": "0002_cheerful_stone_men",
+      "when": 1721504696278,
+      "tag": "0000_robust_warbird",
       "breakpoints": true
     }
   ]

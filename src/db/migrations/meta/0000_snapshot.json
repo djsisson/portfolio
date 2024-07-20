@@ -1,5 +1,5 @@
 {
-  "id": "ceb77c77-3e63-4dea-b58f-564b9a5c1601",
+  "id": "18f5d611-9fbb-410b-9f4f-4001df1d41f6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -185,6 +185,93 @@
         }
       }
     },
+    "public.gamestate": {
+      "name": "gamestate",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "gamestats_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "playername": {
+          "name": "playername",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "theme": {
+          "name": "theme",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currentscore": {
+          "name": "currentscore",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "totalclicks": {
+          "name": "totalclicks",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "totalspent": {
+          "name": "totalspent",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currentaveragecps": {
+          "name": "currentaveragecps",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "averageclickvalue": {
+          "name": "averageclickvalue",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "researched": {
+          "name": "researched",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "upgrades": {
+          "name": "upgrades",
+          "type": "json[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "items": {
+          "name": "items",
+          "type": "json[]",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.items_required_items": {
       "name": "items_required_items",
       "schema": "",
@@ -204,6 +291,12 @@
         "quantity": {
           "name": "quantity",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -261,6 +354,12 @@
         "required_id": {
           "name": "required_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -326,8 +425,8 @@
             "cycle": false
           }
         },
-        "index": {
-          "name": "index",
+        "level": {
+          "name": "level",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -346,19 +445,19 @@
         },
         "baseValue": {
           "name": "baseValue",
-          "type": "numeric",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
         },
         "critChance": {
           "name": "critChance",
-          "type": "numeric",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
         },
         "critDamage": {
           "name": "critDamage",
-          "type": "numeric",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
         }
@@ -420,12 +519,6 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
-        },
-        "requiredToolTip": {
-          "name": "requiredToolTip",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
@@ -452,6 +545,12 @@
         "quantity": {
           "name": "quantity",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -509,6 +608,12 @@
         "required_id": {
           "name": "required_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -586,12 +691,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "requiredToolTip": {
-          "name": "requiredToolTip",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
         "maxQty": {
           "name": "maxQty",
           "type": "integer",
@@ -600,25 +699,25 @@
         },
         "multiplier": {
           "name": "multiplier",
-          "type": "numeric",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
         },
         "baseValue": {
           "name": "baseValue",
-          "type": "numeric",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
         },
         "critChance": {
           "name": "critChance",
-          "type": "numeric",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
         },
         "critDamage": {
           "name": "critDamage",
-          "type": "numeric",
+          "type": "real",
           "primaryKey": false,
           "notNull": true
         }
@@ -647,6 +746,12 @@
         "quantity": {
           "name": "quantity",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }
@@ -704,6 +809,12 @@
         "research_id": {
           "name": "research_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         }

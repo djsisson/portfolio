@@ -4,17 +4,17 @@ import {
   research,
   research_required_items,
   research_required_research,
-  shop_items,
+  shopItems,
   upgrades,
   upgrade_required_research,
   levels,
   gamestate,
-} from "./../migrations/schema";
+} from "./../schema";
 import { Transaction } from "./seed";
 
 export const asteroidSeed = async (db: Transaction) => {
-  const shopItems = await db
-    .insert(shop_items)
+  const newShopItems = await db
+    .insert(shopItems)
     .values([
       {
         name: "Click",
@@ -47,8 +47,8 @@ export const asteroidSeed = async (db: Transaction) => {
     .returning();
   await db.insert(items_required_items).values([
     {
-      item_id: shopItems.find((i) => i.name === "Super Clone")!.id,
-      required_id: shopItems.find((i) => i.name === "Clone")!.id,
+      item_id: newShopItems.find((i) => i.name === "Super Clone")!.id,
+      required_id: newShopItems.find((i) => i.name === "Clone")!.id,
       quantity: 10,
       description: "10 Clones Required",
     },
@@ -103,31 +103,31 @@ export const asteroidSeed = async (db: Transaction) => {
   await db.insert(research_required_items).values([
     {
       research_id: researchItems.find((i) => i.name === "Critcal Strike")!.id,
-      item_id: shopItems.find((i) => i.name === "Clone")!.id,
+      required_id: newShopItems.find((i) => i.name === "Clone")!.id,
       quantity: 2,
       description: "2 Clones Required",
     },
     {
       research_id: researchItems.find((i) => i.name === "Refining")!.id,
-      item_id: shopItems.find((i) => i.name === "Clone")!.id,
+      required_id: newShopItems.find((i) => i.name === "Clone")!.id,
       quantity: 5,
       description: "5 Clones Required",
     },
     {
       research_id: researchItems.find((i) => i.name === "Super Clones")!.id,
-      item_id: shopItems.find((i) => i.name === "Clone")!.id,
+      required_id: newShopItems.find((i) => i.name === "Clone")!.id,
       quantity: 10,
       description: "10 Clones Required",
     },
   ]);
   await db.insert(items_required_research).values([
     {
-      item_id: shopItems.find((i) => i.name === "Clone")!.id,
+      item_id: newShopItems.find((i) => i.name === "Clone")!.id,
       required_id: researchItems.find((i) => i.name === "Cloning")!.id,
       description: "Cloning Research Required",
     },
     {
-      item_id: shopItems.find((i) => i.name === "Super Clone")!.id,
+      item_id: newShopItems.find((i) => i.name === "Super Clone")!.id,
       required_id: researchItems.find((i) => i.name === "Super Clones")!.id,
       description: "Super Clones Research Required",
     },
@@ -138,27 +138,27 @@ export const asteroidSeed = async (db: Transaction) => {
       {
         name: "Weapon",
         description: "Upgrades Click Damage",
-        effectItemId: shopItems.find((i) => i.name === "Click")!.id,
+        effectItemId: newShopItems.find((i) => i.name === "Click")!.id,
       },
       {
         name: "Clones",
         description: "Upgrades Clone Damage",
-        effectItemId: shopItems.find((i) => i.name === "Clone")!.id,
+        effectItemId: newShopItems.find((i) => i.name === "Clone")!.id,
       },
       {
         name: "Crit Chance",
         description: "Click Damage Can Now Critically Hit",
-        effectItemId: shopItems.find((i) => i.name === "Click")!.id,
+        effectItemId: newShopItems.find((i) => i.name === "Click")!.id,
       },
       {
         name: "Refining",
         description: "Further Increase Click Damage",
-        effectItemId: shopItems.find((i) => i.name === "Click")!.id,
+        effectItemId: newShopItems.find((i) => i.name === "Click")!.id,
       },
       {
         name: "Super Clones",
         description: "Upgrades Super Clone Damage",
-        effectItemId: shopItems.find((i) => i.name === "Super Clone")!.id,
+        effectItemId: newShopItems.find((i) => i.name === "Super Clone")!.id,
       },
     ])
     .returning();
@@ -307,15 +307,15 @@ export const asteroidSeed = async (db: Transaction) => {
     },
   ]);
   await db.insert(gamestate).values({
-    playername: "asteroid",
+    playerName: "Traveller",
     theme: "aqua",
-    currentscore: 0,
-    totalclicks: 0,
-    totalspent: 0,
-    currentaveragecps: 0,
-    averageclickvalue: 0,
+    currentScore: 0,
+    totalClicks: 0,
+    totalSpent: 0,
+    currentAverageCps: 0,
+    averageClickValue: 0,
     researched: [],
     upgrades: [],
-    items: [shopItems.find((i) => i.name === "Click")!.id],
+    items: [{ ...newShopItems.find((i) => i.name === "Click")!, quantity: 1 }],
   });
 };

@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm/relations";
 import {
-  shop_items,
+  shopItems,
   upgrades,
   levels,
   cities,
@@ -16,23 +16,23 @@ import {
 } from "./schema";
 
 export const upgradesRelations = relations(upgrades, ({ one, many }) => ({
-  shop_item: one(shop_items, {
+  shop_item: one(shopItems, {
     fields: [upgrades.effectItemId],
-    references: [shop_items.id],
+    references: [shopItems.id],
   }),
   levels: many(levels),
   required_research: many(upgrade_required_research),
-  required_items: many(upgrade_required_items),
+  requiredItems: many(upgrade_required_items),
 }));
 
-export const shop_itemsRelations = relations(shop_items, ({ many }) => ({
+export const shopItemsRelations = relations(shopItems, ({ many }) => ({
   upgrades: many(upgrades),
-  required_research: many(items_required_research),
+  requiredResearch: many(items_required_research),
   research_required_items: many(research_required_items),
   item_id: many(items_required_items, {
     relationName: "required_item_id",
   }),
-  required_item_id: many(items_required_items, {
+  requiredItemId: many(items_required_items, {
     relationName: "item_id",
   }),
   upgrade_required_items: many(upgrade_required_items),
@@ -67,9 +67,9 @@ export const elementsRelations = relations(elements, ({ many }) => ({
 export const items_required_researchRelations = relations(
   items_required_research,
   ({ one }) => ({
-    shop_item: one(shop_items, {
+    shop_item: one(shopItems, {
       fields: [items_required_research.item_id],
-      references: [shop_items.id],
+      references: [shopItems.id],
     }),
     research: one(research, {
       fields: [items_required_research.required_id],
@@ -87,7 +87,7 @@ export const researchRelations = relations(research, ({ many }) => ({
     relationName: "required_research_id",
   }),
   upgrade_required_research: many(upgrade_required_research),
-  required_items: many(research_required_items),
+  requiredItems: many(research_required_items),
 }));
 
 export const research_required_researchRelations = relations(
@@ -123,9 +123,9 @@ export const upgrade_required_researchRelations = relations(
 export const research_required_itemsRelations = relations(
   research_required_items,
   ({ one }) => ({
-    shop_item: one(shop_items, {
-      fields: [research_required_items.item_id],
-      references: [shop_items.id],
+    shop_item: one(shopItems, {
+      fields: [research_required_items.required_id],
+      references: [shopItems.id],
     }),
     research: one(research, {
       fields: [research_required_items.research_id],
@@ -137,14 +137,14 @@ export const research_required_itemsRelations = relations(
 export const items_required_itemsRelations = relations(
   items_required_items,
   ({ one }) => ({
-    shop_item_item_id: one(shop_items, {
+    shop_item_item_id: one(shopItems, {
       fields: [items_required_items.item_id],
-      references: [shop_items.id],
+      references: [shopItems.id],
       relationName: "item_id",
     }),
-    shop_item_required_id: one(shop_items, {
+    shop_item_required_id: one(shopItems, {
       fields: [items_required_items.required_id],
-      references: [shop_items.id],
+      references: [shopItems.id],
       relationName: "required_item_id",
     }),
   }),
@@ -153,9 +153,9 @@ export const items_required_itemsRelations = relations(
 export const upgrade_required_itemsRelations = relations(
   upgrade_required_items,
   ({ one }) => ({
-    shop_item: one(shop_items, {
-      fields: [upgrade_required_items.item_id],
-      references: [shop_items.id],
+    shop_item: one(shopItems, {
+      fields: [upgrade_required_items.required_id],
+      references: [shopItems.id],
     }),
     upgrade: one(upgrades, {
       fields: [upgrade_required_items.upgrade_id],

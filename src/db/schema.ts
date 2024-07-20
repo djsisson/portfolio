@@ -6,79 +6,78 @@ import {
   real,
   unique,
   primaryKey,
+  json,
 } from "drizzle-orm/pg-core";
 
 export const research = pgTable("research", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "research_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "research_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
   name: text("name").notNull(),
   description: text("description").notNull(),
   cost: integer("cost").notNull(),
 });
 
 export const upgrades = pgTable("upgrades", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "upgrades_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "upgrades_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
   name: text("name").notNull(),
   description: text("description").notNull(),
   effectItemId: integer("effectItemId")
     .notNull()
-    .references(() => shop_items.id),
+    .references(() => shopItems.id),
 });
 
+type upgrade = { id: number; level: number };
+type item = Omit<
+  typeof shopItems.$inferSelect & { quantity: number },
+  "required_research" | "required_item_id"
+>;
+
 export const gamestate = pgTable("gamestate", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "gamestats_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-  playername: text("playername").notNull(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "gamestats_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
+  playerName: text("playername").notNull(),
   theme: text("theme").notNull(),
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  currentscore: bigint("currentscore", { mode: "number" }).notNull(),
+  currentScore: bigint("currentscore", { mode: "number" }).notNull(),
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  totalclicks: bigint("totalclicks", { mode: "number" }).notNull(),
+  totalClicks: bigint("totalclicks", { mode: "number" }).notNull(),
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-  totalspent: bigint("totalspent", { mode: "number" }).notNull(),
-  currentaveragecps: real("currentaveragecps").notNull(),
-  averageclickvalue: real("averageclickvalue").notNull(),
-  researched: integer("researched").array(),
-  upgrades: integer("upgrades").array(),
-  items: integer("items").array(),
+  totalSpent: bigint("totalspent", { mode: "number" }).notNull(),
+  currentAverageCps: real("currentaveragecps").notNull(),
+  averageClickValue: real("averageclickvalue").notNull(),
+  researched: integer("researched").array().notNull(),
+  upgrades: json("upgrades").array().$type<upgrade[]>().notNull(),
+  items: json("items").array().$type<item[]>().notNull(),
 });
 
 export const levels = pgTable("levels", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "levels_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "levels_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
   level: integer("level").notNull(),
   upgrade_id: integer("upgrade_id")
     .notNull()
@@ -92,16 +91,14 @@ export const levels = pgTable("levels", {
 export const elements = pgTable(
   "elements",
   {
-    id: integer("id")
-      .primaryKey()
-      .generatedAlwaysAsIdentity({
-        name: "elements_id_seq",
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+      name: "elements_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     name: text("name").notNull(),
     colour: text("colour").notNull(),
   },
@@ -116,16 +113,14 @@ export const elements = pgTable(
 export const characters = pgTable(
   "characters",
   {
-    id: integer("id")
-      .primaryKey()
-      .generatedAlwaysAsIdentity({
-        name: "characters_id_seq",
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+      name: "characters_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     name: text("name").notNull(),
     description: text("description").array().notNull(),
     element_id: integer("element_id")
@@ -145,16 +140,14 @@ export const characters = pgTable(
 export const cities = pgTable(
   "cities",
   {
-    id: integer("id")
-      .primaryKey()
-      .generatedAlwaysAsIdentity({
-        name: "cities_id_seq",
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+      name: "cities_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     name: text("name").notNull(),
   },
   (table) => {
@@ -164,17 +157,15 @@ export const cities = pgTable(
   },
 );
 
-export const shop_items = pgTable("shop_items", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "shop_items_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
+export const shopItems = pgTable("shop_items", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "shop_items_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
   name: text("name").notNull(),
   cost: integer("cost").notNull(),
   maxQty: integer("maxQty").notNull(),
@@ -189,7 +180,7 @@ export const items_required_research = pgTable(
   {
     item_id: integer("item_id")
       .notNull()
-      .references(() => shop_items.id),
+      .references(() => shopItems.id),
     required_id: integer("required_id")
       .notNull()
       .references(() => research.id),
@@ -253,16 +244,16 @@ export const research_required_items = pgTable(
     research_id: integer("research_id")
       .notNull()
       .references(() => research.id),
-    item_id: integer("item_id")
+    required_id: integer("item_id")
       .notNull()
-      .references(() => shop_items.id),
+      .references(() => shopItems.id),
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
   (table) => {
     return {
       research_required_items_research_id_item_id_pk: primaryKey({
-        columns: [table.research_id, table.item_id],
+        columns: [table.research_id, table.required_id],
         name: "research_required_items_research_id_item_id_pk",
       }),
     };
@@ -274,10 +265,10 @@ export const items_required_items = pgTable(
   {
     item_id: integer("item_id")
       .notNull()
-      .references(() => shop_items.id),
+      .references(() => shopItems.id),
     required_id: integer("required_id")
       .notNull()
-      .references(() => shop_items.id),
+      .references(() => shopItems.id),
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
@@ -297,16 +288,16 @@ export const upgrade_required_items = pgTable(
     upgrade_id: integer("upgrade_id")
       .notNull()
       .references(() => upgrades.id),
-    item_id: integer("item_id")
+    required_id: integer("item_id")
       .notNull()
-      .references(() => shop_items.id),
+      .references(() => shopItems.id),
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
   (table) => {
     return {
       upgrade_required_items_upgrade_id_item_id_pk: primaryKey({
-        columns: [table.upgrade_id, table.item_id],
+        columns: [table.upgrade_id, table.required_id],
         name: "upgrade_required_items_upgrade_id_item_id_pk",
       }),
     };
