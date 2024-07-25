@@ -8,7 +8,7 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import Total from "./components/Total";
 import ViewPort from "./components/ViewPort";
 
-export enum containerType {
+enum containerType {
   Inventory = "Inventory",
   Research = "Research",
   Upgrades = "Upgrades",

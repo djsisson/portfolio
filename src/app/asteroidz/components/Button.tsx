@@ -7,7 +7,13 @@ import {
   gameStateActionType,
 } from "./Context";
 import { useEffect, useState, useId } from "react";
-import { containerType } from "../page";
+
+enum containerType {
+  Inventory = "Inventory",
+  Research = "Research",
+  Upgrades = "Upgrades",
+  Shop = "Shop",
+}
 
 const Button = ({ type, id }: { type: containerType; id: number }) => {
   const dispatch = useGameStateDispatch();

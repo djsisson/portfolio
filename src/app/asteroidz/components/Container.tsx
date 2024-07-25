@@ -3,12 +3,18 @@
 import Button from "./Button";
 import { useGameState, useGameObject } from "./Context";
 import React, { useEffect, useState } from "react";
-import { containerType } from "../page";
 
 type requiredResearch = {
   required_id: number;
   description: string;
 };
+
+enum containerType {
+  Inventory = "Inventory",
+  Research = "Research",
+  Upgrades = "Upgrades",
+  Shop = "Shop",
+}
 
 const Container = ({ type }: { type: containerType }) => {
   const [buttonList, setButtonList] = useState([] as ButtonList | typeof inven);
@@ -85,7 +91,7 @@ const Container = ({ type }: { type: containerType }) => {
       <h1 className="border-b-2 border-[var(--bgcolour)] text-center text-3xl">
         {type}
       </h1>
-      <div className="relative grid gap-4 p-4">
+      <div className="relative grid h-[calc(100%-2rem)] gap-4 overflow-y-auto p-4">
         {buttonList.toReversed().map((x) => (
           <Button type={type} id={x.id} key={x.id} />
         ))}
