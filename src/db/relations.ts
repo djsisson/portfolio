@@ -21,7 +21,7 @@ export const upgradesRelations = relations(upgrades, ({ one, many }) => ({
     references: [shopItems.id],
   }),
   levels: many(levels),
-  required_research: many(upgrade_required_research),
+  requiredResearch: many(upgrade_required_research),
   requiredItems: many(upgrade_required_items),
 }));
 
@@ -32,7 +32,7 @@ export const shopItemsRelations = relations(shopItems, ({ many }) => ({
   item_id: many(items_required_items, {
     relationName: "required_item_id",
   }),
-  requiredItemId: many(items_required_items, {
+  requiredItems: many(items_required_items, {
     relationName: "item_id",
   }),
   upgrade_required_items: many(upgrade_required_items),
@@ -80,7 +80,7 @@ export const items_required_researchRelations = relations(
 
 export const researchRelations = relations(research, ({ many }) => ({
   items_required_research: many(items_required_research),
-  required_research_id: many(research_required_research, {
+  requiredResearch: many(research_required_research, {
     relationName: "research_id",
   }),
   research_id: many(research_required_research, {
@@ -110,7 +110,7 @@ export const upgrade_required_researchRelations = relations(
   upgrade_required_research,
   ({ one }) => ({
     research: one(research, {
-      fields: [upgrade_required_research.research_id],
+      fields: [upgrade_required_research.required_id],
       references: [research.id],
     }),
     upgrade: one(upgrades, {

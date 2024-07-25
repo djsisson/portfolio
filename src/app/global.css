@@ -4,4 +4,108 @@
 :root {
   color-scheme: light dark;
   font-family: Inter, system-ui, sans-serif;
+
+  --clr-1: #0e4b50;
+  --clr-2: #2d8f85;
+  --clr-3: #637c54;
+
+  --clr-4: #ff0000;
+  --clr-5: #bb0000;
+  --clr-6: #880000;
+
+  --clr-7: #ffff00;
+  --clr-8: #ffbb00;
+  --clr-9: #ff8800;
+}
+@keyframes rainbow-scroll {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes up {
+  0% {
+    transform: scale(0) translateY(0%);
+    visibility: visible;
+  }
+  10% {
+    opacity: 1;
+    transform: scale(2) translateY(-100%);
+  }
+  100% {
+    transform: translateY(-1000%) rotateZ(15deg) scale(1);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes crit {
+  0% {
+    transform: scale(0) translateY(0%);
+    visibility: visible;
+  }
+  10% {
+    opacity: 1;
+    transform: scale(2) translateY(50%);
+  }
+  100% {
+    transform: scale(4) translateY(100%) rotateZ(15deg);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rotation {
+  0% {
+    --gradient-angle: 0deg;
+  }
+  100% {
+    --gradient-angle: 360deg;
+  }
 }

@@ -12,7 +12,7 @@ const upgrades_object = async () => {
           upgrade_id: false,
         },
       },
-      required_research: {
+      requiredResearch: {
         columns: {
           upgrade_id: false,
         },
@@ -30,7 +30,7 @@ const research_object = async () => {
           research_id: false,
         },
       },
-      required_research_id: {
+      requiredResearch: {
         columns: {
           research_id: false,
         },
@@ -43,7 +43,7 @@ const research_object = async () => {
 const shop_items_object = async () => {
   const result = await db.query.shopItems.findMany({
     with: {
-      requiredItemId: {
+      requiredItems: {
         columns: {
           item_id: false,
         },

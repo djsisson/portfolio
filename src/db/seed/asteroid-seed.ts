@@ -165,22 +165,22 @@ export const asteroidSeed = async (db: Transaction) => {
   await db.insert(upgrade_required_research).values([
     {
       upgrade_id: upgradeItems.find((i) => i.name === "Clones")!.id,
-      research_id: researchItems.find((i) => i.name === "Cloning")!.id,
+      required_id: researchItems.find((i) => i.name === "Cloning")!.id,
       description: "Cloning Research Required",
     },
     {
       upgrade_id: upgradeItems.find((i) => i.name === "Crit Chance")!.id,
-      research_id: researchItems.find((i) => i.name === "Critcal Strike")!.id,
+      required_id: researchItems.find((i) => i.name === "Critcal Strike")!.id,
       description: "Critcal Strike Research Required",
     },
     {
       upgrade_id: upgradeItems.find((i) => i.name === "Refining")!.id,
-      research_id: researchItems.find((i) => i.name === "Refining")!.id,
+      required_id: researchItems.find((i) => i.name === "Refining")!.id,
       description: "Refining Research Required",
     },
     {
       upgrade_id: upgradeItems.find((i) => i.name === "Super Clones")!.id,
-      research_id: researchItems.find((i) => i.name === "Super Clones")!.id,
+      required_id: researchItems.find((i) => i.name === "Super Clones")!.id,
       description: "Super Clones Research Required",
     },
   ]);
@@ -313,7 +313,7 @@ export const asteroidSeed = async (db: Transaction) => {
     totalClicks: 0,
     totalSpent: 0,
     currentAverageCps: 0,
-    averageClickValue: 0,
+    averageClickValue: 1,
     researched: [],
     upgrades: [],
     items: [{ ...newShopItems.find((i) => i.name === "Click")!, quantity: 1 }],

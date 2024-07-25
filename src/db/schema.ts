@@ -223,7 +223,7 @@ export const upgrade_required_research = pgTable(
     upgrade_id: integer("upgrade_id")
       .notNull()
       .references(() => upgrades.id),
-    research_id: integer("research_id")
+    required_id: integer("required_id")
       .notNull()
       .references(() => research.id),
     description: text("description").notNull(),
@@ -231,7 +231,7 @@ export const upgrade_required_research = pgTable(
   (table) => {
     return {
       upgrade_required_research_upgrade_id_research_id_pk: primaryKey({
-        columns: [table.upgrade_id, table.research_id],
+        columns: [table.upgrade_id, table.required_id],
         name: "upgrade_required_research_upgrade_id_research_id_pk",
       }),
     };
