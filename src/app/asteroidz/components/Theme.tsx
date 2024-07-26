@@ -23,7 +23,7 @@ const Theme = () => {
   };
 
   return (
-    <div className="group relative inline-block cursor-pointer text-xl">
+    <div className="group relative inline-block cursor-pointer text-sm md:text-xl">
       Theme
       <div className="absolute right-0 hidden min-w-fit bg-black shadow-lg group-hover:flex group-hover:flex-col">
         {themes.map((x) => {

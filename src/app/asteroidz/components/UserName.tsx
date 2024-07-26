@@ -53,12 +53,12 @@ const UserName = () => {
   };
 
   return (
-    <div className="flex items-end gap-4 text-lg italic">
+    <div className="flex items-end gap-4 text-sm italic md:text-lg">
       <div>{userName || "Traveller"}</div>
       <div className="relative">
         <div
           onClick={onClick}
-          className="aspect-square h-7 w-7 cursor-pointer border-b-1 border-b-transparent fill-[var(--bgcolour)] text-[var(--bgcolour)] hover:scale-105 hover:border-b-[var(--bgcolour)]"
+          className="aspect-square h-4 w-4 cursor-pointer border-b-1 border-b-transparent fill-[var(--bgcolour)] text-[var(--bgcolour)] hover:scale-105 hover:border-b-[var(--bgcolour)] md:h-7 md:w-7"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,256,256">
             <g

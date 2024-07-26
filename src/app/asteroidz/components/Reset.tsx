@@ -7,7 +7,11 @@ const Reset = () => {
   };
 
   return (
-    <button className="cursor-pointer" onClick={onClick} type="button">
+    <button
+      className="cursor-pointer text-sm md:text-lg"
+      onClick={onClick}
+      type="button"
+    >
       Reset
     </button>
   );

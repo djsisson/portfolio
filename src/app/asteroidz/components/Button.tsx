@@ -207,16 +207,19 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
 
   return (
     <Tooltip content={tooltipText}>
-      <div className="relative flex cursor-not-allowed items-center gap-4 rounded-lg bg-black p-2 before:absolute before:-inset-1 before:-z-10 before:[animation:rotation_5s_linear_infinite] before:rounded-lg before:bg-white/30 before:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-4),var(--clr-5),var(--clr-6),var(--clr-5),var(--clr-4))] before:content-[''] after:absolute after:-inset-1 after:-z-10 after:[animation:rotation_5s_linear_infinite] after:rounded-lg after:bg-white/30 after:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-4),var(--clr-5),var(--clr-6),var(--clr-5),var(--clr-4))] after:blur-lg after:content-[''] has-enabled:cursor-pointer has-enabled:before:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-7),var(--clr-8),var(--clr-9),var(--clr-8),var(--clr-7))] has-enabled:after:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-7),var(--clr-8),var(--clr-9),var(--clr-8),var(--clr-7))]">
+      <div className="relative flex cursor-not-allowed items-center gap-4 rounded-lg bg-black p-1 text-sm before:absolute before:-inset-1 before:-z-10 before:[animation:rotation_5s_linear_infinite] before:rounded-lg before:bg-white/30 before:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-4),var(--clr-5),var(--clr-6),var(--clr-5),var(--clr-4))] before:content-[''] after:absolute after:-inset-1 after:-z-10 after:[animation:rotation_5s_linear_infinite] after:rounded-lg after:bg-white/30 after:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-4),var(--clr-5),var(--clr-6),var(--clr-5),var(--clr-4))] after:blur-lg after:content-[''] has-enabled:cursor-pointer has-enabled:before:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-7),var(--clr-8),var(--clr-9),var(--clr-8),var(--clr-7))] has-enabled:after:bg-[conic-gradient(from_var(--gradient-angle),var(--clr-7),var(--clr-8),var(--clr-9),var(--clr-8),var(--clr-7))] md:p-2">
         <button
           id={buttonLabel}
           title={displayText}
           type="button"
-          className={`cursor-[inherit] p-4 text-center ${canBuy ? "bg-green-500" : "bg-red-500"}`}
+          className={`cursor-[inherit] p-1 text-center md:p-2 lg:p-4 ${canBuy ? "bg-green-500" : "bg-red-500"}`}
           onClick={onClick}
           disabled={completed || !canBuy}
         ></button>
-        <label className="flex-1 cursor-[inherit]" htmlFor={buttonLabel}>
+        <label
+          className="flex-1 cursor-[inherit] text-wrap text-sm lg:text-lg"
+          htmlFor={buttonLabel}
+        >
           {displayText}
         </label>
       </div>

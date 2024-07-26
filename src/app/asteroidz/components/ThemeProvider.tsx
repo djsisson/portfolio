@@ -8,7 +8,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const gameState = useGameState();
   return (
     <div
-      className="grid h-svh w-svw grid-cols-[2fr_3fr_2fr] grid-rows-[auto_1fr_1fr_1fr_1fr_auto] border-[var(--bgcolour)] text-[var(--bgcolour)]"
+      className="grid h-svh w-svw grid-cols-7 grid-rows-6 border-[var(--bgcolour)] text-[var(--bgcolour)]"
       style={{ "--bgcolour": gameState.theme } as React.CSSProperties}
     >
       <Image

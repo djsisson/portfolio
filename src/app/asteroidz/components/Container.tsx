@@ -70,28 +70,28 @@ const Container = ({ type }: { type: containerType }) => {
   const containerStyle = () => {
     switch (type) {
       case "Research": {
-        return "row-start-4 -row-end-2 col-start-1 col-end-2 border-l-none";
+        return "row-start-4 -row-end-2 col-start-1 col-end-3 border-l-none";
       }
       case "Upgrades": {
-        return "row-start-2 row-end-4 col-start-1 col-end-2 border-l-none";
+        return "row-start-2 row-end-4 col-start-1 col-end-3 border-l-none";
       }
       case "Shop": {
-        return "row-start-2 row-end-4 -col-start-2 -col-end-1 border-r-none";
+        return "row-start-2 row-end-4 -col-start-3 -col-end-1 border-r-none";
       }
       default: {
-        return "row-start-4 -row-end-2 -col-start-2 -col-end-1 border-r-none";
+        return "row-start-4 -row-end-2 -col-start-3 -col-end-1 border-r-none";
       }
     }
   };
 
   return (
     <div
-      className={`border-5 [border-style:outset] border-[var(--bgcolour)] p-4 ${containerStyle()}`}
+      className={`border-5 [border-style:outset] border-[var(--bgcolour)] md:p-2 lg:p-4 ${containerStyle()}`}
     >
-      <h1 className="border-b-2 border-[var(--bgcolour)] text-center text-3xl">
+      <h1 className="border-b-2 border-[var(--bgcolour)] text-center text-sm md:text-lg lg:text-3xl">
         {type}
       </h1>
-      <div className="relative z-30 grid h-[calc(100%-2rem)] auto-rows-max gap-4 p-4">
+      <div className="relative z-30 grid h-[calc(100%-2rem)] auto-rows-max gap-4 overflow-y-auto p-4">
         {buttonList.toReversed().map((x) => (
           <Button type={type} id={x.id} key={x.id} />
         ))}
