@@ -70,16 +70,16 @@ const Container = ({ type }: { type: containerType }) => {
   const containerStyle = () => {
     switch (type) {
       case "Research": {
-        return "row-start-4 -row-end-2 col-start-1 col-end-3 border-l-none";
+        return "row-start-5 -row-end-2 col-start-1 col-end-3 border-l-none";
       }
       case "Upgrades": {
-        return "row-start-2 row-end-4 col-start-1 col-end-3 border-l-none";
+        return "row-start-2 row-end-5 col-start-1 col-end-3 border-l-none";
       }
       case "Shop": {
-        return "row-start-2 row-end-4 -col-start-3 -col-end-1 border-r-none";
+        return "row-start-2 row-end-5 -col-start-3 -col-end-1 border-r-none";
       }
       default: {
-        return "row-start-4 -row-end-2 -col-start-3 -col-end-1 border-r-none";
+        return "row-start-5 -row-end-2 -col-start-3 -col-end-1 border-r-none";
       }
     }
   };
