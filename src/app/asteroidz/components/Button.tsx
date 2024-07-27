@@ -217,7 +217,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
           disabled={completed || !canBuy}
         ></button>
         <label
-          className="flex-1 cursor-[inherit] text-wrap text-sm lg:text-lg"
+          className="flex-1 cursor-[inherit] text-wrap text-sm select-none lg:text-lg"
           htmlFor={buttonLabel}
         >
           {displayText}

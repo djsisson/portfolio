@@ -54,7 +54,7 @@ const UserName = () => {
 
   return (
     <div className="flex items-end gap-4 text-sm italic md:text-lg">
-      <div>{userName || "Traveller"}</div>
+      <div className="select-none">{userName || "Traveller"}</div>
       <div className="relative">
         <div
           onClick={onClick}

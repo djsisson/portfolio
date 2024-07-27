@@ -88,7 +88,7 @@ const Container = ({ type }: { type: containerType }) => {
     <div
       className={`border-5 [border-style:outset] border-[var(--bgcolour)] md:p-2 lg:p-4 ${containerStyle()}`}
     >
-      <h1 className="border-b-2 border-[var(--bgcolour)] text-center text-sm md:text-lg lg:text-3xl">
+      <h1 className="border-b-2 border-[var(--bgcolour)] text-center text-sm select-none md:text-lg lg:text-3xl">
         {type}
       </h1>
       <div className="relative grid h-[calc(100%-2rem)] auto-rows-max gap-4 overflow-y-auto p-4">

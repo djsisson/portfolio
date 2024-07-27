@@ -27,7 +27,7 @@ const Total = () => {
   };
 
   return (
-    <div className="relative col-start-3 -col-end-3 -row-start-3 -row-end-2 flex items-center justify-center border-5 [border-style:outset] border-[var(--bgcolour)]">
+    <div className="relative col-start-3 -col-end-3 -row-start-3 -row-end-2 flex items-center justify-center border-5 [border-style:outset] border-[var(--bgcolour)] select-none">
       Total: {displayTotal}
     </div>
   );

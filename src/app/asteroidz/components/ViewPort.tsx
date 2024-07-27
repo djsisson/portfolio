@@ -121,7 +121,7 @@ const ViewPort = () => {
   };
 
   return (
-    <div className="relative col-start-3 -col-end-3 row-start-2 row-end-7 flex items-center justify-center border-5 [border-style:outset] border-[var(--bgcolour)]">
+    <div className="relative col-start-3 -col-end-3 row-start-2 row-end-7 flex items-center justify-center border-5 [border-style:outset] border-[var(--bgcolour)] select-none">
       {clickValues.map((x) => {
         return (
           <VisualScore
@@ -139,7 +139,11 @@ const ViewPort = () => {
           animation: shake ? "shake 0.5s infinite" : "",
         }}
       >
-        <Image src={Asteroidz} alt="asteroid" className="select-none" />
+        <Image
+          src={Asteroidz}
+          alt="asteroid"
+          className="[-webkit-user-drag:none] [user-drag:none] select-none"
+        />
       </div>
       {cpsValues.map((x) => {
         return (

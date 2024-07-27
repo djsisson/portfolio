@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="col-start-1 -col-end-1 -row-start-2 -row-end-1 flex items-center justify-between border-t-5 [border-style:outset] border-[var(--bgcolour)] px-4">
       <Stats />
       <div
-        className="bg-clip-text text-sm font-bold text-transparent lg:text-3xl"
+        className="bg-clip-text text-sm font-bold text-transparent select-none lg:text-3xl"
         style={{
           animation: "rainbow-scroll 10s ease-in-out infinite",
           background:

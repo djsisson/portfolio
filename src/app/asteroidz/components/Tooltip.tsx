@@ -42,7 +42,7 @@ const Tooltip = ({
 
   return (
     <div
-      className="relative inline-block"
+      className="relative inline-block select-none"
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
       ref={anchorRef}
