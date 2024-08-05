@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { jwtVerify } from "jose";
+import { JWTPayload, jwtVerify } from "jose";
 
 const generateRandomBase64String = async (length = 24) =>
   Buffer.from(crypto.getRandomValues(new Uint8Array(length))).toString(
@@ -21,8 +21,7 @@ const isCodeVerifierValid = async (
   codeChallenge: string,
 ) => (await computeCodeChallengeFromVerifier(codeVerifier)) === codeChallenge;
 
-export const encodeToBase64 = async (str: string) =>
-  Buffer.from(str).toString("base64url");
+const encodeToBase64 = (str: string) => Buffer.from(str).toString("base64url");
 const decodeFromBase64 = (str: string) =>
   Buffer.from(str || "", "base64url").toString();
 const decodeJWT = (str: string) =>
@@ -30,21 +29,24 @@ const decodeJWT = (str: string) =>
     Buffer.from(str.split(".")[1] || "", "base64url").toString() || "{}",
   );
 
-export async function verifyJWT(jwt: string) {
-  const { payload } = await jwtVerify(
-    decodeFromBase64(jwt),
-    new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!),
-  );
-  console.log(payload);
+export async function isJWTValid(jwt: string) {
+  const payload = await verifyJWT(jwt);
   if (!payload.exp) {
     return false;
   }
-  console.log(Date.now() - 60 * 1000 * 5, payload.exp * 1000);
   const isExpiring = Date.now() - 60 * 1000 * 5 > payload.exp * 1000;
   if (isExpiring) {
     return false;
   }
   return true;
+}
+
+async function verifyJWT(jwt: string): Promise<JWTPayload> {
+  const { payload } = await jwtVerify(
+    decodeFromBase64(jwt),
+    new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!),
+  );
+  return payload;
 }
 
 export async function signInWithGithub() {
@@ -122,27 +124,32 @@ export async function getUser(token: string) {
 }
 
 export async function refreshToken(token: string) {
-  const data = await fetch(`${process.env.INTERNAL_AUTH_URL}/refresh`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: process.env.SUPABASE_ANON_KEY!,
+  const data = await fetch(
+    `${process.env.INTERNAL_AUTH_URL}/token?grant_type=refresh_token`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: process.env.SUPABASE_ANON_KEY!,
+      },
+      body: JSON.stringify({
+        refresh_token: decodeFromBase64(token),
+      }),
     },
-    body: JSON.stringify({
-      refresh_token: token,
-    }),
-  })
-    .then((res) => res.json())
-    .catch((e) => null);
-  if (!data?.access_token && !data?.refresh_token && !data?.expires_in) {
+  )
+  if (data.status !== 200) {
     return null;
   }
-  return data;
+
+  const result = await data.json();
+  if (!result?.access_token && !result?.refresh_token && !result?.expires_in) {
+    return null;
+  }
+
+  return result;
 }
 
 export async function getUserFromJWT() {
-  const data = decodeJWT(
-    decodeFromBase64(cookies().get("access_token")?.value!),
-  );
+  const data = verifyJWT(cookies().get("access_token")?.value!);
   return data;
 }

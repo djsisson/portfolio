@@ -1,6 +1,11 @@
-import { signInWithGithub } from "@/utils/auth";
+import { getUserFromJWT, signInWithGithub } from "@/utils/auth";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const user = await getUserFromJWT();
+  if (user?.email) {
+    redirect("/auth/private");
+  }
   return (
     <div>
       <form>

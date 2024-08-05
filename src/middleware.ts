@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getUser, verifyJWT, refreshToken, encodeToBase64 } from "./utils/auth";
+import { getUser, isJWTValid, refreshToken } from "./utils/auth";
+
+const encodeToBase64 = (str: string) => Buffer.from(str).toString("base64url");
 
 export async function middleware(request: NextRequest) {
   let newResponse = NextResponse.next({
@@ -8,27 +10,28 @@ export async function middleware(request: NextRequest) {
   const cookies = request.cookies;
   const access_token = cookies.get("access_token")?.value;
   const refresh_token = cookies.get("refresh_token")?.value;
-  if (access_token && (await verifyJWT(access_token))) {
+  if (access_token && (await isJWTValid(access_token))) {
     const user = await getUser(access_token);
     if (user) return newResponse;
   }
+
   if (refresh_token) {
     const token = await refreshToken(refresh_token);
     if (token) {
       cookies.set(
         "access_token",
-        await encodeToBase64(JSON.stringify(token.access_token)),
+        encodeToBase64(JSON.stringify(token.access_token)),
       );
       cookies.set(
         "refresh_token",
-        await encodeToBase64(JSON.stringify(token.refresh_token)),
+        encodeToBase64(JSON.stringify(token.refresh_token)),
       );
       newResponse = NextResponse.next({
         request,
       });
       newResponse.cookies.set(
         "access_token",
-        await encodeToBase64(token.access_token),
+        encodeToBase64(token.access_token),
         {
           httpOnly: true,
           sameSite: "lax",
@@ -38,7 +41,7 @@ export async function middleware(request: NextRequest) {
       );
       newResponse.cookies.set(
         "refresh_token",
-        await encodeToBase64(token.refresh_token),
+        encodeToBase64(token.refresh_token),
         {
           httpOnly: true,
           sameSite: "lax",
@@ -52,7 +55,10 @@ export async function middleware(request: NextRequest) {
     cookies.delete("refresh_token");
     const url = request.nextUrl.clone();
     url.pathname = "/auth";
-    return NextResponse.redirect(url);
+    newResponse = NextResponse.redirect(url);
+    newResponse.cookies.delete("access_token");
+    newResponse.cookies.delete("refresh_token");
+    return newResponse;
   }
   return newResponse;
 }
