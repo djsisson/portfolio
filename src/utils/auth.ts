@@ -24,14 +24,10 @@ const isCodeVerifierValid = async (
 const encodeToBase64 = (str: string) => Buffer.from(str).toString("base64url");
 const decodeFromBase64 = (str: string) =>
   Buffer.from(str || "", "base64url").toString();
-const decodeJWT = (str: string) =>
-  JSON.parse(
-    Buffer.from(str.split(".")[1] || "", "base64url").toString() || "{}",
-  );
 
 export async function isJWTValid(jwt: string) {
   const payload = await verifyJWT(jwt);
-  if (!payload.exp) {
+  if (!payload?.exp) {
     return false;
   }
   const isExpiring = Date.now() - 60 * 1000 * 5 > payload.exp * 1000;
@@ -41,12 +37,16 @@ export async function isJWTValid(jwt: string) {
   return true;
 }
 
-async function verifyJWT(jwt: string): Promise<JWTPayload> {
-  const { payload } = await jwtVerify(
-    decodeFromBase64(jwt),
-    new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!),
-  );
-  return payload;
+async function verifyJWT(jwt: string): Promise<JWTPayload | null> {
+  try {
+    const { payload } = await jwtVerify(
+      decodeFromBase64(jwt),
+      new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!),
+    );
+    return payload;
+  } catch (e) {
+    return null;
+  }
 }
 
 export async function signInWithGithub() {
@@ -87,14 +87,14 @@ export async function exchangeCodeForSession(code: string) {
   if (!data?.access_token && !data?.refresh_token && !data?.expires_in) {
     return false;
   }
-  cookies().set("access_token", await encodeToBase64(data.access_token), {
+  cookies().set("access_token", encodeToBase64(data.access_token), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     maxAge: data.expires_in,
   });
 
-  cookies().set("refresh_token", await encodeToBase64(data.refresh_token), {
+  cookies().set("refresh_token", encodeToBase64(data.refresh_token), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -115,7 +115,7 @@ export async function getUser(token: string) {
     headers: {
       "Content-Type": "application/json",
       apikey: process.env.SUPABASE_ANON_KEY!,
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${decodeFromBase64(token)}`,
     },
   })
     .then((res) => res.json())
@@ -136,7 +136,7 @@ export async function refreshToken(token: string) {
         refresh_token: decodeFromBase64(token),
       }),
     },
-  )
+  );
   if (data.status !== 200) {
     return null;
   }
@@ -150,6 +150,9 @@ export async function refreshToken(token: string) {
 }
 
 export async function getUserFromJWT() {
+  if (!cookies().get("access_token")?.value) {
+    return null;
+  }
   const data = verifyJWT(cookies().get("access_token")?.value!);
   return data;
 }

@@ -10,9 +10,12 @@ export async function middleware(request: NextRequest) {
   const cookies = request.cookies;
   const access_token = cookies.get("access_token")?.value;
   const refresh_token = cookies.get("refresh_token")?.value;
-  if (access_token && (await isJWTValid(access_token))) {
-    const user = await getUser(access_token);
-    if (user) return newResponse;
+  if (access_token) {
+    const valid = await isJWTValid(access_token);
+    if (valid) {
+      const user = await getUser(access_token);
+      if (user) return newResponse;
+    }
   }
 
   if (refresh_token) {
