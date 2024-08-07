@@ -13,6 +13,16 @@ export default function Home() {
             Asteroidz
           </a>
         </li>
+        <li>
+          <a className="hover:underline" href="/test">
+            Test
+          </a>
+        </li>
+        <li>
+          <a className="hover:underline" href="/todos">
+            Todos
+          </a>
+        </li>
       </ul>
     </main>
   );

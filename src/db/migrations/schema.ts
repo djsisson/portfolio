@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   pgTable,
   integer,
@@ -6,53 +7,23 @@ import {
   real,
   unique,
   primaryKey,
+  json,
+  uuid,
+  boolean,
+  timestamp,
+  index,
 } from "drizzle-orm/pg-core";
-
-export const research = pgTable("research", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "research_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-  name: text("name").notNull(),
-  description: text("description").notNull(),
-  cost: integer("cost").notNull(),
-});
-
-export const upgrades = pgTable("upgrades", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "upgrades_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
-  name: text("name").notNull(),
-  description: text("description").notNull(),
-  effectItemId: integer("effectItemId")
-    .notNull()
-    .references(() => shop_items.id),
-});
+import { users } from "../auth_schema";
 
 export const gamestate = pgTable("gamestate", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "gamestats_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "gamestats_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
   playername: text("playername").notNull(),
   theme: text("theme").notNull(),
   // You can use { mode: "bigint" } if numbers are exceeding js number limitations
@@ -63,24 +34,72 @@ export const gamestate = pgTable("gamestate", {
   totalspent: bigint("totalspent", { mode: "number" }).notNull(),
   currentaveragecps: real("currentaveragecps").notNull(),
   averageclickvalue: real("averageclickvalue").notNull(),
-  researched: integer("researched").array(),
-  upgrades: integer("upgrades").array(),
-  items: integer("items").array(),
+  researched: integer("researched").array().notNull(),
+  // TODO: failed to parse database type 'json[]'
+  upgrades: json("upgrades").array().notNull(),
+  // TODO: failed to parse database type 'json[]'
+  items: json("items").array().notNull(),
+});
+
+export const shopItems = pgTable("shop_items", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "shop_items_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
+  name: text("name").notNull(),
+  cost: integer("cost").notNull(),
+  maxQty: integer("maxQty").notNull(),
+  multiplier: real("multiplier").notNull(),
+  baseValue: real("baseValue").notNull(),
+  critChance: real("critChance").notNull(),
+  critDamage: real("critDamage").notNull(),
+});
+
+export const research = pgTable("research", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "research_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  cost: integer("cost").notNull(),
+});
+
+export const upgrades = pgTable("upgrades", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "upgrades_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  effectItemId: integer("effectItemId")
+    .notNull()
+    .references(() => shopItems.id),
 });
 
 export const levels = pgTable("levels", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "levels_id_seq",
-      startWith: 1,
-      increment: 1,
-      minValue: 1,
-      maxValue: 2147483647,
-      cache: 1,
-    }),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+    name: "levels_id_seq",
+    startWith: 1,
+    increment: 1,
+    minValue: 1,
+    maxValue: 2147483647,
+    cache: 1,
+  }),
   level: integer("level").notNull(),
-  upgrade_id: integer("upgrade_id")
+  upgradeId: integer("upgrade_id")
     .notNull()
     .references(() => upgrades.id),
   cost: integer("cost").notNull(),
@@ -92,23 +111,21 @@ export const levels = pgTable("levels", {
 export const elements = pgTable(
   "elements",
   {
-    id: integer("id")
-      .primaryKey()
-      .generatedAlwaysAsIdentity({
-        name: "elements_id_seq",
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+      name: "elements_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     name: text("name").notNull(),
     colour: text("colour").notNull(),
   },
   (table) => {
     return {
-      elements_name_unique: unique("elements_name_unique").on(table.name),
-      elements_colour_unique: unique("elements_colour_unique").on(table.colour),
+      elementsNameUnique: unique("elements_name_unique").on(table.name),
+      elementsColourUnique: unique("elements_colour_unique").on(table.colour),
     };
   },
 );
@@ -116,28 +133,26 @@ export const elements = pgTable(
 export const characters = pgTable(
   "characters",
   {
-    id: integer("id")
-      .primaryKey()
-      .generatedAlwaysAsIdentity({
-        name: "characters_id_seq",
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+      name: "characters_id_seq",
+      startWith: 1,
+      increment: 1,
+      minValue: 1,
+      maxValue: 2147483647,
+      cache: 1,
+    }),
     name: text("name").notNull(),
     description: text("description").array().notNull(),
-    element_id: integer("element_id")
+    elementId: integer("element_id")
       .notNull()
       .references(() => elements.id),
-    city_id: integer("city_id")
+    cityId: integer("city_id")
       .notNull()
       .references(() => cities.id),
   },
   (table) => {
     return {
-      characters_name_unique: unique("characters_name_unique").on(table.name),
+      charactersNameUnique: unique("characters_name_unique").on(table.name),
     };
   },
 );
@@ -145,170 +160,171 @@ export const characters = pgTable(
 export const cities = pgTable(
   "cities",
   {
-    id: integer("id")
-      .primaryKey()
-      .generatedAlwaysAsIdentity({
-        name: "cities_id_seq",
-        startWith: 1,
-        increment: 1,
-        minValue: 1,
-        maxValue: 2147483647,
-        cache: 1,
-      }),
-    name: text("name").notNull(),
-  },
-  (table) => {
-    return {
-      cities_name_unique: unique("cities_name_unique").on(table.name),
-    };
-  },
-);
-
-export const shop_items = pgTable("shop_items", {
-  id: integer("id")
-    .primaryKey()
-    .generatedAlwaysAsIdentity({
-      name: "shop_items_id_seq",
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity({
+      name: "cities_id_seq",
       startWith: 1,
       increment: 1,
       minValue: 1,
       maxValue: 2147483647,
       cache: 1,
     }),
-  name: text("name").notNull(),
-  cost: integer("cost").notNull(),
-  maxQty: integer("maxQty").notNull(),
-  multiplier: real("multiplier").notNull(),
-  baseValue: real("baseValue").notNull(),
-  critChance: real("critChance").notNull(),
-  critDamage: real("critDamage").notNull(),
-});
+    name: text("name").notNull(),
+  },
+  (table) => {
+    return {
+      citiesNameUnique: unique("cities_name_unique").on(table.name),
+    };
+  },
+);
 
-export const items_required_research = pgTable(
+export const itemsRequiredResearch = pgTable(
   "items_required_research",
   {
-    item_id: integer("item_id")
+    itemId: integer("item_id")
       .notNull()
-      .references(() => shop_items.id),
-    required_id: integer("required_id")
+      .references(() => shopItems.id),
+    requiredId: integer("required_id")
       .notNull()
       .references(() => research.id),
     description: text("description").notNull(),
   },
   (table) => {
     return {
-      items_required_research_item_id_required_id_pk: primaryKey({
-        columns: [table.item_id, table.required_id],
+      itemsRequiredResearchItemIdRequiredIdPk: primaryKey({
+        columns: [table.itemId, table.requiredId],
         name: "items_required_research_item_id_required_id_pk",
       }),
     };
   },
 );
 
-export const research_required_research = pgTable(
+export const researchRequiredResearch = pgTable(
   "research_required_research",
   {
-    research_id: integer("research_id")
+    researchId: integer("research_id")
       .notNull()
       .references(() => research.id),
-    required_id: integer("required_id")
+    requiredId: integer("required_id")
       .notNull()
       .references(() => research.id),
     description: text("description").notNull(),
   },
   (table) => {
     return {
-      research_required_research_research_id_required_id_pk: primaryKey({
-        columns: [table.research_id, table.required_id],
+      researchRequiredResearchResearchIdRequiredIdPk: primaryKey({
+        columns: [table.researchId, table.requiredId],
         name: "research_required_research_research_id_required_id_pk",
       }),
     };
   },
 );
 
-export const upgrade_required_research = pgTable(
+export const upgradeRequiredResearch = pgTable(
   "upgrade_required_research",
   {
-    upgrade_id: integer("upgrade_id")
+    upgradeId: integer("upgrade_id")
       .notNull()
       .references(() => upgrades.id),
-    research_id: integer("research_id")
+    requiredId: integer("required_id")
       .notNull()
       .references(() => research.id),
     description: text("description").notNull(),
   },
   (table) => {
     return {
-      upgrade_required_research_upgrade_id_research_id_pk: primaryKey({
-        columns: [table.upgrade_id, table.research_id],
-        name: "upgrade_required_research_upgrade_id_research_id_pk",
+      upgradeRequiredResearchPkey: primaryKey({
+        columns: [table.upgradeId, table.requiredId],
+        name: "upgrade_required_research_pkey",
       }),
     };
   },
 );
 
-export const research_required_items = pgTable(
-  "research_required_items",
-  {
-    research_id: integer("research_id")
-      .notNull()
-      .references(() => research.id),
-    item_id: integer("item_id")
-      .notNull()
-      .references(() => shop_items.id),
-    quantity: integer("quantity").notNull(),
-    description: text("description").notNull(),
-  },
-  (table) => {
-    return {
-      research_required_items_research_id_item_id_pk: primaryKey({
-        columns: [table.research_id, table.item_id],
-        name: "research_required_items_research_id_item_id_pk",
-      }),
-    };
-  },
-);
-
-export const items_required_items = pgTable(
+export const itemsRequiredItems = pgTable(
   "items_required_items",
   {
-    item_id: integer("item_id")
+    itemId: integer("item_id")
       .notNull()
-      .references(() => shop_items.id),
-    required_id: integer("required_id")
+      .references(() => shopItems.id),
+    requiredId: integer("required_id")
       .notNull()
-      .references(() => shop_items.id),
+      .references(() => shopItems.id),
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
   (table) => {
     return {
-      items_required_items_item_id_required_id_pk: primaryKey({
-        columns: [table.item_id, table.required_id],
+      itemsRequiredItemsItemIdRequiredIdPk: primaryKey({
+        columns: [table.itemId, table.requiredId],
         name: "items_required_items_item_id_required_id_pk",
       }),
     };
   },
 );
 
-export const upgrade_required_items = pgTable(
-  "upgrade_required_items",
+export const researchRequiredItems = pgTable(
+  "research_required_items",
   {
-    upgrade_id: integer("upgrade_id")
+    researchId: integer("research_id")
       .notNull()
-      .references(() => upgrades.id),
-    item_id: integer("item_id")
+      .references(() => research.id),
+    itemId: integer("item_id")
       .notNull()
-      .references(() => shop_items.id),
+      .references(() => shopItems.id),
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
   (table) => {
     return {
-      upgrade_required_items_upgrade_id_item_id_pk: primaryKey({
-        columns: [table.upgrade_id, table.item_id],
+      researchRequiredItemsResearchIdItemIdPk: primaryKey({
+        columns: [table.researchId, table.itemId],
+        name: "research_required_items_research_id_item_id_pk",
+      }),
+    };
+  },
+);
+
+export const upgradeRequiredItems = pgTable(
+  "upgrade_required_items",
+  {
+    upgradeId: integer("upgrade_id")
+      .notNull()
+      .references(() => upgrades.id),
+    itemId: integer("item_id")
+      .notNull()
+      .references(() => shopItems.id),
+    quantity: integer("quantity").notNull(),
+    description: text("description").notNull(),
+  },
+  (table) => {
+    return {
+      upgradeRequiredItemsUpgradeIdItemIdPk: primaryKey({
+        columns: [table.upgradeId, table.itemId],
         name: "upgrade_required_items_upgrade_id_item_id_pk",
       }),
+    };
+  },
+);
+
+export const todos = pgTable(
+  "todos",
+  {
+    id: uuid("id")
+      .default(sql`uuid_generate_v4()`)
+      .primaryKey()
+      .notNull(),
+    title: text("title").notNull(),
+    completed: boolean("completed").notNull().default(false),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .default(sql`now()`),
+  },
+  (table) => {
+    return {
+      userIdx: index("todos_user_id_idx").using("btree", table.userId),
     };
   },
 );

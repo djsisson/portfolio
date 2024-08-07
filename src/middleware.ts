@@ -1,8 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getUser, isJWTValid, refreshToken } from "./utils/auth";
 
-const encodeToBase64 = (str: string) => Buffer.from(str).toString("base64url");
-
 export async function middleware(request: NextRequest) {
   let newResponse = NextResponse.next({
     request,
@@ -21,43 +19,29 @@ export async function middleware(request: NextRequest) {
   if (refresh_token) {
     const token = await refreshToken(refresh_token);
     if (token) {
-      cookies.set(
-        "access_token",
-        encodeToBase64(JSON.stringify(token.access_token)),
-      );
-      cookies.set(
-        "refresh_token",
-        encodeToBase64(JSON.stringify(token.refresh_token)),
-      );
+      cookies.set("access_token", JSON.stringify(token.access_token));
+      cookies.set("refresh_token", JSON.stringify(token.refresh_token));
       newResponse = NextResponse.next({
         request,
       });
-      newResponse.cookies.set(
-        "access_token",
-        encodeToBase64(token.access_token),
-        {
-          httpOnly: true,
-          sameSite: "lax",
-          secure: process.env.NODE_ENV === "production",
-          maxAge: token.expires_in,
-        },
-      );
-      newResponse.cookies.set(
-        "refresh_token",
-        encodeToBase64(token.refresh_token),
-        {
-          httpOnly: true,
-          sameSite: "lax",
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 60 * 60 * 24 * 7,
-        },
-      );
+      newResponse.cookies.set("access_token", token.access_token, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: token.expires_in,
+      });
+      newResponse.cookies.set("refresh_token", token.refresh_token, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+      });
       return newResponse;
     }
     cookies.delete("access_token");
     cookies.delete("refresh_token");
     const url = request.nextUrl.clone();
-    url.pathname = "/auth";
+    url.pathname = "/";
     newResponse = NextResponse.redirect(url);
     newResponse.cookies.delete("access_token");
     newResponse.cookies.delete("refresh_token");

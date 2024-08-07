@@ -1,6 +1,6 @@
 {
-  "id": "a858300b-0336-4ac7-b29e-8a3c25058964",
-  "prevId": "18f5d611-9fbb-410b-9f4f-4001df1d41f6",
+  "id": "81098097-8303-4e3f-8489-cb62c4ede1bf",
+  "prevId": "0c25d191-e2aa-44bf-ad42-1b966b67d292",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -56,12 +56,8 @@
           "name": "characters_element_id_elements_id_fk",
           "tableFrom": "characters",
           "tableTo": "elements",
-          "columnsFrom": [
-            "element_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["element_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -69,12 +65,8 @@
           "name": "characters_city_id_cities_id_fk",
           "tableFrom": "characters",
           "tableTo": "cities",
-          "columnsFrom": [
-            "city_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["city_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -84,9 +76,7 @@
         "characters_name_unique": {
           "name": "characters_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       }
     },
@@ -125,9 +115,7 @@
         "cities_name_unique": {
           "name": "cities_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         }
       }
     },
@@ -172,16 +160,12 @@
         "elements_name_unique": {
           "name": "elements_name_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
+          "columns": ["name"]
         },
         "elements_colour_unique": {
           "name": "elements_colour_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "colour"
-          ]
+          "columns": ["colour"]
         }
       }
     },
@@ -307,12 +291,8 @@
           "name": "items_required_items_item_id_shop_items_id_fk",
           "tableFrom": "items_required_items",
           "tableTo": "shop_items",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -320,12 +300,8 @@
           "name": "items_required_items_required_id_shop_items_id_fk",
           "tableFrom": "items_required_items",
           "tableTo": "shop_items",
-          "columnsFrom": [
-            "required_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["required_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -333,10 +309,7 @@
       "compositePrimaryKeys": {
         "items_required_items_item_id_required_id_pk": {
           "name": "items_required_items_item_id_required_id_pk",
-          "columns": [
-            "item_id",
-            "required_id"
-          ]
+          "columns": ["item_id", "required_id"]
         }
       },
       "uniqueConstraints": {}
@@ -370,12 +343,8 @@
           "name": "items_required_research_item_id_shop_items_id_fk",
           "tableFrom": "items_required_research",
           "tableTo": "shop_items",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -383,12 +352,8 @@
           "name": "items_required_research_required_id_research_id_fk",
           "tableFrom": "items_required_research",
           "tableTo": "research",
-          "columnsFrom": [
-            "required_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["required_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -396,10 +361,7 @@
       "compositePrimaryKeys": {
         "items_required_research_item_id_required_id_pk": {
           "name": "items_required_research_item_id_required_id_pk",
-          "columns": [
-            "item_id",
-            "required_id"
-          ]
+          "columns": ["item_id", "required_id"]
         }
       },
       "uniqueConstraints": {}
@@ -468,12 +430,8 @@
           "name": "levels_upgrade_id_upgrades_id_fk",
           "tableFrom": "levels",
           "tableTo": "upgrades",
-          "columnsFrom": [
-            "upgrade_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["upgrade_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -561,12 +519,8 @@
           "name": "research_required_items_research_id_research_id_fk",
           "tableFrom": "research_required_items",
           "tableTo": "research",
-          "columnsFrom": [
-            "research_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["research_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -574,12 +528,8 @@
           "name": "research_required_items_item_id_shop_items_id_fk",
           "tableFrom": "research_required_items",
           "tableTo": "shop_items",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -587,10 +537,7 @@
       "compositePrimaryKeys": {
         "research_required_items_research_id_item_id_pk": {
           "name": "research_required_items_research_id_item_id_pk",
-          "columns": [
-            "research_id",
-            "item_id"
-          ]
+          "columns": ["research_id", "item_id"]
         }
       },
       "uniqueConstraints": {}
@@ -624,12 +571,8 @@
           "name": "research_required_research_research_id_research_id_fk",
           "tableFrom": "research_required_research",
           "tableTo": "research",
-          "columnsFrom": [
-            "research_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["research_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -637,12 +580,8 @@
           "name": "research_required_research_required_id_research_id_fk",
           "tableFrom": "research_required_research",
           "tableTo": "research",
-          "columnsFrom": [
-            "required_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["required_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -650,10 +589,7 @@
       "compositePrimaryKeys": {
         "research_required_research_research_id_required_id_pk": {
           "name": "research_required_research_research_id_required_id_pk",
-          "columns": [
-            "research_id",
-            "required_id"
-          ]
+          "columns": ["research_id", "required_id"]
         }
       },
       "uniqueConstraints": {}
@@ -727,6 +663,68 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.todos": {
+      "name": "todos",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "uuid_generate_v4()"
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "completed": {
+          "name": "completed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "todos_user_id_idx": {
+          "name": "todos_user_id_idx",
+          "table": "todos",
+          "unique": false,
+          "type": "btree",
+          "columns": ["user_id"]
+        }
+      },
+      "foreignKeys": {
+        "todos_user_id_users_id_fk": {
+          "name": "todos_user_id_users_id_fk",
+          "tableFrom": "todos",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.upgrade_required_items": {
       "name": "upgrade_required_items",
       "schema": "",
@@ -762,12 +760,8 @@
           "name": "upgrade_required_items_upgrade_id_upgrades_id_fk",
           "tableFrom": "upgrade_required_items",
           "tableTo": "upgrades",
-          "columnsFrom": [
-            "upgrade_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["upgrade_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -775,12 +769,8 @@
           "name": "upgrade_required_items_item_id_shop_items_id_fk",
           "tableFrom": "upgrade_required_items",
           "tableTo": "shop_items",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["item_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -788,10 +778,7 @@
       "compositePrimaryKeys": {
         "upgrade_required_items_upgrade_id_item_id_pk": {
           "name": "upgrade_required_items_upgrade_id_item_id_pk",
-          "columns": [
-            "upgrade_id",
-            "item_id"
-          ]
+          "columns": ["upgrade_id", "item_id"]
         }
       },
       "uniqueConstraints": {}
@@ -825,12 +812,8 @@
           "name": "upgrade_required_research_upgrade_id_upgrades_id_fk",
           "tableFrom": "upgrade_required_research",
           "tableTo": "upgrades",
-          "columnsFrom": [
-            "upgrade_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["upgrade_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -838,12 +821,8 @@
           "name": "upgrade_required_research_required_id_research_id_fk",
           "tableFrom": "upgrade_required_research",
           "tableTo": "research",
-          "columnsFrom": [
-            "required_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["required_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -851,10 +830,7 @@
       "compositePrimaryKeys": {
         "upgrade_required_research_upgrade_id_research_id_pk": {
           "name": "upgrade_required_research_upgrade_id_research_id_pk",
-          "columns": [
-            "upgrade_id",
-            "required_id"
-          ]
+          "columns": ["upgrade_id", "required_id"]
         }
       },
       "uniqueConstraints": {}
@@ -905,12 +881,8 @@
           "name": "upgrades_effectItemId_shop_items_id_fk",
           "tableFrom": "upgrades",
           "tableTo": "shop_items",
-          "columnsFrom": [
-            "effectItemId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["effectItemId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }

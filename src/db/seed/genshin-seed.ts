@@ -1,4 +1,4 @@
-import { characters, cities, elements } from "../migrations/schema";
+import { characters, cities, elements } from "../genshin/schema";
 import { Transaction } from "./seed";
 
 export const genshinSeed = async (db: Transaction) => {

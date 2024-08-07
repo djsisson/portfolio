@@ -9,7 +9,7 @@ import {
   upgrade_required_research,
   levels,
   gamestate,
-} from "./../schema";
+} from "../asteroidz/schema";
 import { Transaction } from "./seed";
 
 export const asteroidSeed = async (db: Transaction) => {

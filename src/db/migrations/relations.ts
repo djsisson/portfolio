@@ -1,165 +1,133 @@
 import { relations } from "drizzle-orm/relations";
-import {
-  shop_items,
-  upgrades,
-  levels,
-  cities,
-  characters,
-  elements,
-  items_required_research,
-  research,
-  research_required_research,
-  upgrade_required_research,
-  research_required_items,
-  items_required_items,
-  upgrade_required_items,
-} from "./schema";
+import { shopItems, upgrades, levels, cities, characters, elements, itemsRequiredResearch, research, researchRequiredResearch, upgradeRequiredResearch, itemsRequiredItems, researchRequiredItems, upgradeRequiredItems } from "./schema";
 
-export const upgradesRelations = relations(upgrades, ({ one, many }) => ({
-  shop_item: one(shop_items, {
-    fields: [upgrades.effectItemId],
-    references: [shop_items.id],
-  }),
-  levels: many(levels),
-  required_research: many(upgrade_required_research),
-  required_items: many(upgrade_required_items),
+export const upgradesRelations = relations(upgrades, ({one, many}) => ({
+	shopItem: one(shopItems, {
+		fields: [upgrades.effectItemId],
+		references: [shopItems.id]
+	}),
+	levels: many(levels),
+	upgradeRequiredResearches: many(upgradeRequiredResearch),
+	upgradeRequiredItems: many(upgradeRequiredItems),
 }));
 
-export const shop_itemsRelations = relations(shop_items, ({ many }) => ({
-  upgrades: many(upgrades),
-  required_research: many(items_required_research),
-  research_required_items: many(research_required_items),
-  item_id: many(items_required_items, {
-    relationName: "required_item_id",
-  }),
-  required_item_id: many(items_required_items, {
-    relationName: "item_id",
-  }),
-  upgrade_required_items: many(upgrade_required_items),
+export const shopItemsRelations = relations(shopItems, ({many}) => ({
+	upgrades: many(upgrades),
+	itemsRequiredResearches: many(itemsRequiredResearch),
+	itemsRequiredItems_itemId: many(itemsRequiredItems, {
+		relationName: "itemsRequiredItems_itemId_shopItems_id"
+	}),
+	itemsRequiredItems_requiredId: many(itemsRequiredItems, {
+		relationName: "itemsRequiredItems_requiredId_shopItems_id"
+	}),
+	researchRequiredItems: many(researchRequiredItems),
+	upgradeRequiredItems: many(upgradeRequiredItems),
 }));
 
-export const levelsRelations = relations(levels, ({ one }) => ({
-  upgrade: one(upgrades, {
-    fields: [levels.upgrade_id],
-    references: [upgrades.id],
-  }),
+export const levelsRelations = relations(levels, ({one}) => ({
+	upgrade: one(upgrades, {
+		fields: [levels.upgradeId],
+		references: [upgrades.id]
+	}),
 }));
 
-export const charactersRelations = relations(characters, ({ one }) => ({
-  city: one(cities, {
-    fields: [characters.city_id],
-    references: [cities.id],
-  }),
-  element: one(elements, {
-    fields: [characters.element_id],
-    references: [elements.id],
-  }),
+export const charactersRelations = relations(characters, ({one}) => ({
+	city: one(cities, {
+		fields: [characters.cityId],
+		references: [cities.id]
+	}),
+	element: one(elements, {
+		fields: [characters.elementId],
+		references: [elements.id]
+	}),
 }));
 
-export const citiesRelations = relations(cities, ({ many }) => ({
-  characters: many(characters),
+export const citiesRelations = relations(cities, ({many}) => ({
+	characters: many(characters),
 }));
 
-export const elementsRelations = relations(elements, ({ many }) => ({
-  characters: many(characters),
+export const elementsRelations = relations(elements, ({many}) => ({
+	characters: many(characters),
 }));
 
-export const items_required_researchRelations = relations(
-  items_required_research,
-  ({ one }) => ({
-    shop_item: one(shop_items, {
-      fields: [items_required_research.item_id],
-      references: [shop_items.id],
-    }),
-    research: one(research, {
-      fields: [items_required_research.required_id],
-      references: [research.id],
-    }),
-  }),
-);
-
-export const researchRelations = relations(research, ({ many }) => ({
-  items_required_research: many(items_required_research),
-  required_research_id: many(research_required_research, {
-    relationName: "research_id",
-  }),
-  research_id: many(research_required_research, {
-    relationName: "required_research_id",
-  }),
-  upgrade_required_research: many(upgrade_required_research),
-  required_items: many(research_required_items),
+export const itemsRequiredResearchRelations = relations(itemsRequiredResearch, ({one}) => ({
+	shopItem: one(shopItems, {
+		fields: [itemsRequiredResearch.itemId],
+		references: [shopItems.id]
+	}),
+	research: one(research, {
+		fields: [itemsRequiredResearch.requiredId],
+		references: [research.id]
+	}),
 }));
 
-export const research_required_researchRelations = relations(
-  research_required_research,
-  ({ one }) => ({
-    research_required_id: one(research, {
-      fields: [research_required_research.required_id],
-      references: [research.id],
-      relationName: "required_research_id",
-    }),
-    research_research_id: one(research, {
-      fields: [research_required_research.research_id],
-      references: [research.id],
-      relationName: "research_id",
-    }),
-  }),
-);
+export const researchRelations = relations(research, ({many}) => ({
+	itemsRequiredResearches: many(itemsRequiredResearch),
+	researchRequiredResearches_requiredId: many(researchRequiredResearch, {
+		relationName: "researchRequiredResearch_requiredId_research_id"
+	}),
+	researchRequiredResearches_researchId: many(researchRequiredResearch, {
+		relationName: "researchRequiredResearch_researchId_research_id"
+	}),
+	upgradeRequiredResearches: many(upgradeRequiredResearch),
+	researchRequiredItems: many(researchRequiredItems),
+}));
 
-export const upgrade_required_researchRelations = relations(
-  upgrade_required_research,
-  ({ one }) => ({
-    research: one(research, {
-      fields: [upgrade_required_research.research_id],
-      references: [research.id],
-    }),
-    upgrade: one(upgrades, {
-      fields: [upgrade_required_research.upgrade_id],
-      references: [upgrades.id],
-    }),
-  }),
-);
+export const researchRequiredResearchRelations = relations(researchRequiredResearch, ({one}) => ({
+	research_requiredId: one(research, {
+		fields: [researchRequiredResearch.requiredId],
+		references: [research.id],
+		relationName: "researchRequiredResearch_requiredId_research_id"
+	}),
+	research_researchId: one(research, {
+		fields: [researchRequiredResearch.researchId],
+		references: [research.id],
+		relationName: "researchRequiredResearch_researchId_research_id"
+	}),
+}));
 
-export const research_required_itemsRelations = relations(
-  research_required_items,
-  ({ one }) => ({
-    shop_item: one(shop_items, {
-      fields: [research_required_items.item_id],
-      references: [shop_items.id],
-    }),
-    research: one(research, {
-      fields: [research_required_items.research_id],
-      references: [research.id],
-    }),
-  }),
-);
+export const upgradeRequiredResearchRelations = relations(upgradeRequiredResearch, ({one}) => ({
+	research: one(research, {
+		fields: [upgradeRequiredResearch.requiredId],
+		references: [research.id]
+	}),
+	upgrade: one(upgrades, {
+		fields: [upgradeRequiredResearch.upgradeId],
+		references: [upgrades.id]
+	}),
+}));
 
-export const items_required_itemsRelations = relations(
-  items_required_items,
-  ({ one }) => ({
-    shop_item_item_id: one(shop_items, {
-      fields: [items_required_items.item_id],
-      references: [shop_items.id],
-      relationName: "item_id",
-    }),
-    shop_item_required_id: one(shop_items, {
-      fields: [items_required_items.required_id],
-      references: [shop_items.id],
-      relationName: "required_item_id",
-    }),
-  }),
-);
+export const itemsRequiredItemsRelations = relations(itemsRequiredItems, ({one}) => ({
+	shopItem_itemId: one(shopItems, {
+		fields: [itemsRequiredItems.itemId],
+		references: [shopItems.id],
+		relationName: "itemsRequiredItems_itemId_shopItems_id"
+	}),
+	shopItem_requiredId: one(shopItems, {
+		fields: [itemsRequiredItems.requiredId],
+		references: [shopItems.id],
+		relationName: "itemsRequiredItems_requiredId_shopItems_id"
+	}),
+}));
 
-export const upgrade_required_itemsRelations = relations(
-  upgrade_required_items,
-  ({ one }) => ({
-    shop_item: one(shop_items, {
-      fields: [upgrade_required_items.item_id],
-      references: [shop_items.id],
-    }),
-    upgrade: one(upgrades, {
-      fields: [upgrade_required_items.upgrade_id],
-      references: [upgrades.id],
-    }),
-  }),
-);
+export const researchRequiredItemsRelations = relations(researchRequiredItems, ({one}) => ({
+	shopItem: one(shopItems, {
+		fields: [researchRequiredItems.itemId],
+		references: [shopItems.id]
+	}),
+	research: one(research, {
+		fields: [researchRequiredItems.researchId],
+		references: [research.id]
+	}),
+}));
+
+export const upgradeRequiredItemsRelations = relations(upgradeRequiredItems, ({one}) => ({
+	shopItem: one(shopItems, {
+		fields: [upgradeRequiredItems.itemId],
+		references: [shopItems.id]
+	}),
+	upgrade: one(upgrades, {
+		fields: [upgradeRequiredItems.upgradeId],
+		references: [upgrades.id]
+	}),
+}));

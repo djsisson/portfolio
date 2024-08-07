@@ -4,9 +4,14 @@ import { loadEnvConfig } from "@next/env";
 loadEnvConfig(process.cwd(), true);
 
 export default defineConfig({
-  schema: "./src/db/schema.ts",
+  schema: [
+    "./src/db/asteroidz/schema.ts",
+    "./src/db/genshin/schema.ts",
+    "./src/db/todos/schema.ts",
+  ],
   out: "./src/db/migrations",
   dialect: "postgresql",
+  schemaFilter: "public",
   verbose: true,
   strict: true,
   dbCredentials: {

@@ -3998,6 +3998,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-themes@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "next-themes@npm:0.3.0"
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18
+    react-dom: ^16.8 || ^17 || ^18
+  checksum: 10c0/72bd670ad6b9f547dc18cece340dfd1ac41e3e7b37eb321d4767db90bfa2c239f937011cd0efe35ca0081f1ea260051bc0868808ef39b0fbff2ddefd7146cec6
+  languageName: node
+  linkType: hard
+
 "next@npm:15.0.0-rc.0":
   version: 15.0.0-rc.0
   resolution: "next@npm:15.0.0-rc.0"
@@ -4328,6 +4338,7 @@ __metadata:
     eslint-config-next: "npm:15.0.0-rc.0"
     jose: "npm:^5.6.3"
     next: "npm:15.0.0-rc.0"
+    next-themes: "npm:^0.3.0"
     postgres: "npm:^3.4.4"
     prettier: "npm:^3.3.2"
     prettier-plugin-tailwindcss: "npm:^0.6.5"

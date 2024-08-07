@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { JWTPayload, jwtVerify } from "jose";
+import { JWTPayload, jwtVerify, SignJWT } from "jose";
 
 const generateRandomBase64String = async (length = 24) =>
   Buffer.from(crypto.getRandomValues(new Uint8Array(length))).toString(
@@ -16,15 +16,6 @@ const computeCodeChallengeFromVerifier = async (verifier: string) => {
   return Buffer.from(hashedValue).toString("base64url");
 };
 
-const isCodeVerifierValid = async (
-  codeVerifier: string,
-  codeChallenge: string,
-) => (await computeCodeChallengeFromVerifier(codeVerifier)) === codeChallenge;
-
-const encodeToBase64 = (str: string) => Buffer.from(str).toString("base64url");
-const decodeFromBase64 = (str: string) =>
-  Buffer.from(str || "", "base64url").toString();
-
 export async function isJWTValid(jwt: string) {
   const payload = await verifyJWT(jwt);
   if (!payload?.exp) {
@@ -37,19 +28,28 @@ export async function isJWTValid(jwt: string) {
   return true;
 }
 
-async function verifyJWT(jwt: string): Promise<JWTPayload | null> {
+export async function verifyJWT(jwt: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jwtVerify(
-      decodeFromBase64(jwt),
+      jwt,
       new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!),
     );
-    return payload;
+    return payload as JWTPayload;
   } catch (e) {
     return null;
   }
 }
 
-export async function signInWithGithub() {
+async function signJWT(payload: JWTPayload) {
+  const jwt = await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("1w")
+    .sign(new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!));
+  return jwt;
+}
+
+export async function signInWithGithub(redirectTo: string) {
   const codeVerifier = await generateRandomBase64String();
   const codeChallenge = await computeCodeChallengeFromVerifier(codeVerifier);
   cookies().set("code_verifier", codeVerifier, {
@@ -59,7 +59,7 @@ export async function signInWithGithub() {
     maxAge: 60 * 5,
   });
   redirect(
-    `${process.env.EXTERNAL_AUTH_URL}/authorize?provider=github&redirect_to=${process.env.SITE_URL}/auth/callback&code_challenge=${codeChallenge}&code_challenge_method=S256`,
+    `${process.env.EXTERNAL_AUTH_URL}/authorize?provider=github&redirect_to=${process.env.SITE_URL}${redirectTo}&code_challenge=${codeChallenge}&code_challenge_method=S256`,
   );
 }
 
@@ -67,7 +67,7 @@ export async function exchangeCodeForSession(code: string) {
   if (!code || !cookies().get("code_verifier")?.value) {
     return false;
   }
-  const data = await fetch(
+  const result = await fetch(
     `${process.env.INTERNAL_AUTH_URL}/token?grant_type=pkce`,
     {
       method: "POST",
@@ -80,33 +80,47 @@ export async function exchangeCodeForSession(code: string) {
         code_verifier: cookies().get("code_verifier")?.value,
       }),
     },
-  )
-    .then((res) => res.json())
-    .catch((e) => e);
+  );
+  if (result.status !== 200) {
+    return false;
+  }
+  const data = await result.json();
   cookies().delete("code_verifier");
   if (!data?.access_token && !data?.refresh_token && !data?.expires_in) {
     return false;
   }
-  cookies().set("access_token", encodeToBase64(data.access_token), {
+  cookies().set("access_token", data.access_token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     maxAge: data.expires_in,
   });
 
-  cookies().set("refresh_token", encodeToBase64(data.refresh_token), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7,
-  });
+  cookies().set(
+    "refresh_token",
+    await signJWT({ refresh_token: data.refresh_token }),
+    {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24 * 7,
+    },
+  );
   return true;
 }
 
-export async function signOut() {
+export async function signOut(redirectTo: string) {
+  const result = await fetch(`${process.env.INTERNAL_AUTH_URL}/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: process.env.SUPABASE_ANON_KEY!,
+      Authorization: `Bearer ${cookies().get("access_token")?.value}`,
+    },
+  });
   cookies().delete("access_token");
   cookies().delete("refresh_token");
-  redirect("/auth/");
+  redirect(redirectTo);
 }
 
 export async function getUser(token: string) {
@@ -115,7 +129,7 @@ export async function getUser(token: string) {
     headers: {
       "Content-Type": "application/json",
       apikey: process.env.SUPABASE_ANON_KEY!,
-      Authorization: `Bearer ${decodeFromBase64(token)}`,
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((res) => res.json())
@@ -124,6 +138,10 @@ export async function getUser(token: string) {
 }
 
 export async function refreshToken(token: string) {
+  const refresh = await verifyJWT(token)
+  if (refresh === null) {
+    return null;
+  }
   const data = await fetch(
     `${process.env.INTERNAL_AUTH_URL}/token?grant_type=refresh_token`,
     {
@@ -133,7 +151,7 @@ export async function refreshToken(token: string) {
         apikey: process.env.SUPABASE_ANON_KEY!,
       },
       body: JSON.stringify({
-        refresh_token: decodeFromBase64(token),
+        refresh_token: refresh.refresh_token,
       }),
     },
   );
@@ -146,7 +164,10 @@ export async function refreshToken(token: string) {
     return null;
   }
 
-  return result;
+  return {
+    ...result,
+    refresh_token: await signJWT({ refresh_token: result.refresh_token }),
+  };
 }
 
 export async function getUserFromJWT() {

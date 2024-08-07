@@ -103,9 +103,9 @@ CREATE TABLE IF NOT EXISTS "upgrade_required_items" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "upgrade_required_research" (
 	"upgrade_id" integer NOT NULL,
-	"research_id" integer NOT NULL,
+	"required_id" integer NOT NULL,
 	"description" text NOT NULL,
-	CONSTRAINT "upgrade_required_research_upgrade_id_research_id_pk" PRIMARY KEY("upgrade_id","research_id")
+	CONSTRAINT "upgrade_required_research_upgrade_id_research_id_pk" PRIMARY KEY("upgrade_id","required_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "upgrades" (
@@ -200,7 +200,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "upgrade_required_research" ADD CONSTRAINT "upgrade_required_research_research_id_research_id_fk" FOREIGN KEY ("research_id") REFERENCES "public"."research"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "upgrade_required_research" ADD CONSTRAINT "upgrade_required_research_required_id_research_id_fk" FOREIGN KEY ("required_id") REFERENCES "public"."research"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
