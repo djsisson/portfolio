@@ -12,6 +12,20 @@ import {
   upgrade_required_items,
 } from "./schema";
 
+export const items_required_researchRelations = relations(
+  items_required_research,
+  ({ one }) => ({
+    shop_item: one(shopItems, {
+      fields: [items_required_research.item_id],
+      references: [shopItems.id],
+    }),
+    research: one(research, {
+      fields: [items_required_research.required_id],
+      references: [research.id],
+    }),
+  }),
+);
+
 export const upgradesRelations = relations(upgrades, ({ one, many }) => ({
   shop_item: one(shopItems, {
     fields: [upgrades.effectItemId],
