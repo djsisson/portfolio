@@ -8,10 +8,8 @@ export default async function Page() {
   return (
     <div className="flex h-svh w-svw flex-col items-center">
       <Header />
-
-      <h2 className="text-2xl font-bold">Todos</h2>
       {user ? (
-        <div className="flex max-w-prose flex-1 gap-4 p-4">
+        <div className="grid w-full max-w-prose min-w-96 flex-1 grid-cols-2 p-4">
           <TodoList />
           <AddTodo />
         </div>
