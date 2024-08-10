@@ -11,6 +11,7 @@ export default function TodoFilter({
   todos: (typeof _todos.$inferSelect)[];
 }) {
   const [completed, setCompleted] = useState(false);
+  const todoList = todos.filter((todo) => todo.completed == completed);
   return (
     <div className="flex w-full flex-1 flex-col gap-2 p-2">
       <div className="flex items-center space-x-2">
@@ -21,6 +22,13 @@ export default function TodoFilter({
         />
         <Label htmlFor="completed">Show Completed</Label>
       </div>
+      {todoList.length == 0 ? (
+        completed ? (
+          <p>No Completed Todos</p>
+        ) : (
+          <p>Add A New Todo</p>
+        )
+      ) : null}
       {todos
         .filter((todo) => todo.completed == completed)
         .map((todo) => (
