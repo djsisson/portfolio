@@ -14,11 +14,6 @@ export default function Home() {
           </a>
         </li>
         <li>
-          <a className="hover:underline" href="/test">
-            Test
-          </a>
-        </li>
-        <li>
           <a className="hover:underline" href="/todos">
             Todos
           </a>

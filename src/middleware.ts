@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getUser, isJWTValid, refreshToken } from "./utils/auth";
+import { getUser, isJWTValid, refreshToken } from "./lib/auth";
 
 export async function middleware(request: NextRequest) {
   let newResponse = NextResponse.next({

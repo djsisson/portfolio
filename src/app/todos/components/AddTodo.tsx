@@ -2,20 +2,23 @@
 
 import { useState, useRef } from "react";
 import { addTodo } from "../actions";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function AddTodo() {
   const [todo, setTodo] = useState("");
   const ref = useRef<HTMLFormElement>(null);
   return (
-    <div className="flex h-fit w-full flex-col gap-2 rounded-lg p-2 flex-1">
+    <div className="flex h-fit w-full flex-1 flex-col gap-2 rounded-lg p-2">
       <form
+        className="flex w-full flex-col gap-2"
         ref={ref}
         action={async (FormData) => {
           await addTodo(FormData);
           setTodo("");
         }}
       >
-        <textarea
+        <Textarea
           className="w-full resize-none rounded-md border-1 py-1 px-2"
           rows={5}
           value={todo}
@@ -27,12 +30,13 @@ export default function AddTodo() {
           title="Enter a todo"
           name="todo"
         />
-        <button
-          className="w-full max-w-max cursor-pointer rounded-md border-1 py-1 px-2"
+        <Button
+          className="max-w-max cursor-pointer"
+          variant={"default"}
           type="submit"
         >
           Add Todo
-        </button>
+        </Button>
       </form>
     </div>
   );

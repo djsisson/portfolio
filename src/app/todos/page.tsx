@@ -1,4 +1,4 @@
-import { getUserFromJWT } from "@/utils/auth";
+import { getUserFromJWT } from "@/lib/auth";
 import AddTodo from "./components/AddTodo";
 import Header from "./components/Header";
 import TodoList from "./components/TodoList";

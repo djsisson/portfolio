@@ -12,16 +12,22 @@
     "seed": "yarn dlx tsx ./src/db/seed/seed.ts"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.1.0",
     "babel-plugin-react-compiler": "0.0.0-experimental-696af53-20240625",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.32.2",
     "jose": "^5.6.3",
+    "lucide-react": "^0.427.0",
     "next": "15.0.0-rc.0",
     "next-themes": "^0.3.0",
     "postgres": "^3.4.4",
     "react": "19.0.0-rc-f994737d14-20240522",
     "react-dom": "19.0.0-rc-f994737d14-20240522",
     "server-only": "^0.0.1",
-    "sharp": "^0.33.4"
+    "sharp": "^0.33.4",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0-alpha.17",

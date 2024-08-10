@@ -1,7 +1,7 @@
 "use server";
 import { getdb as db } from "@/db/todos/db";
 import { cookies } from "next/headers";
-import { verifyJWT } from "@/utils/auth";
+import { verifyJWT } from "@/lib/auth";
 import { JWTPayload } from "jose";
 import { todos } from "@/db/todos/schema";
 import { desc, eq, not } from "drizzle-orm";

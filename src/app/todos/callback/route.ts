@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { exchangeCodeForSession } from "@/utils/auth";
+import { exchangeCodeForSession } from "@/lib/auth";
 // The client you created from the Server-Side Auth instructions
 
 export async function GET(request: Request) {

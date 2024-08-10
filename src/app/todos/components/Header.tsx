@@ -2,7 +2,7 @@ import {
   getUserFromJWT,
   signInWithGithub,
   signOut as _signOut,
-} from "@/utils/auth";
+} from "@/lib/auth";
 
 export default async function Header() {
   const signIn = signInWithGithub.bind(null, "/todos/callback");

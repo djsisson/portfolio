@@ -142,6 +142,7 @@ const ViewPort = () => {
         <Image
           src={Asteroidz}
           alt="asteroid"
+          priority={true}
           className="[-webkit-user-drag:none] [user-drag:none] select-none"
         />
       </div>
