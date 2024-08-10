@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { addTodo } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@radix-ui/react-label";
 
 export default function AddTodo() {
   const [todo, setTodo] = useState("");
@@ -18,6 +19,7 @@ export default function AddTodo() {
           setTodo("");
         }}
       >
+        <Label htmlFor="todo">New Todo</Label>
         <Textarea
           className="w-full resize-none rounded-md border-1 py-1 px-2"
           rows={5}
@@ -29,6 +31,7 @@ export default function AddTodo() {
           minLength={1}
           title="Enter a todo"
           name="todo"
+          id="todo"
         />
         <Button
           className="max-w-max cursor-pointer"
