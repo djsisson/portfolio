@@ -1,35 +1,62 @@
-import {
-  getUserFromJWT,
-  signInWithGithub,
-  signInWithGoogle,
-  signOut as _signOut,
-} from "@/lib/auth";
+import { getUserFromJWT, signInWithGithub, signInWithGoogle } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import Logout from "./Logout";
 
 export default async function Header() {
   const signInWithGH = signInWithGithub.bind(null, "/todos/callback");
   const signInWithGO = signInWithGoogle.bind(null, "/todos/callback");
-  const signOut = _signOut.bind(null, "/todos");
-  const user = await getUserFromJWT();
+  const user: {
+    user_metadata?: { avatar_url: string; name: string } | undefined;
+  } | null = (await getUserFromJWT()) as {
+    user_metadata?: { avatar_url: string; name: string } | undefined;
+  } | null;
+
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
 
   return (
     <div className="flex w-full justify-between p-4">
       <h1 className="text-2xl font-bold">Todos</h1>
       <div className="cursor-pointer">
-        {user?.exp ? (
-          <form>
-            <Button
-              variant={"default"}
-              className="cursor-pointer"
-              formAction={signOut}
-            >
-              Logout
-            </Button>
-          </form>
+        {user ? (
+          <div className="h-10 w-10 cursor-pointer">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="focus:outline-0">
+                <Avatar className="cursor-pointer">
+                  <AvatarImage
+                    src={user?.user_metadata?.avatar_url as string}
+                  />
+                  <AvatarFallback>
+                    {getInitials((user?.user_metadata?.name as string) || "U")}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem disabled>
+                  <p>{user?.user_metadata?.name}</p>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <Logout />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         ) : (
           <div className="flex items-center gap-2">
-            <Label>Sign in with</Label>
+            <Label>Sign in with:</Label>
             <form>
               <Button
                 variant={"ghost"}

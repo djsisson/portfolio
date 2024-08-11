@@ -27,13 +27,12 @@ export default function Todo({ todo }: { todo: typeof todos.$inferSelect }) {
             <Tooltip>
               <TooltipTrigger>
                 <CircleCheck
-                  color={`${todo.completed ? "green" : "gray"}`}
                   onClick={() => toggleTodo(todo.id)}
-                  className="cursor-pointer opacity-50 hover:opacity-100"
+                  className={`cursor-pointer ${todo.completed ? "text-green-500" : "text-gray-500"} opacity-50 hover:opacity-100 ${todo.completed ? "hover:text-gray-500" : "hover:text-green-500"}`}
                 />
               </TooltipTrigger>
               <TooltipContent>
-                {todo.completed ? "Completed" : "Not completed"}
+                {todo.completed ? "Uncomplete Todo" : "Complete Todo"}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -46,7 +45,7 @@ export default function Todo({ todo }: { todo: typeof todos.$inferSelect }) {
                   onClick={() => deleteTodo(todo.id)}
                 />
               </TooltipTrigger>
-              <TooltipContent>Delete</TooltipContent>
+              <TooltipContent>Delete Todo</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
