@@ -63,6 +63,20 @@ export async function signInWithGithub(redirectTo: string) {
   );
 }
 
+export async function signInWithGoogle(redirectTo: string) {
+  const codeVerifier = await generateRandomBase64String();
+  const codeChallenge = await computeCodeChallengeFromVerifier(codeVerifier);
+  cookies().set("code_verifier", codeVerifier, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 5,
+  });
+  redirect(
+    `${process.env.EXTERNAL_AUTH_URL}/authorize?provider=google&redirect_to=${process.env.SITE_URL}${redirectTo}&code_challenge=${codeChallenge}&code_challenge_method=S256`,
+  );
+}
+
 export async function exchangeCodeForSession(code: string) {
   if (!code || !cookies().get("code_verifier")?.value) {
     return false;

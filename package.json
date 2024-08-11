@@ -12,11 +12,15 @@
     "seed": "yarn dlx tsx ./src/db/seed/seed.ts"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.0.1",
+    "@mdx-js/react": "^3.0.1",
+    "@next/mdx": "^14.2.5",
     "@radix-ui/react-hover-card": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
+    "@types/mdx": "^2.0.13",
     "babel-plugin-react-compiler": "0.0.0-experimental-696af53-20240625",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
