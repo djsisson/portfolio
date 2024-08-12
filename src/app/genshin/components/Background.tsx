@@ -9,7 +9,6 @@ export default function Background({ currentCity }: { currentCity: string }) {
         key={currentCity}
         src={backgrounds[currentCity.toLowerCase() as keyof typeof backgrounds]}
         alt={currentCity}
-        placeholder="blur"
         priority={true}
         fill={true}
       ></Image>

@@ -9,7 +9,6 @@ import {
   stats,
 } from "./Context";
 import VisualScore from "./VisualScore";
-import Asteroidz from "@/assets/asteroidz/asteroid.webp";
 import Image from "next/image";
 
 export type Score = {
@@ -133,17 +132,18 @@ const ViewPort = () => {
         );
       })}
       <div
-        className="aspect-square w-[50%] cursor-pointer object-contain object-center"
+        className="relative aspect-square w-[50%] cursor-pointer object-contain object-center"
         onClick={onClick}
         style={{
           animation: shake ? "shake 0.5s infinite" : "",
         }}
       >
         <Image
-          src={Asteroidz}
+          src={"/assets/asteroidz/asteroid.webp"}
           alt="asteroid"
           priority={true}
           className="[-webkit-user-drag:none] [user-drag:none] select-none"
+          fill={true}
         />
       </div>
       {cpsValues.map((x) => {

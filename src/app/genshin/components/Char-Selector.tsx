@@ -67,7 +67,9 @@ export default function CharSelector({
                 setCurrentCharacter(character);
                 setCharacterLoading(true);
               }}
-              placeholder="blur"
+              fill={true}
+              priority={true}
+              sizes="10vw"
             />
           </div>
         ))}

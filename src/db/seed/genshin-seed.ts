@@ -438,6 +438,38 @@ export const genshinSeed = async (db: Transaction) => {
         element_id: element_result.find((e) => e.name === "Geo")?.id!,
         city_id: city_result.find((c) => c.name === "Liyue")?.id!,
       },
+      {
+        name: "Clorinde",
+        description: [
+          "The mightiest Champion Duelist. Sword in hand, she defends justice in the Court of Fontaine.",
+        ],
+        element_id: element_result.find((e) => e.name === "Electro")?.id!,
+        city_id: city_result.find((c) => c.name === "Fontaine")?.id!,
+      },
+      {
+        name: "Emilie",
+        description: [
+          "A renowned perfumer from Fontaine. Elegant, charming, and a little mysterious... just like her work.",
+        ],
+        element_id: element_result.find((e) => e.name === "Dendro")?.id!,
+        city_id: city_result.find((c) => c.name === "Fontaine")?.id!,
+      },
+      {
+        name: "Sigewinne",
+        description: [
+          "The head nurse of the Fortress of Meropide. As a Melusine, she uses her unique perspective to observe and care for those around her.",
+        ],
+        element_id: element_result.find((e) => e.name === "Hydro")?.id!,
+        city_id: city_result.find((c) => c.name === "Fontaine")?.id!,
+      },
+      {
+        name: "Arlecchino",
+        description: [
+          '"The Knave," Fourth of the Fatui Harbingers. Revered as "Father" by the children of the House of the Hearth.',
+        ],
+        element_id: element_result.find((e) => e.name === "Pyro")?.id!,
+        city_id: city_result.find((c) => c.name === "Fontaine")?.id!,
+      },
     ])
     .returning();
 };

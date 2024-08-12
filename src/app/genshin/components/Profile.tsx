@@ -18,7 +18,8 @@ export default function Profile({
         onTouchEnd={(e) => handleTouchEnd(e)}
         onTouchStart={(e) => handleTouchStart(e)}
         key={currentCharacter}
-        className="absolute top-0 left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none object-cover"
+        className="left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none overflow-clip object-cover"
+        style={{ inset: undefined, width: undefined, height: undefined }}
         src={
           characters[
             currentCharacter
@@ -27,7 +28,7 @@ export default function Profile({
           ]
         }
         alt={currentCharacter}
-        placeholder="blur"
+        fill={true}
         priority={true}
         onLoad={() => setCharacterLoading(false)}
       />

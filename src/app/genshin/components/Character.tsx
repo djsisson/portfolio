@@ -93,7 +93,7 @@ export default function Character({ data }: { data: Cities }) {
           setCurrentCity={setCurrentCity}
         />
       </div>
-      <div className="flex h-1/5 max-h-36 justify-center">
+      <div className="z-20 flex h-1/5 max-h-36 justify-center bg-white/20">
         <CharSelector
           characters={data[currentCity].characters}
           currentCharacter={currentCharacter.name}

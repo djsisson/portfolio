@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import { exchangeCodeForSession } from "@/lib/auth";
 // The client you created from the Server-Side Auth instructions
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { redirect?: string[] } },
+) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
 
-  // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get("next") ?? "/todos";
+  const redirectUrl = `/${params.redirect?.join("/") ?? ""}`;
 
   if (code) {
     const valid = await exchangeCodeForSession(code);
@@ -16,14 +18,14 @@ export async function GET(request: Request) {
       const isLocalEnv = process.env.NODE_ENV === "development";
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(`${origin}${redirectUrl}`);
       } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
+        return NextResponse.redirect(`https://${forwardedHost}${redirectUrl}`);
       } else {
-        return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(`${origin}${redirectUrl}`);
       }
     }
   }
   // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/todos?error=invalid_code`);
+  return NextResponse.redirect(`${origin}${redirectUrl}?error=invalid_code`);
 }

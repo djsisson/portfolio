@@ -49,7 +49,10 @@ async function signJWT(payload: JWTPayload) {
   return jwt;
 }
 
-export async function signInWithGithub(redirectTo: string) {
+export async function signInWithProvider(
+  provider: "google" | "github",
+  redirectTo: string,
+) {
   const codeVerifier = await generateRandomBase64String();
   const codeChallenge = await computeCodeChallengeFromVerifier(codeVerifier);
   cookies().set("code_verifier", codeVerifier, {
@@ -59,21 +62,7 @@ export async function signInWithGithub(redirectTo: string) {
     maxAge: 60 * 5,
   });
   redirect(
-    `${process.env.EXTERNAL_AUTH_URL}/authorize?provider=github&redirect_to=${process.env.SITE_URL}${redirectTo}&code_challenge=${codeChallenge}&code_challenge_method=S256`,
-  );
-}
-
-export async function signInWithGoogle(redirectTo: string) {
-  const codeVerifier = await generateRandomBase64String();
-  const codeChallenge = await computeCodeChallengeFromVerifier(codeVerifier);
-  cookies().set("code_verifier", codeVerifier, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 5,
-  });
-  redirect(
-    `${process.env.EXTERNAL_AUTH_URL}/authorize?provider=google&redirect_to=${process.env.SITE_URL}${redirectTo}&code_challenge=${codeChallenge}&code_challenge_method=S256`,
+    `${process.env.EXTERNAL_AUTH_URL}/authorize?provider=${provider}&redirect_to=${process.env.SITE_URL}/redirect${redirectTo}&code_challenge=${codeChallenge}&code_challenge_method=S256`,
   );
 }
 
@@ -152,7 +141,7 @@ export async function getUser(token: string) {
 }
 
 export async function refreshToken(token: string) {
-  const refresh = await verifyJWT(token)
+  const refresh = await verifyJWT(token);
   if (refresh === null) {
     return null;
   }
@@ -188,6 +177,6 @@ export async function getUserFromJWT() {
   if (!cookies().get("access_token")?.value) {
     return null;
   }
-  const data = verifyJWT(cookies().get("access_token")?.value!);
+  const data = await verifyJWT(cookies().get("access_token")?.value!);
   return data;
 }
