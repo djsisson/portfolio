@@ -5,7 +5,7 @@ import { useGameState, useGameObject } from "./Context";
 import React, { useEffect, useState } from "react";
 
 type requiredResearch = {
-  required_id: number;
+  required: string;
   description: string;
 };
 
@@ -57,7 +57,7 @@ const Container = ({ type }: { type: containerType }) => {
     if (!filteredList) return;
     const hasResearched = (requireResearch = [] as requiredResearch[]) => {
       const checkForResearch = requireResearch.filter(
-        (x: requiredResearch) => !research.includes(x.required_id),
+        (x: requiredResearch) => !research.includes(x.required),
       );
       return checkForResearch.length == 0;
     };
@@ -93,7 +93,7 @@ const Container = ({ type }: { type: containerType }) => {
       </h1>
       <div className="relative grid h-[calc(100%-2rem)] auto-rows-max gap-4 overflow-y-auto p-4">
         {buttonList.toReversed().map((x) => (
-          <Button type={type} id={x.id} key={x.id} />
+          <Button type={type} name={x.name} key={x.name} />
         ))}
       </div>
     </div>

@@ -8,7 +8,7 @@ import React, {
   Dispatch,
   useState,
 } from "react";
-import { gameObjectDB, gameStateDB } from "../data";
+import { gameObject, gameState } from "../data";
 
 export enum gameStateActionType {
   CLICK = "click",
@@ -34,15 +34,15 @@ type gameAction =
     }
   | {
       type: gameStateActionType.BUYRESEARCH;
-      value: number;
+      value: string;
     }
   | {
       type: gameStateActionType.BUYUPGRADE;
-      value: number;
+      value: string;
     }
   | {
       type: gameStateActionType.BUYITEM;
-      value: number;
+      value: string;
     }
   | {
       type: gameStateActionType.CHANGETHEME;
@@ -54,11 +54,11 @@ type gameAction =
     }
   | {
       type: gameStateActionType.LOAD_GAME;
-      payload: Awaited<ReturnType<typeof gameStateDB>>;
+      payload: typeof gameState;
     }
   | {
       type: gameStateActionType.NEW_GAME;
-      payload: Awaited<ReturnType<typeof gameStateDB>>;
+      payload: typeof gameState;
     };
 
 export type stats = {
@@ -67,23 +67,19 @@ export type stats = {
   critDamage: number;
 };
 
-const gameStateContext = createContext(
-  {} as Awaited<ReturnType<typeof gameStateDB>>,
-);
+const gameStateContext = createContext({} as typeof gameState);
 const gameStateDispatchContext = createContext({} as Dispatch<gameAction>);
-const gameObjectContext = createContext(
-  {} as Readonly<Awaited<ReturnType<typeof gameObjectDB>>>,
-);
+const gameObjectContext = createContext({} as Readonly<typeof gameObject>);
 
-let g_GameObject: Awaited<ReturnType<typeof gameObjectDB>>;
+let g_GameObject: typeof gameObject;
 export const GameStateProvider = ({
   children,
   _gameState,
   _gameObject,
 }: {
   children: React.ReactNode;
-  _gameState: Awaited<ReturnType<typeof gameStateDB>>;
-  _gameObject: Awaited<ReturnType<typeof gameObjectDB>>;
+  _gameState: typeof gameState;
+  _gameObject: typeof gameObject;
 }) => {
   const [gameState, dispatch] = useReducer(gameStateReducer, _gameState) as [
     typeof _gameState,
@@ -102,9 +98,7 @@ export const GameStateProvider = ({
     } else {
       dispatch({
         type: gameStateActionType.LOAD_GAME,
-        payload: JSON.parse(localState) as Awaited<
-          ReturnType<typeof gameStateDB>
-        >,
+        payload: JSON.parse(localState) as typeof gameState,
       });
     }
   }, [_gameState]);
@@ -142,13 +136,14 @@ export const useGameObject = () => {
 };
 
 const buyItems = (
-  items = [] as Awaited<
-    ReturnType<typeof gameObjectDB>
-  >["research"][number]["requiredItems"],
-  inven = [] as Awaited<ReturnType<typeof gameStateDB>>["items"],
+  items: Omit<
+    (typeof gameObject)["research"][number]["requiredItems"][number],
+    "research"
+  >[],
+  inven = [] as (typeof gameState)["items"],
 ) => {
   items.forEach((item) => {
-    const itemtoremove = inven.findIndex((x) => x.id == item.required_id);
+    const itemtoremove = inven.findIndex((x) => x.name == item.required);
     const newInvenItem = { ...inven[itemtoremove] };
     newInvenItem.quantity -= item.quantity;
     inven[itemtoremove] = { ...newInvenItem };
@@ -156,7 +151,7 @@ const buyItems = (
 };
 
 const upgradeItem = (
-  item: Awaited<ReturnType<typeof gameStateDB>>["items"][number],
+  item: (typeof gameState)["items"][number],
   stats: stats,
 ) => {
   item.baseValue += stats.baseValue;
@@ -179,9 +174,7 @@ export const calcdamage = (stats: stats) => {
   return { totaldamage, crit };
 };
 
-const updateAverage = (
-  inven = [] as Awaited<ReturnType<typeof gameStateDB>>["items"],
-): number => {
+const updateAverage = (inven = [] as (typeof gameState)["items"]): number => {
   const newAverage = [] as stats[];
   inven.forEach((x) => {
     const stats = {
@@ -199,9 +192,9 @@ const updateAverage = (
 };
 
 const gameStateReducer = (
-  state: Awaited<ReturnType<typeof gameStateDB>>,
+  state: typeof gameState,
   action: gameAction,
-): Awaited<ReturnType<typeof gameStateDB>> => {
+): typeof gameState => {
   const inventory = state.items;
   const researched = state.researched;
   const upgrades = state.upgrades;
@@ -225,7 +218,7 @@ const gameStateReducer = (
     case "buyResearch": {
       const updatedInventory = [...inventory];
       const researchIndex = g_GameObject.research.find(
-        (research) => research.id === action.value,
+        (research) => research.name === action.value,
       )!;
       buyItems(researchIndex.requiredItems, updatedInventory);
       const newAverage = updateAverage(updatedInventory);
@@ -243,23 +236,23 @@ const gameStateReducer = (
       const updatedUpgrades = [...upgrades];
       const updatedInventory = [...inventory];
       const upgrade = g_GameObject.upgrades.find(
-        (upgrade) => upgrade.id === action.value,
+        (upgrade) => upgrade.name === action.value,
       )!;
       const upgradeIndex = updatedUpgrades.findIndex(
-        (upgrade) => upgrade.id === action.value,
+        (upgrade) => upgrade.name === action.value,
       );
       if (upgradeIndex !== -1) {
         const updatedUpgrade = { ...updatedUpgrades[upgradeIndex] };
         updatedUpgrade.level++;
         updatedUpgrades[upgradeIndex] = updatedUpgrade;
       } else {
-        updatedUpgrades.push({ id: action.value, level: 1 });
+        updatedUpgrades.push({ name: action.value, level: 1 });
       }
       const currentUpgrade = updatedUpgrades.find(
-        (upgrade) => upgrade.id === action.value,
+        (upgrade) => upgrade.name === action.value,
       )!;
       const itemIndex = updatedInventory.findIndex(
-        (item) => item.id === upgrade.effectItemId,
+        (item) => item.name === upgrade.effectItem,
       );
       if (itemIndex !== -1) {
         const updatedInventoryItem = { ...updatedInventory[itemIndex] };
@@ -271,7 +264,7 @@ const gameStateReducer = (
       } else {
         const { requiredItems, requiredResearch, ...newInventoryItem } =
           g_GameObject.shopItems.find(
-            (item) => item.id === upgrade.effectItemId,
+            (item) => item.name === upgrade.effectItem,
           )!;
         upgradeItem(
           { ...newInventoryItem, quantity: 0 },
@@ -303,12 +296,12 @@ const gameStateReducer = (
     case "buyItem": {
       const updatedInventory = [...inventory];
       const item = g_GameObject.shopItems.find(
-        (item) => item.id === action.value,
+        (item) => item.name === action.value,
       )!;
       let quantity = 1;
       buyItems(item.requiredItems, updatedInventory);
       const itemIndex = updatedInventory.findIndex(
-        (item) => item.id === action.value,
+        (item) => item.name === action.value,
       );
       if (itemIndex !== -1) {
         const updatedInventoryItem = { ...updatedInventory[itemIndex] };

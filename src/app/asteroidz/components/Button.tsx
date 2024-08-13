@@ -15,7 +15,7 @@ enum containerType {
   Shop = "Shop",
 }
 
-const Button = ({ type, id }: { type: containerType; id: number }) => {
+const Button = ({ type, name }: { type: containerType; name: string }) => {
   const dispatch = useGameStateDispatch();
   const score = useGameState().currentScore;
   const research = useGameState().researched;
@@ -38,7 +38,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
     let toolTip = [];
     switch (type) {
       case "Research": {
-        const x = _gameObjects.research.find((x) => x.id == id)!;
+        const x = _gameObjects.research.find((x) => x.name == name)!;
         if (completed) {
           textToDisplay = `${x.name} Research Completed`;
           toolTip = [`${x.name} Completed`];
@@ -53,7 +53,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
         break;
       }
       case "Upgrades": {
-        const x = _gameObjects.upgrades.find((x) => x.id == id)!;
+        const x = _gameObjects.upgrades.find((x) => x.name == name)!;
         if (completed) {
           textToDisplay = `${x.name} Upgrade Completed`;
           toolTip = [`${x.name} Completed`];
@@ -69,7 +69,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
         break;
       }
       case "Shop": {
-        const x = _gameObjects.shopItems.find((x) => x.id == id)!;
+        const x = _gameObjects.shopItems.find((x) => x.name == name)!;
         if (quantity == x.maxQty) {
           textToDisplay = `${x.name} Max: ${quantity}`;
           toolTip = [`${x.name} Qty: ${quantity}`];
@@ -86,7 +86,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
         break;
       }
       case "Inventory": {
-        const x = inven.find((x) => x.id == id)!;
+        const x = inven.find((x) => x.name == name)!;
         textToDisplay = `${x.name} Qty: ${quantity}`;
         toolTip = [`${x.name} Qty: ${quantity}`];
         break;
@@ -97,7 +97,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
     }
     setDisplayText(textToDisplay);
     setToolTipText(toolTip);
-  }, [type, id, completed, nextLevel, quantity, inven, _gameObjects]);
+  }, [type, name, completed, nextLevel, quantity, inven, _gameObjects]);
 
   useEffect(() => {
     if (completed) return;
@@ -107,7 +107,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
     const hasItems = (x: Research | Upgrade | ShopItem) => {
       let canBuy = true;
       x.requiredItems.forEach((item) => {
-        let invenItem = inven.find((x) => x.id == item.required_id);
+        let invenItem = inven.find((x) => x.name == item.required);
         if (invenItem ? invenItem.quantity < item.quantity : true) {
           canBuy = false;
         }
@@ -117,17 +117,17 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
 
     switch (type) {
       case "Research": {
-        const x = _gameObjects.research.find((x) => x.id == id)!;
-        setCompleted(research.includes(x.id));
+        const x = _gameObjects.research.find((x) => x.name == name)!;
+        setCompleted(research.includes(x.name));
         calcCost = x.cost;
         if (canBuy) canBuy = hasItems(x);
         break;
       }
       case "Upgrades": {
-        const x = _gameObjects.upgrades.find((x) => x.id == id)!;
+        const x = _gameObjects.upgrades.find((x) => x.name == name)!;
         calcCost = x.levels.find((x) => x.level == nextLevel)?.cost || 0;
         let isCompleted = false;
-        const currentUpgrade = upgrades.find((item) => x.id == item.id);
+        const currentUpgrade = upgrades.find((item) => x.name == item.name);
         if (currentUpgrade) {
           isCompleted = currentUpgrade.level == x.levels.length;
           setNextLevel(currentUpgrade.level + 1);
@@ -137,9 +137,9 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
         break;
       }
       case "Shop": {
-        const x = _gameObjects.shopItems.find((x) => x.id == id)!;
+        const x = _gameObjects.shopItems.find((x) => x.name == name)!;
         calcCost = x.cost * Math.pow(x.multiplier, quantity);
-        const currentShopItem = inven.find((item) => x.id == item.id);
+        const currentShopItem = inven.find((item) => x.name == item.name);
         if (currentShopItem) {
           if (currentShopItem.quantity == x.maxQty) canBuy = false;
           setQuantity(currentShopItem.quantity);
@@ -148,7 +148,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
         break;
       }
       case "Inventory": {
-        const x = inven.find((x) => x.id == id)!;
+        const x = inven.find((x) => x.name == name)!;
         setQuantity(x.quantity);
         canBuy = false;
         break;
@@ -170,7 +170,7 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
     completed,
     research,
     upgrades,
-    id,
+    name,
     type,
   ]);
 
@@ -179,21 +179,21 @@ const Button = ({ type, id }: { type: containerType; id: number }) => {
       case "Research": {
         dispatch({
           type: gameStateActionType.BUYRESEARCH,
-          value: id,
+          value: name,
         });
         return;
       }
       case "Upgrades": {
         dispatch({
           type: gameStateActionType.BUYUPGRADE,
-          value: id,
+          value: name,
         });
         return;
       }
       case "Shop": {
         dispatch({
           type: gameStateActionType.BUYITEM,
-          value: id,
+          value: name,
         });
         return;
       }

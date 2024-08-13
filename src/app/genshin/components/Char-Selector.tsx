@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { icons } from "../images";
-import { genshin_data } from "../data";
+import { genshinData } from "../data";
 
 export default function CharSelector({
   characters,
@@ -10,7 +10,7 @@ export default function CharSelector({
   setCharacterLoading,
   characterRef,
 }: {
-  characters: Awaited<ReturnType<typeof genshin_data>>[0]["characters"];
+  characters: (typeof genshinData)[0]["characters"];
   currentCharacter: string;
   setCurrentCharacter: React.Dispatch<
     React.SetStateAction<(typeof characters)[0]>
@@ -45,7 +45,7 @@ export default function CharSelector({
       <div className="group z-30 flex h-full snap-x snap-mandatory gap-2 overflow-x-auto p-2">
         {characters.map((character) => (
           <div
-            key={character.id}
+            key={character.name}
             className={`relative z-10 aspect-square h-full rounded-full group-has-hover:grayscale-100 before:absolute before:inset-0 before:z-10 before:w-full before:rounded-full before:bg-[conic-gradient(from_135deg,var(--bgcolour),white,var(--bgcolour))] before:transition-all before:duration-1000 before:content-[''] after:absolute after:inset-0 after:z-20 after:w-full after:rounded-full after:bg-[conic-gradient(from_45deg,var(--bgcolour),white,var(--bgcolour))] after:opacity-0 after:transition-all after:duration-1000 after:content-[''] hover:grayscale-0 hover:after:opacity-100`}
             style={
               { "--bgcolour": character.element.colour } as React.CSSProperties

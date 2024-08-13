@@ -2,7 +2,7 @@ import { GameStateProvider } from "./components/Context";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Container from "./components/Container";
-import { gameObjectDB, gameStateDB } from "./data";
+import { gameObject, gameState } from "./data";
 import { Suspense } from "react";
 import { ThemeProvider } from "./components/ThemeProvider";
 import Total from "./components/Total";
@@ -16,11 +16,10 @@ enum containerType {
 }
 
 export default async function Asteroidz() {
-  const data = await gameObjectDB();
-  const gameState = await gameStateDB();
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <GameStateProvider _gameState={gameState} _gameObject={data}>
+      <GameStateProvider _gameState={gameState} _gameObject={gameObject}>
         <ThemeProvider>
           <Header />
           <Container type={containerType.Inventory} />
