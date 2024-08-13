@@ -5,7 +5,7 @@ on:
     branches: ["main"]
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: "djadetech/portfolio"
+  IMAGE_NAME: "djsisson/portfolio"
 
 jobs:
   amd64:
