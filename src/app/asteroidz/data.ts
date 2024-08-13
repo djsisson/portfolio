@@ -24,8 +24,8 @@ const research = asteroidz.research.map((r) => ({
 const shopItems = asteroidz.shopItems.map((i) => ({
   ...i,
   requiredItems: asteroidz.item_required_items.filter((r) => r.item === i.name),
-  requiredResearch: asteroidz.research_required_items.filter(
-    (r) => r.research === i.name,
+  requiredResearch: asteroidz.item_required_research.filter(
+    (r) => r.item === i.name,
   ),
 }));
 
