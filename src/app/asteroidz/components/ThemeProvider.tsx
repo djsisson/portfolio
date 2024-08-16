@@ -5,6 +5,7 @@ import Image from "next/image";
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const gameState = useGameState();
+  const cdn = process.env.NEXT_PUBLIC_CDN;
   return (
     <div
       className="grid h-svh w-svw grid-cols-7 grid-rows-8 border-[var(--bgcolour)] text-[var(--bgcolour)]"
@@ -12,7 +13,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     >
       <Image
         className="absolute top-0 left-0 -z-20 h-svh w-svw object-cover object-center"
-        src={"/assets/asteroidz/starfield.webp"}
+        src={`${cdn}/assets/asteroidz/starfield.webp`}
         alt="Background"
         fill={true}
       />

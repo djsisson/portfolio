@@ -30,6 +30,7 @@ const ViewPort = () => {
   const [clickStats, setClickStats] = useState({} as stats);
   const [cpsStats, setCpsStats] = useState([] as stats[]);
   const [shake, setShake] = useState(false);
+  const cdn = process.env.NEXT_PUBLIC_CDN;
 
   useEffect(() => {
     const newValues = [] as stats[];
@@ -139,7 +140,7 @@ const ViewPort = () => {
         }}
       >
         <Image
-          src={"/assets/asteroidz/asteroid.webp"}
+          src={`${cdn}/assets/asteroidz/asteroid.webp`}
           alt="asteroid"
           priority={true}
           className="[-webkit-user-drag:none] [user-drag:none] select-none"
