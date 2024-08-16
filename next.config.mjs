@@ -8,6 +8,8 @@ const nextConfig = {
     reactCompiler: true,
   },
   images: {
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
     remotePatterns: [
       {
         protocol: "https",
@@ -28,6 +30,10 @@ const nextConfig = {
         pathname: "**",
       },
     ],
+  },
+  env: {
+    NEXT_PUBLIC_CDN: "https://r2.djadetech.com",
+    NEXT_PUBLIC_SITE: "https://djadetech.com",
   },
 };
 

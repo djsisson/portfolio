@@ -18,6 +18,7 @@ export default function Profile({
         onTouchEnd={(e) => handleTouchEnd(e)}
         onTouchStart={(e) => handleTouchStart(e)}
         key={currentCharacter}
+        quality={75}
         className="left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none overflow-clip object-cover"
         style={{ inset: undefined, width: undefined, height: undefined }}
         src={

@@ -15,7 +15,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         className="absolute top-0 left-0 -z-20 h-svh w-svw object-cover object-center"
         src={`${cdn}/assets/asteroidz/starfield.webp`}
         alt="Background"
-        fill={true}
+        fill={true}quality={75}
       />
       {children}
     </div>

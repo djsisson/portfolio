@@ -60,6 +60,7 @@ export default function CharSelector({
                     .toLowerCase() as keyof typeof icons
                 ]
               }
+              quality={75}
               ref={character.name === currentCharacter ? characterRef : null}
               alt={character.name}
               onClick={() => {
@@ -69,7 +70,7 @@ export default function CharSelector({
               }}
               fill={true}
               priority={true}
-              sizes="10vw"
+              sizes="20vw"
             />
           </div>
         ))}

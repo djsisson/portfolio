@@ -11,6 +11,7 @@ export default function Background({ currentCity }: { currentCity: string }) {
         alt={currentCity}
         priority={true}
         fill={true}
+        quality={75}
       ></Image>
     </div>
   );

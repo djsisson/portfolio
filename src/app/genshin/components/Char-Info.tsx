@@ -16,6 +16,8 @@ export default function CharInfo({ character }: { character: Characters[0] }) {
           alt={character.element.name}
           fill={true}
           priority={true}
+          sizes="20vw"
+          quality={75}
         />
       </div>
       <div className="bg-white/20 backdrop-blur-sm">
