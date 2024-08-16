@@ -29,9 +29,6 @@ const nextConfig = {
       },
     ],
   },
-  env: {
-    NEXT_PUBLIC_CDN: "https://r2.djadetech.com",
-  },
 };
 
 const withMDX = createMDX({
