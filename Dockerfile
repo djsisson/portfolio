@@ -2,14 +2,9 @@ FROM node:22-alpine AS base
 
 ENV YARN_VERSION=4.3.1
 RUN corepack enable && corepack prepare yarn@${YARN_VERSION} --activate
-RUN yarn set version 4.3.1
-RUN apk --no-cache add curl
-
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN yarn set version ${YARN_VERSION}
 RUN apk add --no-cache libc6-compat
-
+RUN apk add --no-cache curl
 
 FROM base AS builder
 
@@ -26,7 +21,6 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-
 # Rebuild the source code only when needed
 
 COPY src ./src
@@ -34,7 +28,7 @@ COPY public ./public
 COPY next.config.mjs .
 COPY tsconfig.json .
 COPY postcss.config.js .
-#COPY drizzle.config.ts .
+COPY drizzle.config.ts .
 COPY mdx-components.tsx .
 
 #RUN yarn driz-mig

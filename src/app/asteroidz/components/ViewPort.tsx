@@ -30,7 +30,7 @@ const ViewPort = () => {
   const [clickStats, setClickStats] = useState({} as stats);
   const [cpsStats, setCpsStats] = useState([] as stats[]);
   const [shake, setShake] = useState(false);
-  const cdn = "";
+  const cdn = process.env.NEXT_PUBLIC_CDN || "";
 
   useEffect(() => {
     const newValues = [] as stats[];

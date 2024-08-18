@@ -1,4 +1,4 @@
-const cdn = "";
+const cdn = process.env.NEXT_PUBLIC_CDN || "";
 
 export const icons = {
   albedo: `${cdn}/assets/icon/albedo_icon.webp`,

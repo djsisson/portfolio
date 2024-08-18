@@ -35,6 +35,19 @@ const nextConfig = {
     NEXT_PUBLIC_CDN: "https://r2.djadetech.com",
     NEXT_PUBLIC_SITE: "https://djadetech.com",
   },
+  headers() {
+    return [
+      {
+        source: "/assets/:slug*",
+        headers: [
+          {
+            key: "Cache-Control,",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({
