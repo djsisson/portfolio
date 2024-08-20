@@ -1,0 +1,16 @@
+{
+  "asteroid.webp": {
+    "fileName": "asteroid.webp",
+    "relativePath": "/assets/asteroidz/asteroid.webp",
+    "width": 500,
+    "height": 465,
+    "imgBase64": "data:image/webp;base64,UklGRoABAABXRUJQVlA4WAoAAAAQAAAAEwAAEgAAQUxQSJkAAAABgFtt27LmwbVzqNxdJ+CwAYeO0q2kpLK4p/Ok1A1kAU+Zk9LdPTjfN0JETAAAyej5805lKC5Hn9aLRs/LVVc31l6j349ol3Cj/79ixxxBo5EChA9EnxrkGuRl7FGYxROFJZxT2MUYhV+1+JSskUeEwhZwQnYDlMj2AO7wG0kCAKSx+n0/J5wOAMq1Xs9e9Bka2z57uT+cMAAAVlA4IMAAAAAQBQCdASoUABMAPm0ylEekIqIhKAgAgA2JaQAD5GjdmLzzJzAEkD/BwpaPx06BamHgAP5mpc2pIj693d64WfX95Gfy2lfE+mT1NSajwFFCCLF5SHBwIcb4zUKrIF8u8TWD9klEbZ+Dqtd04gMgnwLR9rTs2q5UzCOlQviVO1/xUQuYEDUDdft7WQ9Jfyz2k3ioFxBKXWbf8z7WYGq60d9GIj8aPeprV13ANyT4katdP+/hO8OLID6IOqJdhWmgAAA="
+  },
+  "starfield.webp": {
+    "fileName": "starfield.webp",
+    "relativePath": "/assets/asteroidz/starfield.webp",
+    "width": 1280,
+    "height": 854,
+    "imgBase64": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAACQAwCdASoUAA0APm0skkWkIqGYBABABsS0gAAt9h5CI2CJ4ggAAP7+Svgl0qVLbOb5cbekizvYMUAA"
+  }
+}

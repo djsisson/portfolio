@@ -10,6 +10,7 @@ import {
 } from "./Context";
 import VisualScore from "./VisualScore";
 import Image from "next/image";
+import { asteroidz } from "@/lib/imgMeta";
 
 export type Score = {
   id: number;
@@ -147,6 +148,8 @@ const ViewPort = () => {
           fill={true}
           sizes="25vw"
           quality={75}
+          placeholder="blur"
+          blurDataURL={asteroidz["asteroid.webp"].imgBase64}
         />
       </div>
       {cpsValues.map((x) => {

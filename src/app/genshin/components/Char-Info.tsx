@@ -1,23 +1,30 @@
 import Image from "next/image";
-import { elements } from "../images";
+import { elements } from "@/lib/imgMeta";
 import { Characters } from "../data";
 
 export default function CharInfo({ character }: { character: Characters[0] }) {
+  const cdn = process.env.NEXT_PUBLIC_CDN || "";
   return (
     <div className="flex h-full flex-col">
       <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center">
         <Image
           className="aspect-square object-contain opacity-50"
-          src={
+          src={`${cdn}${
             elements[
-              character.element.name.toLowerCase() as keyof typeof elements
-            ]
-          }
+              `element_${character.element.name.toLowerCase()}.svg` as keyof typeof elements
+            ].relativePath
+          }`}
           alt={character.element.name}
           fill={true}
           priority={true}
           sizes="20vw"
           quality={75}
+          placeholder="blur"
+          blurDataURL={
+            elements[
+              `element_${character.element.name.toLowerCase()}.svg` as keyof typeof elements
+            ].imgBase64
+          }
         />
       </div>
       <div className="bg-white/20 backdrop-blur-sm">

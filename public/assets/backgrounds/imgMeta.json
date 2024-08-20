@@ -1,0 +1,37 @@
+{
+  "fontaine.webp": {
+    "fileName": "fontaine.webp",
+    "relativePath": "/assets/backgrounds/fontaine.webp",
+    "width": 1920,
+    "height": 1080,
+    "imgBase64": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACQBACdASoUAAsAPm0skUWkIqGYBABABsSyAE6ZQjgbwAAzr2SvdgH2k+uOfwAA/Ws4nZYpyvdlA0ziy7I407vYQzH5rWl7ahullUq/0wOUIYlaYf8W8fJEf6F+F+pT5NLUmeWoIxHPxzDk8k/QZcW+TJ1xx9Aip/DZWt3GSeAAAA=="
+  },
+  "inazuma.webp": {
+    "fileName": "inazuma.webp",
+    "relativePath": "/assets/backgrounds/inazuma.webp",
+    "width": 1920,
+    "height": 1080,
+    "imgBase64": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAABQBACdASoUAAsAPm0skUWkIqGYBABABsSgCdMoMxgE4QCrmXri1GODFjIAAP7a0P8yzPv3mjTVsuh++jxX/IYg53dKJk9EmnwIRWxOylMHokN6N/FK3QsnNH/Xo8TRO71mPALzecnTfPOxi6EcycPnO/0SJiq4HntL/y6l6nuAfkHQFfw4YWYr8skOo8AA"
+  },
+  "liyue.webp": {
+    "fileName": "liyue.webp",
+    "relativePath": "/assets/backgrounds/liyue.webp",
+    "width": 1920,
+    "height": 1080,
+    "imgBase64": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAABQBACdASoUAAsAPm0uk0YkIqGhMAgAgA2JagCdMoMYANJbcv5zpUSFitkAAP4ASpvqTrVkbhqKJHh73qDx0dSECAZ92MOUN/v3qz2BqPakAOfJb7AwBN+uoqpfBShMIHEWtD9WGV6yZ8beuJJqjav/EZOd2+4q1eV5g39dTBWErc9CDHU6sSV7/I1LqTs6AV5oa/Rp9gCPtFRutrU8AAAA"
+  },
+  "mondstadt.webp": {
+    "fileName": "mondstadt.webp",
+    "relativePath": "/assets/backgrounds/mondstadt.webp",
+    "width": 1920,
+    "height": 1080,
+    "imgBase64": "data:image/webp;base64,UklGRqwAAABXRUJQVlA4IKAAAADwBACdASoUAAsAPm0qkUWkIqGYBABABsS1AE6ZQjubyWl/0uAA52/R/UeMOhvmiUAA/sB+t00nOPqfpMZTBPOCvpkYcz3riCKE0A97AyuBd0TGaxwuQoLy63XfeMfvF7BlVx8lS6vhx/rx22rBuPfKRBh/B7Xp8aVcR7uy8ajOoYsNgQGrRLlq0EerXdqPsN1s4QGxjhQ+UaRh7dkGgAAA"
+  },
+  "sumeru.webp": {
+    "fileName": "sumeru.webp",
+    "relativePath": "/assets/backgrounds/sumeru.webp",
+    "width": 1920,
+    "height": 1080,
+    "imgBase64": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAAAwBACdASoUAAsAPm0skkWkIqGYBABABsS2AE6ZQAGV/cfu6zrgGe8IAAAA/nke+h15H2LXeDAr7lXsgTdn9LCdENOFoKvJbOlAzAgvIzn/JvQUT9g1qjG2vxvyqlk21QGMP8HiLG9K+rjdGDbEyQEB6Kx3y3DyliIvvDrldnJ9+mkK2Wnav45VoXFRFzAA"
+  }
+}

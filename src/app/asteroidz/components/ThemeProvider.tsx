@@ -2,6 +2,7 @@
 
 import { useGameState } from "./Context";
 import Image from "next/image";
+import { asteroidz } from "@/lib/imgMeta";
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const gameState = useGameState();
@@ -19,6 +20,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         sizes="100vw"
         priority={true}
         quality={75}
+        placeholder="blur"
+        blurDataURL={asteroidz["starfield.webp"].imgBase64}
       />
       {children}
     </div>
