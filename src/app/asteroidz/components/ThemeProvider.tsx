@@ -8,7 +8,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const cdn = process.env.NEXT_PUBLIC_CDN || "";
   return (
     <div
-      className="grid h-svh w-svw grid-cols-7 grid-rows-8 border-[var(--bgcolour)] text-[var(--bgcolour)]"
+      className="relative grid h-svh w-svw grid-cols-7 grid-rows-8 border-[var(--bgcolour)] text-[var(--bgcolour)]"
       style={{ "--bgcolour": gameState.theme } as React.CSSProperties}
     >
       <Image
@@ -16,6 +16,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         src={`${cdn}/assets/asteroidz/starfield.webp`}
         alt="Background"
         fill={true}
+        sizes="100vw"
+        priority={true}
         quality={75}
       />
       {children}

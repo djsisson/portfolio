@@ -145,6 +145,7 @@ const ViewPort = () => {
           priority={true}
           className="[-webkit-user-drag:none] [user-drag:none] select-none"
           fill={true}
+          sizes="25vw"
           quality={75}
         />
       </div>

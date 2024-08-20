@@ -91,7 +91,7 @@ const Container = ({ type }: { type: containerType }) => {
       <h1 className="border-b-2 border-[var(--bgcolour)] text-center text-sm select-none md:text-lg lg:text-3xl">
         {type}
       </h1>
-      <div className="relative grid h-[calc(100%-2rem)] auto-rows-max gap-4 overflow-y-auto p-4">
+      <div className="relative grid h-[calc(100%-2rem)] auto-rows-max gap-4 overflow-y-auto p-2 md:p-3 lg:p-4">
         {buttonList.toReversed().map((x) => (
           <Button type={type} name={x.name} key={x.name} />
         ))}
