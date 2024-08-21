@@ -3,17 +3,16 @@ import { elements } from "@/lib/imgMeta";
 import { Characters } from "../data";
 
 export default function CharInfo({ character }: { character: Characters[0] }) {
-  const cdn = process.env.NEXT_PUBLIC_CDN || "";
   return (
     <div className="flex h-full flex-col">
       <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center">
         <Image
           className="aspect-square object-contain opacity-50"
-          src={`${cdn}${
+          src={
             elements[
               `element_${character.element.name.toLowerCase()}.svg` as keyof typeof elements
             ].relativePath
-          }`}
+          }
           alt={character.element.name}
           fill={true}
           priority={true}

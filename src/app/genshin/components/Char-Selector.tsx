@@ -19,7 +19,6 @@ export default function CharSelector({
   setCharacterLoading: React.Dispatch<React.SetStateAction<boolean>>;
   characterRef: React.RefObject<HTMLImageElement>;
 }) {
-  const cdn = process.env.NEXT_PUBLIC_CDN || "";
   const onClick = (direction: "left" | "right") => {
     const index = characters.findIndex(
       (char) => char.name === currentCharacter,
@@ -54,13 +53,13 @@ export default function CharSelector({
           >
             <Image
               className={`relative z-40 cursor-pointer snap-center rounded-full hover:ring-4 hover:ring-[var(--bgcolour)] ${character.name === currentCharacter && characterLoading && "grayscale-100"} ${character.name === currentCharacter && characterLoading && "animate-pulse"} ${character.name === currentCharacter && "ring-4 ring-[var(--bgcolour)]"}`}
-              src={`${cdn}${
+              src={
                 icon[
                   `${character.name
                     .replace(" ", "_")
                     .toLowerCase()}_icon.webp` as keyof typeof icon
                 ].relativePath
-              }`}
+              }
               quality={75}
               ref={character.name === currentCharacter ? characterRef : null}
               alt={character.name}

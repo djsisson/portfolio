@@ -32,7 +32,6 @@ const nextConfig = {
     ],
   },
   env: {
-    NEXT_PUBLIC_CDN: "https://r2.djadetech.com",
     NEXT_PUBLIC_SITE: "https://djadetech.com",
   },
   headers() {
