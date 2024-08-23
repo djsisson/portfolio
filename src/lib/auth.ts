@@ -28,7 +28,7 @@ export async function isJWTValid(jwt: string) {
   return true;
 }
 
-export async function verifyJWT(jwt: string): Promise<JWTPayload | null> {
+async function verifyJWT(jwt: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jwtVerify(
       jwt,
@@ -178,5 +178,10 @@ export async function getUserFromJWT() {
     return null;
   }
   const data = await verifyJWT(cookies().get("access_token")?.value!);
+  return data;
+}
+
+export async function getAnonToken() {
+  const data = await verifyJWT(process.env.SUPABASE_ANON_KEY!);
   return data;
 }

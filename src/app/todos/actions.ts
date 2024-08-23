@@ -1,7 +1,6 @@
 "use server";
 import { getdb as db } from "@/db/todos/db";
-import { cookies } from "next/headers";
-import { verifyJWT } from "@/lib/auth";
+import { getUserFromJWT } from "@/lib/auth";
 import { JWTPayload } from "jose";
 import { todos } from "@/db/todos/schema";
 import { desc, eq, not } from "drizzle-orm";
@@ -9,18 +8,14 @@ import { revalidatePath } from "next/cache";
 
 export async function addTodo(FormData: FormData) {
   const todo = FormData.get("todo") as string;
-  const jwt = cookies().get("access_token")?.value;
+  const jwt = await getUserFromJWT();
   if (!jwt) {
     return null;
   }
-  const decodedJwt = await verifyJWT(jwt);
-  if (!decodedJwt) {
-    return null;
-  }
-  const result = await db(decodedJwt as JWTPayload).transaction(async (tx) => {
+  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
     const todoList = await tx
       .insert(todos)
-      .values({ title: todo, userId: decodedJwt.sub as string })
+      .values({ title: todo, userId: jwt.sub as string })
       .returning()
       .execute();
     return todoList;
@@ -29,16 +24,12 @@ export async function addTodo(FormData: FormData) {
 }
 
 export async function toggleTodo(id: string) {
-  const jwt = cookies().get("access_token")?.value;
+  const jwt = await getUserFromJWT();
   if (!jwt) {
     return null;
   }
-  const decodedJwt = await verifyJWT(jwt);
-  if (!decodedJwt) {
-    return null;
-  }
 
-  const result = await db(decodedJwt as JWTPayload).transaction(async (tx) => {
+  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
     const todoList = await tx
       .update(todos)
       .set({ completed: not(todos.completed) })
@@ -50,16 +41,12 @@ export async function toggleTodo(id: string) {
 }
 
 export async function deleteTodo(id: string) {
-  const jwt = cookies().get("access_token")?.value;
+  const jwt = await getUserFromJWT();
   if (!jwt) {
     return null;
   }
-  const decodedJwt = await verifyJWT(jwt);
-  if (!decodedJwt) {
-    return null;
-  }
 
-  const result = await db(decodedJwt as JWTPayload).transaction(async (tx) => {
+  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
     await tx.delete(todos).where(eq(todos.id, id)).execute();
   });
 
@@ -67,16 +54,11 @@ export async function deleteTodo(id: string) {
 }
 
 export async function listTodos() {
-  const jwt = cookies().get("access_token")?.value;
-
+  const jwt = await getUserFromJWT();
   if (!jwt) {
-    return [];
+    return null;
   }
-  const decodedJwt = await verifyJWT(jwt);
-  if (!decodedJwt) {
-    return [];
-  }
-  const result = await db(decodedJwt as JWTPayload).transaction(async (tx) => {
+  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
     const todoList = await tx
       .select()
       .from(todos)

@@ -18,6 +18,11 @@ export default function Home() {
             Todos
           </a>
         </li>
+        <li>
+          <a className="hover:underline" href="/tilez">
+            Tilez
+          </a>
+        </li>
       </ul>
     </main>
   );

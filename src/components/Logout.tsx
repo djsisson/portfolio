@@ -2,10 +2,10 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/lib/auth";
 import { LogOut } from "lucide-react";
-export default function Logout() {
+export default function Logout({ redirect }: { redirect: string }) {
   const submitForm = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    await signOut("/todos");
+    await signOut(redirect);
   };
   return (
     <DropdownMenuItem

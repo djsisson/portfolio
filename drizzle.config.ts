@@ -8,6 +8,7 @@ export default defineConfig({
     "./src/db/asteroidz/schema.ts",
     "./src/db/genshin/schema.ts",
     "./src/db/todos/schema.ts",
+    "./src/db/tilez/schema.ts",
   ],
   out: "./src/db/migrations",
   dialect: "postgresql",
