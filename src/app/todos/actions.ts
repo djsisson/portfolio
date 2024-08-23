@@ -56,7 +56,7 @@ export async function deleteTodo(id: string) {
 export async function listTodos() {
   const jwt = await getUserFromJWT();
   if (!jwt) {
-    return null;
+    return [] as (typeof todos.$inferSelect)[];
   }
   const result = await db(jwt as JWTPayload).transaction(async (tx) => {
     const todoList = await tx
