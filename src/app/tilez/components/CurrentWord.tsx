@@ -86,13 +86,17 @@ export default function CurrentWord() {
   }, []);
 
   const updateDefinition = (e: React.MouseEvent<HTMLDivElement>, x: string) => {
+    const currentDef = refDefinitions.current.get(x);
     const getDef = async () => {
+      refDefinitions.current.set(x, "No definition found");
       const result = await getWordDefinition(x);
       refDefinitions.current.set(x, result);
-      (e.target as HTMLElement).title = result;
+      setCurrentDefinition(result);
     };
-    if (refDefinitions.current.get(x) === undefined) {
+    if (currentDef === undefined) {
       getDef();
+    } else {
+      setCurrentDefinition(currentDef);
     }
   };
   return completed ? (
@@ -108,7 +112,7 @@ export default function CurrentWord() {
                 <div
                   key={x}
                   className="cursor-pointer italic"
-                  title={refDefinitions.current.get(x) || "No Definition Found"}
+                  title={currentDefinition}
                   onMouseOver={(e) => updateDefinition(e, x)}
                 >
                   {x}
@@ -123,9 +127,7 @@ export default function CurrentWord() {
                   <div
                     key={x}
                     className="italic"
-                    title={
-                      refDefinitions.current.get(x) || "No Definition Found"
-                    }
+                    title={currentDefinition}
                     onMouseOver={(e) => updateDefinition(e, x)}
                   >
                     {x}
