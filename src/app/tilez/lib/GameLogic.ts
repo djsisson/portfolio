@@ -89,8 +89,13 @@ function getAllWords(letters: string[]): string[] {
   return words;
 }
 
-export async function getWordsOnLoad(letters: string[]): Promise<string[]> {
-  return getAllWords(letters);
+export async function getWordsOnLoad(letters: string[]) {
+  const words = getAllWords(letters).join(",");
+  const Score = await getScore();
+  return {
+    words: [Buffer.from(words, "utf-8").toString("base64")],
+    score: Score,
+  };
 }
 
 export async function uploadScore(game: GameState): Promise<boolean> {
@@ -117,7 +122,7 @@ export async function uploadScore(game: GameState): Promise<boolean> {
   return result;
 }
 
-export async function getScore() {
+async function getScore() {
   const jwt = await getUserFromJWT();
   if (!jwt) return { games: 0, average: 0 };
   const result = await db(jwt as JWTPayload).transaction(async (tx) => {

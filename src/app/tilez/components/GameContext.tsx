@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import { GameAction, GameState, GameActionType } from "../lib/GameTypes";
-import { getScore, getWordsOnLoad, NewGame } from "../lib/GameLogic";
+import { getWordsOnLoad, NewGame } from "../lib/GameLogic";
 
 export const useGameState = () => {
   return useContext(GameStateContext);
@@ -117,17 +117,26 @@ export const GameStateProvider = ({
       getGameState();
     } else {
       const loadGameState = async () => {
-        const loadGame = JSON.parse(localState) as GameState;
-        const words = await getWordsOnLoad(
-          loadGame.rows.map((x) => x.tiles.map((y) => y.letter).join("")),
-        );
-        loadGame.words = Buffer.from(words[0], "base64")
-          .toString("utf-8")
-          .split(",");
-        dispatch({
-          type: GameActionType.LOAD_GAME,
-          payload: loadGame,
-        });
+        try {
+          const loadGame = JSON.parse(localState) as GameState;
+          const words = await getWordsOnLoad(
+            loadGame.rows.map((x) => x.tiles.map((y) => y.letter).join("")),
+          );
+          loadGame.words = Buffer.from(words.words[0], "base64")
+            .toString("utf-8")
+            .split(",");
+          loadGame.score = words.score;
+          dispatch({
+            type: GameActionType.LOAD_GAME,
+            payload: loadGame,
+          });
+        } catch (e) {
+          localStorage.removeItem("Tilez");
+          dispatch({
+            type: GameActionType.LOAD_GAME,
+            payload: await NewGame(),
+          });
+        }
       };
       loadGameState();
     }

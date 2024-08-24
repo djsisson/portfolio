@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { JWTPayload, jwtVerify, SignJWT } from "jose";
 
+const cache = new Map<string, { result: boolean; ttl: number }>();
+
 const generateRandomBase64String = async (length = 24) =>
   Buffer.from(crypto.getRandomValues(new Uint8Array(length))).toString(
     "base64url",
@@ -127,6 +129,11 @@ export async function signOut(redirectTo: string) {
 }
 
 export async function getUser(token: string) {
+  const inCache = cache.get(token);
+  if (inCache && inCache.ttl > Date.now()) {
+    console.log("cache hit");
+    return inCache.result;
+  }
   const data = await fetch(`${process.env.INTERNAL_AUTH_URL}/user`, {
     method: "GET",
     headers: {
@@ -135,8 +142,21 @@ export async function getUser(token: string) {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((res) => res.json())
-    .catch((e) => null);
+    .then((res) => {
+      if (res.status === 200) {
+        cache.set(token, {
+          result: true,
+          ttl: Date.now() + 60 * 1000,
+        });
+        return true;
+      }
+      cache.delete(token);
+      return false;
+    })
+    .catch((e) => {
+      cache.delete(token);
+      return false;
+    });
   return data;
 }
 
@@ -181,7 +201,11 @@ export async function getUserFromJWT() {
   return data;
 }
 
-export async function getAnonToken() {
-  const data = await verifyJWT(process.env.SUPABASE_ANON_KEY!);
-  return data;
-}
+const clearTokens = () => {
+  cache.forEach((value, key) => {
+    if (value.ttl < Date.now()) {
+      cache.delete(key);
+    }
+  });
+};
+setInterval(clearTokens, 60 * 1000);

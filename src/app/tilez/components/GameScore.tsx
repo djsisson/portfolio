@@ -1,33 +1,19 @@
 "use client";
 
-import { getScore } from "../lib/GameLogic";
-import { useState, useEffect, useRef } from "react";
-import { useGameState, useGameStateDispatch } from "./GameContext";
+import { useState, useRef } from "react";
+import { useGameState } from "./GameContext";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Info } from "lucide-react";
-import { GameActionType } from "../lib/GameTypes";
 
 export default function GameScore() {
   const games = useGameState().score.games;
   const average = useGameState().score.average;
-  const refInitial = useRef(false);
   const [hoverOpen, setHoverOpen] = useState(false);
   const ref = useRef<NodeJS.Timeout>();
-  const dispatch = useGameStateDispatch();
-
-  useEffect(() => {
-    async function getScores() {
-      if (refInitial.current) return;
-      refInitial.current = true;
-      const scores = await getScore();
-      dispatch({ type: GameActionType.GETSCORE, payload: scores });
-    }
-    getScores();
-  }, [dispatch]);
 
   return (
     <div
