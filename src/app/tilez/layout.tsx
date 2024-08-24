@@ -2,6 +2,13 @@ import Footer from "./components/Footer";
 import { GameStateProvider } from "./components/GameContext";
 import Header from "./components/Header";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tilez Word Game",
+  description: "Created by DJ Sisson",
+};
+
 export default function TilezLayout({
   children,
 }: Readonly<{

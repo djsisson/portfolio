@@ -17,8 +17,9 @@ import { getUserFromJWT } from "@/lib/auth";
 export default function CurrentWord() {
   const dispatch = useGameStateDispatch();
   const gameState = useGameState();
-  const [currentWord, setCurrentWord] = useState<string>("");
-  const [currentDefintion, setCurrentDefintion] = useState<string>();
+  const currentWord = gameState.rows
+    .map((x) => x.tiles[x.position + 1].letter)
+    .join("");
   const [definitions, setDefinitions] = useState(
     new Map() as Map<string, string>,
   );
@@ -28,18 +29,6 @@ export default function CurrentWord() {
   const ref = useRef<NodeJS.Timeout>();
   const [signedIn, setSignedIn] = useState(false);
   const [uploading, setUploading] = useState(false);
-
-  useEffect(() => {
-    setCurrentWord(
-      gameState.rows.map((x) => x.tiles[x.position + 1].letter).join(""),
-    );
-    setCurrentDefintion("");
-  }, [gameState]);
-
-  useEffect(() => {
-    if (currentWord === undefined) return;
-    setCurrentDefintion(definitions.get(currentWord) || "");
-  }, [currentWord, definitions]);
 
   useEffect(() => {
     if (!gameState.uploaded && signedIn && gameState.completed && !uploading) {
@@ -98,16 +87,14 @@ export default function CurrentWord() {
     const getDef = async () => {
       const result = await getWordDefinition(x);
       setDefinitions(new Map([...definitions, [x, result]]));
-      setCurrentDefintion(result);
+      // (e.target as HTMLDivElement).title = result;
     };
     if (currentDef === undefined) {
       setDefinitions(new Map([...definitions, [x, ""]]));
-      setCurrentDefintion("");
       getDef();
-    } else {
-      setCurrentDefintion(currentDef);
     }
   };
+
   return completed ? (
     <div className="modal absolute inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
       <div className="rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-1">
@@ -121,7 +108,7 @@ export default function CurrentWord() {
                 <div
                   key={x}
                   className="cursor-pointer italic"
-                  title={currentDefintion}
+                  title={definitions.get(x)}
                   onMouseOver={(e) => updateDefinition(e, x)}
                 >
                   {x}
@@ -134,9 +121,11 @@ export default function CurrentWord() {
                 .filter((x) => !gameState.found.includes(x))
                 .map((x) => (
                   <div
-                    key={x}
+                    key={definitions.get(x) ? x : `no def ${x}`}
                     className="cursor-pointer italic"
-                    title={currentDefintion}
+                    title={
+                      definitions.get(x) ? definitions.get(x) : "loading..."
+                    }
                     onMouseOver={(e) => updateDefinition(e, x)}
                   >
                     {x}
@@ -167,7 +156,7 @@ export default function CurrentWord() {
         )}
       </div>
       <div
-        title={currentDefintion ? undefined : "Current Word"}
+        title={definitions.get(currentWord) ? undefined : "Current Word"}
         className="flex items-center justify-center"
       >
         <div
@@ -184,14 +173,14 @@ export default function CurrentWord() {
           <Popover open={hoverOpen}>
             <PopoverTrigger className="focus-within:outline-0">
               <Badge
-                variant={`${currentDefintion ? "default" : "secondary"}`}
+                variant={`${definitions.get(currentWord) ? "default" : "secondary"}`}
                 aria-disabled={true}
-                className={`cursor-pointer text-center text-base uppercase md:text-xl lg:text-2xl ${currentDefintion ? "" : "border-muted-foreground border border-solid"}`}
+                className={`cursor-pointer text-center text-base uppercase md:text-xl lg:text-2xl ${definitions.get(currentWord) ? "" : "border-muted-foreground border border-solid"}`}
               >
                 {currentWord}
               </Badge>
             </PopoverTrigger>
-            {currentDefintion && (
+            {definitions.get(currentWord) && (
               <PopoverContent
                 onMouseEnter={() => {
                   clearTimeout(ref.current);
@@ -203,7 +192,7 @@ export default function CurrentWord() {
                 }}
                 className="border-border rounded-lg border border-solid normal-case"
               >
-                {currentDefintion}
+                {definitions.get(currentWord)}
               </PopoverContent>
             )}
           </Popover>
