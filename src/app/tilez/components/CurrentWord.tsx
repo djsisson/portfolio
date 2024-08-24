@@ -55,9 +55,9 @@ export default function CurrentWord() {
       if (!(def === undefined)) {
         return;
       }
-      setDefinitions(new Map([...definitions, [currentWord, ""]]));
+      setDefinitions((x) => new Map([...x, [currentWord, ""]]));
       const result = await getWordDefinition(currentWord);
-      setDefinitions(new Map([...definitions, [currentWord, result]]));
+      setDefinitions((x) => new Map([...x, [currentWord, result]]));
     }
     if (allWords.includes(currentWord)) {
       if (!gameState.found.includes(currentWord)) {
@@ -86,11 +86,10 @@ export default function CurrentWord() {
     if (currentDef === "") return;
     const getDef = async () => {
       const result = await getWordDefinition(x);
-      setDefinitions(new Map([...definitions, [x, result]]));
-      // (e.target as HTMLDivElement).title = result;
+      setDefinitions((def) => new Map([...def, [x, result]]));
     };
     if (currentDef === undefined) {
-      setDefinitions(new Map([...definitions, [x, ""]]));
+      setDefinitions((def) => new Map([...def, [x, ""]]));
       getDef();
     }
   };
