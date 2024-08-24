@@ -10,7 +10,7 @@ export default function LeftArrow({
     <div
       onClick={clickHandler}
       className={
-        "col-start-1 flex scale-150 cursor-pointer grid-cols-subgrid items-center rounded-lg p-4 font-bold uppercase transition delay-150 duration-300 ease-in-out hover:-translate-x-2 hover:scale-150"
+        "col-start-1 flex scale-150 cursor-pointer grid-cols-subgrid items-center rounded-lg p-3 font-bold uppercase transition delay-150 duration-300 ease-in-out hover:-translate-x-2 hover:scale-150 md:p-4"
       }
     >
       <ChevronLeft

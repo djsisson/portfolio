@@ -11,9 +11,9 @@ export default function GameTile({
 }) {
   return (
     <div
-      className={`flex select-none grid-cols-subgrid items-center justify-center rounded-lg border border-solid border-border p-4 font-semibold uppercase col-start-${
+      className={`border-border flex grid-cols-subgrid items-center justify-center rounded-lg border border-solid p-3 font-semibold uppercase select-none md:p-4 col-start-${
         position + 2
-      } ${found ? "bg-green-500 text-background" : active ? "bg-blue-500" : "bg-background"}`}
+      } ${found ? "text-background bg-green-500" : active ? "bg-blue-500" : "bg-background"}`}
       key={position}
     >
       {letter}

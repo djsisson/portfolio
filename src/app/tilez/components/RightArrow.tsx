@@ -9,7 +9,7 @@ export default function RightArrow({
   return (
     <div
       onClick={clickHandler}
-      className={`flex cursor-pointer grid-cols-subgrid items-center rounded-lg p-4 font-bold uppercase transition delay-150 duration-300 ease-in-out hover:translate-x-2 hover:scale-150`}
+      className={`flex cursor-pointer grid-cols-subgrid items-center rounded-lg p-3 md:p-4 font-bold uppercase transition delay-150 duration-300 ease-in-out hover:translate-x-2 hover:scale-150`}
     >
       <ChevronRight
         className="scale-150 text-blue-500 shadow-blue-500"
