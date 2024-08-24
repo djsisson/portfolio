@@ -2,31 +2,32 @@
 
 import { getScore } from "../lib/GameLogic";
 import { useState, useEffect, useRef } from "react";
-import { useGameState } from "./GameContext";
+import { useGameState, useGameStateDispatch } from "./GameContext";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Info } from "lucide-react";
+import { GameActionType } from "../lib/GameTypes";
 
 export default function GameScore() {
-  const [games, setGames] = useState(0);
-  const [average, setAverage] = useState("0");
-  const gameState = useGameState().uploaded;
-
+  const games = useGameState().score.games;
+  const average = useGameState().score.average;
+  const refInitial = useRef(false);
   const [hoverOpen, setHoverOpen] = useState(false);
   const ref = useRef<NodeJS.Timeout>();
+  const dispatch = useGameStateDispatch();
 
   useEffect(() => {
     async function getScores() {
-      if (!gameState && games) return;
+      if (refInitial.current) return;
+      refInitial.current = true;
       const scores = await getScore();
-      setGames(scores.games);
-      setAverage(scores.average || "0");
+      dispatch({ type: GameActionType.GETSCORE, payload: scores });
     }
     getScores();
-  }, [gameState, games]);
+  }, [dispatch]);
 
   return (
     <div
@@ -50,7 +51,7 @@ export default function GameScore() {
         <PopoverContent>
           <div className="flex flex-col gap-4 text-sm italic">
             <div>Games Played: {games}</div>
-            <div>Average Moves: {parseInt(average)}</div>
+            <div>Average Moves: {Math.round(average)}</div>
           </div>
         </PopoverContent>
       </Popover>

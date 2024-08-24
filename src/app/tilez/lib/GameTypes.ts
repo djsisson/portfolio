@@ -22,6 +22,7 @@ export type GameState = {
   completed?: boolean;
   uploaded?: boolean;
   words: string[];
+  score: { games: number; average: number };
 };
 
 export enum GameActionType {
@@ -30,6 +31,7 @@ export enum GameActionType {
   MOVEROW = "MOVEROW",
   FOUND = "FOUND",
   UPLOADED = "UPLOADED",
+  GETSCORE = "GETSCORE",
 }
 
 export type GameAction =
@@ -50,6 +52,10 @@ export type GameAction =
   | {
       type: GameActionType.MOVEROW;
       payload: MoveRow;
+    }
+  | {
+      type: GameActionType.GETSCORE;
+      payload: { games: number; average: number };
     };
 
 export type MoveRow = {

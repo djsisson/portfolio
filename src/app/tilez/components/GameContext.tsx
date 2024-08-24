@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import { GameAction, GameState, GameActionType } from "../lib/GameTypes";
-import { getWordsOnLoad, NewGame } from "../lib/GameLogic";
+import { getScore, getWordsOnLoad, NewGame } from "../lib/GameLogic";
 
 export const useGameState = () => {
   return useContext(GameStateContext);
@@ -20,6 +20,7 @@ const _gameState: GameState = {
   found: [],
   uploaded: false,
   words: [],
+  score: { games: 0, average: 0 },
 };
 
 const gameStateReducer = (
@@ -31,7 +32,10 @@ const gameStateReducer = (
       return { ...(action.payload as GameState) };
     }
     case GameActionType.RESET: {
-      return { ...(action.payload as GameState) };
+      const words = Buffer.from(action.payload.words[0], "base64")
+        .toString("utf-8")
+        .split(",");
+      return { ...(action.payload as GameState), words: words };
     }
     case GameActionType.UPLOADED: {
       return { ...gameState, uploaded: true };
@@ -63,6 +67,12 @@ const gameStateReducer = (
         newState.completed = true;
       }
       return newState;
+    }
+    case GameActionType.GETSCORE: {
+      return {
+        ...gameState,
+        score: action.payload,
+      };
     }
     case GameActionType.MOVEROW: {
       return {
@@ -108,9 +118,12 @@ export const GameStateProvider = ({
     } else {
       const loadGameState = async () => {
         const loadGame = JSON.parse(localState) as GameState;
-        loadGame.words = await getWordsOnLoad(
+        const words = await getWordsOnLoad(
           loadGame.rows.map((x) => x.tiles.map((y) => y.letter).join("")),
         );
+        loadGame.words = Buffer.from(words[0], "base64")
+          .toString("utf-8")
+          .split(",");
         dispatch({
           type: GameActionType.LOAD_GAME,
           payload: loadGame,
@@ -124,7 +137,7 @@ export const GameStateProvider = ({
     if (gameState.rows.length > 0)
       localStorage.setItem(
         "Tilez",
-        JSON.stringify({ ...gameState, words: [] }),
+        JSON.stringify({ ...gameState, words: [], score: [] }),
       );
   }, [gameState]);
 

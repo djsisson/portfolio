@@ -87,13 +87,15 @@ export default function CurrentWord() {
 
   const updateDefinition = (e: React.MouseEvent<HTMLDivElement>, x: string) => {
     const currentDef = refDefinitions.current.get(x);
+    if (currentDef === "") return;
     const getDef = async () => {
-      refDefinitions.current.set(x, "No definition found");
+      refDefinitions.current.set(x, "");
       const result = await getWordDefinition(x);
       refDefinitions.current.set(x, result);
       setCurrentDefinition(result);
     };
     if (currentDef === undefined) {
+      setCurrentDefinition("");
       getDef();
     } else {
       setCurrentDefinition(currentDef);
