@@ -8,13 +8,6 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import Total from "./components/Total";
 import ViewPort from "./components/ViewPort";
 
-enum containerType {
-  Inventory = "Inventory",
-  Research = "Research",
-  Upgrades = "Upgrades",
-  Shop = "Shop",
-}
-
 export default async function Asteroidz() {
 
   return (
@@ -22,10 +15,10 @@ export default async function Asteroidz() {
       <GameStateProvider _gameState={gameState} _gameObject={gameObject}>
         <ThemeProvider>
           <Header />
-          <Container type={containerType.Inventory} />
-          <Container type={containerType.Research} />
-          <Container type={containerType.Upgrades} />
-          <Container type={containerType.Shop} />
+          <Container type={"Inventory"} />
+          <Container type={"Research"} />
+          <Container type={"Upgrades"} />
+          <Container type={"Shop"} />
           <ViewPort />
           <Total />
           <Footer />

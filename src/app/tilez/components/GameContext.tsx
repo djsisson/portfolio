@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { GameAction, GameState, GameActionType } from "../lib/GameTypes";
+import { GameAction, GameState } from "../lib/GameTypes";
 import { getWordsOnLoad, NewGame } from "../lib/GameLogic";
 
 export const useGameState = () => {
@@ -28,19 +28,19 @@ const gameStateReducer = (
   action: GameAction,
 ): GameState => {
   switch (action.type) {
-    case GameActionType.LOAD_GAME: {
+    case "LOAD_GAME": {
       return { ...(action.payload as GameState) };
     }
-    case GameActionType.RESET: {
+    case "RESET": {
       const words = Buffer.from(action.payload.words[0], "base64")
         .toString("utf-8")
         .split(",");
       return { ...(action.payload as GameState), words: words };
     }
-    case GameActionType.UPLOADED: {
+    case "UPLOADED": {
       return { ...gameState, uploaded: true };
     }
-    case GameActionType.FOUND: {
+    case "FOUND": {
       const currentWord = gameState.rows
         .map((x) => x.tiles[x.position + 1].letter)
         .join("");
@@ -68,13 +68,13 @@ const gameStateReducer = (
       }
       return newState;
     }
-    case GameActionType.GETSCORE: {
+    case "GETSCORE": {
       return {
         ...gameState,
         score: action.payload,
       };
     }
-    case GameActionType.MOVEROW: {
+    case "MOVEROW": {
       return {
         ...gameState,
         moves: gameState.completed ? gameState.moves : gameState.moves + 1,
@@ -112,7 +112,7 @@ export const GameStateProvider = ({
 
     if (!localState) {
       const getGameState = async () => {
-        dispatch({ type: GameActionType.LOAD_GAME, payload: await NewGame() });
+        dispatch({ type: "LOAD_GAME", payload: await NewGame() });
       };
       getGameState();
     } else {
@@ -127,13 +127,13 @@ export const GameStateProvider = ({
             .split(",");
           loadGame.score = words.score;
           dispatch({
-            type: GameActionType.LOAD_GAME,
+            type: "LOAD_GAME",
             payload: loadGame,
           });
         } catch (e) {
           localStorage.removeItem("Tilez");
           dispatch({
-            type: GameActionType.LOAD_GAME,
+            type: "LOAD_GAME",
             payload: await NewGame(),
           });
         }

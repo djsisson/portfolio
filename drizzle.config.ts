@@ -9,6 +9,7 @@ export default defineConfig({
     "./src/db/genshin/schema.ts",
     "./src/db/todos/schema.ts",
     "./src/db/tilez/schema.ts",
+    "./src/db/forum/schema.ts",
   ],
   out: "./src/db/migrations",
   dialect: "postgresql",

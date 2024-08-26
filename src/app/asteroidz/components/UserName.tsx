@@ -1,9 +1,5 @@
 "use client";
-import {
-  useGameState,
-  useGameStateDispatch,
-  gameStateActionType,
-} from "./Context";
+import { useGameState, useGameStateDispatch } from "./Context";
 import { useState, useRef, useEffect } from "react";
 
 const UserName = () => {
@@ -47,7 +43,7 @@ const UserName = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
-      type: gameStateActionType.CHANGENAME,
+      type: "changeName",
       value: e.target.value,
     });
   };

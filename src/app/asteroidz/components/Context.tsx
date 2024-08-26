@@ -10,54 +10,41 @@ import React, {
 } from "react";
 import { gameObject, gameState } from "../data";
 
-export enum gameStateActionType {
-  CLICK = "click",
-  ADDCPS = "addCps",
-  BUYRESEARCH = "buyResearch",
-  BUYUPGRADE = "buyUpgrade",
-  BUYITEM = "buyItem",
-  UPDATEAVERAGE = "updateAverage",
-  CHANGETHEME = "changeTheme",
-  CHANGENAME = "changeName",
-  LOAD_GAME = "loadGame",
-  NEW_GAME = "newGame",
-}
-
 type gameAction =
   | {
-      type: gameStateActionType.CLICK;
+      type: "click";
       value: number;
     }
   | {
-      type: gameStateActionType.ADDCPS;
+      type: "addCps";
       value: number;
     }
   | {
-      type: gameStateActionType.BUYRESEARCH;
+      type: "buyResearch";
       value: string;
     }
   | {
-      type: gameStateActionType.BUYUPGRADE;
+      type: "buyUpgrade";
       value: string;
     }
   | {
-      type: gameStateActionType.BUYITEM;
+      type: "buyItem";
       value: string;
     }
   | {
-      type: gameStateActionType.CHANGETHEME;
+      type: "changeTheme";
       value: string;
     }
   | {
-      type: gameStateActionType.CHANGENAME;
+      type: "changeName";
       value: string;
     }
   | {
-      type: gameStateActionType.LOAD_GAME;
+      type: "loadGame";
       payload: typeof gameState;
     }
   | {
-      type: gameStateActionType.NEW_GAME;
+      type: "newGame";
       payload: typeof gameState;
     };
 
@@ -92,12 +79,12 @@ export const GameStateProvider = ({
 
     if (!localState) {
       const getGameState = async () => {
-        dispatch({ type: gameStateActionType.LOAD_GAME, payload: _gameState });
+        dispatch({ type: "loadGame", payload: _gameState });
       };
       getGameState();
     } else {
       dispatch({
-        type: gameStateActionType.LOAD_GAME,
+        type: "loadGame",
         payload: JSON.parse(localState) as typeof gameState,
       });
     }
@@ -344,7 +331,7 @@ const gameStateReducer = (
     }
 
     default: {
-      throw new Error(`Unknown action: ${action.type}`);
+      throw new Error(`Unknown action`);
     }
   }
 };

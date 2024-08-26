@@ -1,21 +1,15 @@
 "use client";
 import Tooltip from "./Tooltip";
-import {
-  useGameState,
-  useGameStateDispatch,
-  useGameObject,
-  gameStateActionType,
-} from "./Context";
+import { useGameState, useGameStateDispatch, useGameObject } from "./Context";
 import { useEffect, useState, useId } from "react";
 
-enum containerType {
-  Inventory = "Inventory",
-  Research = "Research",
-  Upgrades = "Upgrades",
-  Shop = "Shop",
-}
-
-const Button = ({ type, name }: { type: containerType; name: string }) => {
+const Button = ({
+  type,
+  name,
+}: {
+  type: "Inventory" | "Research" | "Upgrades" | "Shop";
+  name: string;
+}) => {
   const dispatch = useGameStateDispatch();
   const score = useGameState().currentScore;
   const research = useGameState().researched;
@@ -178,21 +172,21 @@ const Button = ({ type, name }: { type: containerType; name: string }) => {
     switch (type) {
       case "Research": {
         dispatch({
-          type: gameStateActionType.BUYRESEARCH,
+          type: "buyResearch",
           value: name,
         });
         return;
       }
       case "Upgrades": {
         dispatch({
-          type: gameStateActionType.BUYUPGRADE,
+          type: "buyUpgrade",
           value: name,
         });
         return;
       }
       case "Shop": {
         dispatch({
-          type: gameStateActionType.BUYITEM,
+          type: "buyItem",
           value: name,
         });
         return;

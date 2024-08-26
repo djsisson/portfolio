@@ -15,6 +15,13 @@
       "when": 1724416077879,
       "tag": "0001_slow_greymalkin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1724677440465,
+      "tag": "0002_hesitant_lester",
+      "breakpoints": true
     }
   ]
 }

@@ -9,14 +9,7 @@ type requiredResearch = {
   description: string;
 };
 
-enum containerType {
-  Inventory = "Inventory",
-  Research = "Research",
-  Upgrades = "Upgrades",
-  Shop = "Shop",
-}
-
-const Container = ({ type }: { type: containerType }) => {
+const Container = ({ type }: { type: "Inventory" | "Research" | "Upgrades" | "Shop" }) => {
   const [buttonList, setButtonList] = useState([] as ButtonList | typeof inven);
   const inven = useGameState().items;
   const research = useGameState().researched;

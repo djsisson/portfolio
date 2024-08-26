@@ -3,7 +3,6 @@
 import { useGameState, useGameStateDispatch } from "./GameContext";
 import { useEffect, useState, useRef } from "react";
 import { uploadScore, getWordDefinition } from "../lib/GameLogic";
-import { GameActionType } from "../lib/GameTypes";
 import { Badge } from "@/components/ui/badge";
 import Help from "./Help";
 import {
@@ -35,7 +34,7 @@ export default function CurrentWord() {
       async function upload() {
         const uploaded = await uploadScore(gameState);
         if (uploaded) {
-          dispatch({ type: GameActionType.UPLOADED });
+          dispatch({ type: "UPLOADED" });
           setUploading(false);
         }
       }
@@ -62,7 +61,7 @@ export default function CurrentWord() {
     if (allWords.includes(currentWord)) {
       if (!gameState.found.includes(currentWord)) {
         dispatch({
-          type: GameActionType.FOUND,
+          type: "FOUND",
         });
       }
       if (!definitions.has(currentWord)) {

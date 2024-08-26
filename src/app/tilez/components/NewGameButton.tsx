@@ -2,7 +2,6 @@
 
 import { useGameStateDispatch } from "./GameContext";
 import { Button } from "@/components/ui/button";
-import { GameActionType } from "../lib/GameTypes";
 import { NewGame } from "../lib/GameLogic";
 
 export default function NewGameButton() {
@@ -11,7 +10,7 @@ export default function NewGameButton() {
     <Button
       title="New Game"
       onClick={async () =>
-        dispatch({ type: GameActionType.RESET, payload: await NewGame() })
+        dispatch({ type: "RESET", payload: await NewGame() })
       }
     >
       New Game

@@ -40,7 +40,7 @@ const nextConfig = {
         source: "/assets/:slug*",
         headers: [
           {
-            key: "Cache-Control,",
+            key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
           },
         ],

@@ -5,11 +5,11 @@ import LeftArrow from "./LeftArrow";
 import RightArrow from "./RightArrow";
 import React, { useState, useEffect } from "react";
 import { useGameState, useGameStateDispatch } from "./GameContext";
-import * as GameTypes from "../lib/GameTypes";
+import { GameTile as GTile } from "../lib/GameTypes";
 
 export default function GameRow({ rowNumber }: { rowNumber: number }) {
   const [position, setPosition] = useState(0);
-  const [letters, setLetters] = useState([] as GameTypes.GameTile[]);
+  const [letters, setLetters] = useState([] as GTile[]);
   const gameState = useGameState();
   const dispatch = useGameStateDispatch();
 
@@ -20,21 +20,25 @@ export default function GameRow({ rowNumber }: { rowNumber: number }) {
   }, [gameState, rowNumber]);
 
   const leftArrowClick = () => {
+    const newPosition = position + 1;
+    if (!(newPosition === 0 || newPosition === -1 || newPosition === 1)) return;
     dispatch({
-      type: GameTypes.GameActionType.MOVEROW,
+      type: "MOVEROW",
       payload: {
         rowNumber: rowNumber,
-        position: position + 1,
+        position: newPosition,
       },
     });
   };
 
   const RightArrowClick = () => {
+    const newPosition = position - 1;
+    if (!(newPosition === 0 || newPosition === -1 || newPosition === 1)) return;
     dispatch({
-      type: GameTypes.GameActionType.MOVEROW,
+      type: "MOVEROW",
       payload: {
         rowNumber: rowNumber,
-        position: position - 1,
+        position: newPosition,
       },
     });
   };

@@ -1,6 +1,6 @@
 "use client";
 
-import { gameStateActionType, useGameStateDispatch } from "./Context";
+import { useGameStateDispatch } from "./Context";
 
 const Theme = () => {
   const dispatch = useGameStateDispatch();
@@ -17,7 +17,7 @@ const Theme = () => {
 
   const onClick = ({ colour }: { colour: string }) => {
     dispatch({
-      type: gameStateActionType.CHANGETHEME,
+      type: "changeTheme",
       value: colour,
     });
   };

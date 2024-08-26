@@ -1,11 +1,5 @@
-export enum GameRowPosition {
-  LEFT = -1,
-  CENTER = 0,
-  RIGHT = 1,
-}
-
 export type GameRow = {
-  position: GameRowPosition;
+  position: -1 | 0 | 1;
   tiles: GameTile[];
 };
 
@@ -25,40 +19,31 @@ export type GameState = {
   score: { games: number; average: number };
 };
 
-export enum GameActionType {
-  LOAD_GAME = "LOAD_GAME",
-  RESET = "RESET",
-  MOVEROW = "MOVEROW",
-  FOUND = "FOUND",
-  UPLOADED = "UPLOADED",
-  GETSCORE = "GETSCORE",
-}
-
 export type GameAction =
   | {
-      type: GameActionType.LOAD_GAME;
+      type: "LOAD_GAME";
       payload: GameState;
     }
   | {
-      type: GameActionType.RESET;
+      type: "RESET";
       payload: GameState;
     }
   | {
-      type: GameActionType.UPLOADED;
+      type: "UPLOADED";
     }
   | {
-      type: GameActionType.FOUND;
+      type: "FOUND";
     }
   | {
-      type: GameActionType.MOVEROW;
+      type: "MOVEROW";
       payload: MoveRow;
     }
   | {
-      type: GameActionType.GETSCORE;
+      type: "GETSCORE";
       payload: { games: number; average: number };
     };
 
 export type MoveRow = {
   rowNumber: number;
-  position: GameRowPosition;
+  position: -1 | 0 | 1;
 };

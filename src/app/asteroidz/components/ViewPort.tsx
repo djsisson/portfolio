@@ -5,7 +5,6 @@ import {
   useGameState,
   calcdamage,
   useGameStateDispatch,
-  gameStateActionType,
   stats,
 } from "./Context";
 import VisualScore from "./VisualScore";
@@ -80,7 +79,7 @@ const ViewPort = () => {
     }));
     setCpsValues((x) => [...x, ...cpsToAdd]);
     dispatch({
-      type: gameStateActionType.ADDCPS,
+      type: "addCps",
       value: updatedAverageDmg.reduce((i, x) => i + x.totaldamage, 0),
     });
   };
@@ -107,7 +106,7 @@ const ViewPort = () => {
       } as Score,
     ]);
     dispatch({
-      type: gameStateActionType.CLICK,
+      type: "click",
       value: getCalcDamage.totaldamage,
     });
   };

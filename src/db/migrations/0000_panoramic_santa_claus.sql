@@ -243,21 +243,4 @@ END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "tilez_game_id_idx" ON "tilez_games" USING btree ("game_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "tilez_game_user_id_idx" ON "tilez_games" USING btree ("user_id");--> statement-breakpoint
-ALTER TABLE "todos" enable row level security;
-DO $$ BEGIN
-CREATE POLICY "todos_select_policy" ON "todos" FOR SELECT USING ( (SELECT auth.uid()) = user_id );
-CREATE POLICY "todos_insert_policy" ON "todos" FOR INSERT TO "authenticated" WITH CHECK ( (SELECT auth.uid()) = user_id );
-CREATE POLICY "todos_update_policy" ON "todos" FOR UPDATE USING ( (SELECT auth.uid()) = user_id ) WITH CHECK ( (SELECT auth.uid()) = user_id );
-CREATE POLICY "todos_delete_policy" ON "todos" FOR DELETE TO "authenticated" USING ( (SELECT auth.uid()) = user_id );
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;--> statement-breakpoint
-ALTER TABLE "tilez_games" enable row level security;
-DO $$ BEGIN
-CREATE POLICY "tilez_select_policy" ON "tilez_games" FOR SELECT USING ( (SELECT auth.uid()) = user_id );
-CREATE POLICY "tilez_insert_policy" ON "tilez_games" FOR INSERT TO "authenticated" WITH CHECK ( (SELECT auth.uid()) = user_id );
-CREATE POLICY "tilez_update_policy" ON "tilez_games" FOR UPDATE USING ( (SELECT auth.uid()) = user_id ) WITH CHECK ( (SELECT auth.uid()) = user_id );
-CREATE POLICY "tilez_delete_policy" ON "tilez_games" FOR DELETE TO "authenticated" USING ( (SELECT auth.uid()) = user_id );
-EXCEPTION
- WHEN duplicate_object THEN null;
- END $$;
+
