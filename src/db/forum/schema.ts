@@ -18,9 +18,10 @@ export const users = pgTable(
       .default(sql`uuid_generate_v4()`)
       .primaryKey()
       .notNull(),
-    user_id: uuid("user_id")
-      .references(() => auth.id, { onDelete: "cascade", onUpdate: "cascade" })
-      .notNull(),
+    user_id: uuid("user_id").references(() => auth.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
     username: text("username").notNull(),
     email: text("email").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })

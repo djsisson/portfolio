@@ -115,14 +115,18 @@ export async function exchangeCodeForSession(code: string) {
 }
 
 export async function signOut(redirectTo: string) {
-  const result = await fetch(`${process.env.INTERNAL_AUTH_URL}/logout`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: process.env.SUPABASE_ANON_KEY!,
-      Authorization: `Bearer ${cookies().get("access_token")?.value}`,
-    },
-  });
+  const jwt = cookies().get("access_token")?.value;
+  if (jwt && await isJWTValid(jwt)) {
+    const result = await fetch(`${process.env.INTERNAL_AUTH_URL}/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: process.env.SUPABASE_ANON_KEY!,
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+  }
+  cache.delete(cookies().get("access_token")?.value!);
   cookies().delete("access_token");
   cookies().delete("refresh_token");
   redirect(redirectTo);
