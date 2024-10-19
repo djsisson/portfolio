@@ -23,8 +23,8 @@ export type Score = {
 const ViewPort = () => {
   const [clickValues, setClickValues] = useState([] as Score[]);
   const [cpsValues, setCpsValues] = useState([] as Score[]);
-  const refTimer = useRef<typeof sendAddCps>();
-  const refShake = useRef<NodeJS.Timeout>();
+  const refTimer = useRef<typeof sendAddCps>(null);
+  const refShake = useRef<NodeJS.Timeout>(null);
   const dispatch = useGameStateDispatch();
   const inven = useGameState().items;
   const [clickStats, setClickStats] = useState({} as stats);

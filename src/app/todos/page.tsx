@@ -1,10 +1,10 @@
-import { getUserFromJWT } from "@/lib/auth";
+import { getUser } from "@/lib/auth-client";
 import AddTodo from "./components/AddTodo";
 import Header from "./components/Header";
 import TodoList from "./components/TodoList";
 
 export default async function Page() {
-  const user = await getUserFromJWT();
+  const user = await getUser();
   return (
     <div className="flex h-svh w-svw flex-col items-center">
       <Header />

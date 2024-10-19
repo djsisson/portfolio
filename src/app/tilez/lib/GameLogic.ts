@@ -8,7 +8,7 @@ import { getdb as db } from "@/db/tilez/db";
 import { tilez_games, tilez_words } from "@/db/tilez/schema";
 import { avg, count, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { getUserFromJWT } from "@/lib/auth";
+import { getUser } from "@/lib/auth-client";
 import { JWTPayload } from "jose";
 
 function getRandomWord() {
@@ -49,10 +49,14 @@ export async function NewGame(): Promise<GameState> {
   do {
     rows = words.map(
       (x) =>
-        ({
+        (({
           position: Math.floor(Math.random() * x.length) - 1,
-          tiles: x.map((y) => ({ letter: y, found: false }) as GameTile),
-        }) as GameRow,
+
+          tiles: x.map((y) => (({
+            letter: y,
+            found: false
+          }) as GameTile))
+        }) as GameRow),
     );
   } while (
     all_words.includes(rows.map((x) => x.tiles[x.position + 1].letter).join(""))
@@ -99,7 +103,7 @@ export async function getWordsOnLoad(letters: string[]) {
 }
 
 export async function uploadScore(game: GameState): Promise<boolean> {
-  const jwt = await getUserFromJWT();
+  const jwt = await getUser();
   if (!jwt) {
     return false;
   }
@@ -123,7 +127,7 @@ export async function uploadScore(game: GameState): Promise<boolean> {
 }
 
 async function getScore() {
-  const jwt = await getUserFromJWT();
+  const jwt = await getUser();
   if (!jwt) return { games: 0, average: 0 };
   const result = await db(jwt as JWTPayload).transaction(async (tx) => {
     const scores = await tx

@@ -19,7 +19,7 @@ export default function Profile({
         onTouchStart={(e) => handleTouchStart(e)}
         key={currentCharacter}
         quality={75}
-        className="left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none overflow-clip object-cover"
+        className="left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none overflow-clip object-cover opacity-0"
         style={{ inset: undefined, width: undefined, height: undefined }}
         src={
           portrait[
@@ -31,7 +31,11 @@ export default function Profile({
         alt={currentCharacter}
         fill={true}
         priority={true}
-        onLoad={() => setCharacterLoading(false)}
+        onLoad={(e) => {
+          setCharacterLoading(false);
+          e.currentTarget.classList.add("animate-slide-in");
+          e.currentTarget.classList.remove("opacity-0");
+        }}
         sizes="100vw"
         placeholder="blur"
         blurDataURL={

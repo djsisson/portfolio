@@ -1,4 +1,3 @@
-"use server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { JWTPayload, jwtVerify, SignJWT } from "jose";
@@ -57,7 +56,7 @@ export async function signInWithProvider(
 ) {
   const codeVerifier = await generateRandomBase64String();
   const codeChallenge = await computeCodeChallengeFromVerifier(codeVerifier);
-  cookies().set("code_verifier", codeVerifier, {
+  (await cookies()).set("code_verifier", codeVerifier, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -69,7 +68,7 @@ export async function signInWithProvider(
 }
 
 export async function exchangeCodeForSession(code: string) {
-  if (!code || !cookies().get("code_verifier")?.value) {
+  if (!code || !(await cookies()).get("code_verifier")?.value) {
     return false;
   }
   const result = await fetch(
@@ -82,7 +81,7 @@ export async function exchangeCodeForSession(code: string) {
       },
       body: JSON.stringify({
         auth_code: code,
-        code_verifier: cookies().get("code_verifier")?.value,
+        code_verifier: (await cookies()).get("code_verifier")?.value,
       }),
     },
   );
@@ -90,18 +89,18 @@ export async function exchangeCodeForSession(code: string) {
     return false;
   }
   const data = await result.json();
-  cookies().delete("code_verifier");
+  (await cookies()).delete("code_verifier");
   if (!data?.access_token && !data?.refresh_token && !data?.expires_in) {
     return false;
   }
-  cookies().set("access_token", data.access_token, {
+  (await cookies()).set("access_token", data.access_token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     maxAge: data.expires_in,
   });
 
-  cookies().set(
+  (await cookies()).set(
     "refresh_token",
     await signJWT({ refresh_token: data.refresh_token }),
     {
@@ -114,9 +113,9 @@ export async function exchangeCodeForSession(code: string) {
   return true;
 }
 
-export async function signOut(redirectTo: string) {
-  const jwt = cookies().get("access_token")?.value;
-  if (jwt && await isJWTValid(jwt)) {
+export async function signOutFromProvider(redirectTo: string) {
+  const jwt = (await cookies()).get("access_token")?.value;
+  if (jwt && (await isJWTValid(jwt))) {
     const result = await fetch(`${process.env.INTERNAL_AUTH_URL}/logout`, {
       method: "POST",
       headers: {
@@ -126,16 +125,15 @@ export async function signOut(redirectTo: string) {
       },
     });
   }
-  cache.delete(cookies().get("access_token")?.value!);
-  cookies().delete("access_token");
-  cookies().delete("refresh_token");
+  cache.delete((await cookies()).get("access_token")?.value!);
+  (await cookies()).delete("access_token");
+  (await cookies()).delete("refresh_token");
   redirect(redirectTo);
 }
 
 export async function getUser(token: string) {
   const inCache = cache.get(token);
   if (inCache && inCache.ttl > Date.now()) {
-    console.log("cache hit");
     return inCache.result;
   }
   const data = await fetch(`${process.env.INTERNAL_AUTH_URL}/user`, {
@@ -198,10 +196,10 @@ export async function refreshToken(token: string) {
 }
 
 export async function getUserFromJWT() {
-  if (!cookies().get("access_token")?.value) {
+  if (!(await cookies()).get("access_token")?.value) {
     return null;
   }
-  const data = await verifyJWT(cookies().get("access_token")?.value!);
+  const data = await verifyJWT((await cookies()).get("access_token")?.value!);
   return data;
 }
 

@@ -1,10 +1,10 @@
-import { getUserFromJWT } from "@/lib/auth";
+import { getUser } from "@/lib/auth-client";
 import GameScore from "./GameScore";
 import Auth from "@/components/auth";
 export default async function Header() {
   const user: {
     user_metadata?: { avatar_url: string; name: string } | undefined;
-  } | null = (await getUserFromJWT()) as {
+  } | null = (await getUser()) as {
     user_metadata?: { avatar_url: string; name: string } | undefined;
   } | null;
 

@@ -8,7 +8,6 @@ export default function CharSelector({
   setCurrentCharacter,
   characterLoading,
   setCharacterLoading,
-  characterRef,
 }: {
   characters: (typeof genshinData)[0]["characters"];
   currentCharacter: string;
@@ -17,7 +16,6 @@ export default function CharSelector({
   >;
   characterLoading: boolean;
   setCharacterLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  characterRef: React.RefObject<HTMLImageElement>;
 }) {
   const onClick = (direction: "left" | "right") => {
     const index = characters.findIndex(
@@ -61,13 +59,13 @@ export default function CharSelector({
                 ].relativePath
               }
               quality={75}
-              ref={character.name === currentCharacter ? characterRef : null}
               alt={character.name}
               onClick={() => {
                 if (currentCharacter === character.name) return;
                 setCurrentCharacter(character);
                 setCharacterLoading(true);
               }}
+              id={`icon-${character.name}`}
               fill={true}
               priority={true}
               sizes="20vw"

@@ -4,7 +4,7 @@ import { useGameState } from "./Context";
 
 const Total = () => {
   const currentScore = useGameState().currentScore;
-  const refDisplay = useRef<typeof setDisplay>();
+  const refDisplay = useRef<typeof setDisplay>(null);
   const [displayTotal, setDisplayTotal] = useState(0);
 
   useEffect(() => {

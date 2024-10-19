@@ -1,6 +1,6 @@
 FROM node:22-alpine AS base
 
-ENV YARN_VERSION=4.3.1
+ENV YARN_VERSION=4.5
 RUN corepack enable && corepack prepare yarn@${YARN_VERSION} --activate
 RUN yarn set version ${YARN_VERSION}
 RUN apk add --no-cache libc6-compat
@@ -25,7 +25,7 @@ RUN \
 
 COPY src ./src
 COPY public ./public
-COPY next.config.mjs .
+COPY next.config.ts .
 COPY tsconfig.json .
 COPY postcss.config.js .
 COPY mdx-components.tsx .

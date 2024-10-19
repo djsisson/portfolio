@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import NewGameButton from "./NewGameButton";
-import { getUserFromJWT } from "@/lib/auth";
+import { getUser } from "@/lib/auth-client";
 
 export default function CurrentWord() {
   const dispatch = useGameStateDispatch();
@@ -25,7 +25,7 @@ export default function CurrentWord() {
   const completed = gameState.completed || false;
   const allWords = gameState.words;
   const [hoverOpen, setHoverOpen] = useState(false);
-  const ref = useRef<NodeJS.Timeout>();
+  const ref = useRef<NodeJS.Timeout>(null);
   const [signedIn, setSignedIn] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -71,13 +71,13 @@ export default function CurrentWord() {
   }, [gameState, dispatch, allWords, definitions]);
 
   useEffect(() => {
-    async function getUser() {
-      const user = await getUserFromJWT();
+    async function isUser() {
+      const user = await getUser();
       if (user) {
         setSignedIn(true);
       }
     }
-    getUser();
+    isUser();
   }, []);
 
   const updateDefinition = (e: React.MouseEvent<HTMLDivElement>, x: string) => {
@@ -160,11 +160,11 @@ export default function CurrentWord() {
         <div
           onClick={() => setHoverOpen(!hoverOpen)}
           onMouseEnter={() => {
-            clearTimeout(ref.current);
+            if (ref.current) clearTimeout(ref.current);
             setTimeout(() => setHoverOpen(true), 200);
           }}
           onMouseLeave={() => {
-            clearTimeout(ref.current);
+            if (ref.current) clearTimeout(ref.current);
             ref.current = setTimeout(() => setHoverOpen(false), 200);
           }}
         >
@@ -181,11 +181,11 @@ export default function CurrentWord() {
             {definitions.get(currentWord) && (
               <PopoverContent
                 onMouseEnter={() => {
-                  clearTimeout(ref.current);
+                  if (ref.current) clearTimeout(ref.current);
                   setTimeout(() => setHoverOpen(true), 200);
                 }}
                 onMouseLeave={() => {
-                  clearTimeout(ref.current);
+                  if (ref.current) clearTimeout(ref.current);
                   setTimeout(() => setHoverOpen(false), 200);
                 }}
                 className="border-border rounded-lg border border-solid normal-case"

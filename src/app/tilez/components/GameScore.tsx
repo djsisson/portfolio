@@ -13,17 +13,17 @@ export default function GameScore() {
   const games = useGameState().score.games;
   const average = useGameState().score.average;
   const [hoverOpen, setHoverOpen] = useState(false);
-  const ref = useRef<NodeJS.Timeout>();
+  const ref = useRef<NodeJS.Timeout>(null);
 
   return (
     <div
       onClick={() => setHoverOpen(!hoverOpen)}
       onMouseEnter={() => {
-        clearTimeout(ref.current);
+        if (ref.current) clearTimeout(ref.current);
         setTimeout(() => setHoverOpen(true), 200);
       }}
       onMouseLeave={() => {
-        clearTimeout(ref.current);
+        if (ref.current) clearTimeout(ref.current);
         ref.current = setTimeout(() => setHoverOpen(false), 200);
       }}
     >

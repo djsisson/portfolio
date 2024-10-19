@@ -1,6 +1,6 @@
 "use server";
 import { getdb as db } from "@/db/todos/db";
-import { getUserFromJWT } from "@/lib/auth";
+import { getUser } from "@/lib/auth-client";
 import { JWTPayload } from "jose";
 import { todos } from "@/db/todos/schema";
 import { desc, eq, not } from "drizzle-orm";
@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 
 export async function addTodo(FormData: FormData) {
   const todo = FormData.get("todo") as string;
-  const jwt = await getUserFromJWT();
+  const jwt = await getUser();
   if (!jwt) {
     return null;
   }
@@ -24,7 +24,7 @@ export async function addTodo(FormData: FormData) {
 }
 
 export async function toggleTodo(id: string) {
-  const jwt = await getUserFromJWT();
+  const jwt = await getUser();
   if (!jwt) {
     return null;
   }
@@ -41,7 +41,7 @@ export async function toggleTodo(id: string) {
 }
 
 export async function deleteTodo(id: string) {
-  const jwt = await getUserFromJWT();
+  const jwt = await getUser();
   if (!jwt) {
     return null;
   }
@@ -54,7 +54,7 @@ export async function deleteTodo(id: string) {
 }
 
 export async function listTodos() {
-  const jwt = await getUserFromJWT();
+  const jwt = await getUser();
   if (!jwt) {
     return [] as (typeof todos.$inferSelect)[];
   }

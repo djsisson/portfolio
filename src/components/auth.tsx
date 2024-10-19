@@ -1,4 +1,4 @@
-import { getUserFromJWT, signInWithProvider } from "@/lib/auth";
+import { getUser, signIn } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -13,7 +13,7 @@ import Logout from "./Logout";
 export default async function Auth({ app }: { app: string }) {
   const user: {
     user_metadata?: { avatar_url: string; name: string } | undefined;
-  } | null = (await getUserFromJWT()) as {
+  } | null = (await getUser()) as {
     user_metadata?: { avatar_url: string; name: string } | undefined;
   } | null;
 
@@ -53,7 +53,7 @@ export default async function Auth({ app }: { app: string }) {
             <Button
               variant={"ghost"}
               className="flex cursor-pointer gap-2"
-              formAction={signInWithProvider.bind(null, "github", app)}
+              formAction={signIn.bind(null, "github", app)}
             >
               <div className="h-8 w-8">
                 <svg
@@ -74,7 +74,7 @@ export default async function Auth({ app }: { app: string }) {
             <Button
               variant={"ghost"}
               className="flex cursor-pointer gap-2"
-              formAction={signInWithProvider.bind(null, "google", app)}
+              formAction={signIn.bind(null, "google", app)}
             >
               <div className="h-8 w-8">
                 <svg

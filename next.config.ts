@@ -1,7 +1,6 @@
 import createMDX from "@next/mdx";
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+const nextConfig: NextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   output: "standalone",
   experimental: {
@@ -34,7 +33,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_SITE: "https://djadetech.com",
   },
-  headers() {
+  async headers() {
     return [
       {
         source: "/assets/:slug*",

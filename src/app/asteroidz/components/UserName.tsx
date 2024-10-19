@@ -6,7 +6,7 @@ const UserName = () => {
   const [showName, setShowName] = useState(false);
   const userName = useGameState().playerName;
   const dispatch = useGameStateDispatch();
-  const ref = useRef<NodeJS.Timeout>();
+  const ref = useRef<NodeJS.Timeout>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -18,19 +18,19 @@ const UserName = () => {
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setShowName(!showName);
-    clearTimeout(ref.current);
+    if (ref.current) clearTimeout(ref.current);
   };
 
   const onFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.select();
     setShowName(true);
-    clearTimeout(ref.current);
+    if (ref.current) clearTimeout(ref.current);
   };
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.code == "Enter") {
       setShowName(false);
     }
-    clearTimeout(ref.current);
+    if (ref.current) clearTimeout(ref.current);
   };
 
   const onMouseLeave = () => {
@@ -38,7 +38,7 @@ const UserName = () => {
   };
 
   const onMouseEnter = () => {
-    clearTimeout(ref.current);
+    if (ref.current) clearTimeout(ref.current);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

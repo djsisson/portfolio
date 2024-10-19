@@ -12,13 +12,13 @@ const Tooltip = ({
   content: string[];
 }) => {
   const [active, setActive] = useState(false);
-  const refTimeout = useRef<NodeJS.Timeout>();
-  const refDisplay = useRef<NodeJS.Timeout>();
+  const refTimeout = useRef<NodeJS.Timeout>(null);
+  const refDisplay = useRef<NodeJS.Timeout>(null);
   const anchorRef = useRef<HTMLDivElement>(null);
 
   const showTip = () => {
-    clearTimeout(refTimeout.current);
-    clearTimeout(refDisplay.current);
+    if (refTimeout.current) clearTimeout(refTimeout.current);
+    if (refDisplay.current) clearTimeout(refDisplay.current);
     refTimeout.current = setTimeout(() => {
       setActive(true);
     }, delay || 400);
@@ -28,8 +28,8 @@ const Tooltip = ({
   };
 
   const hideTip = () => {
-    clearTimeout(refTimeout.current);
-    clearTimeout(refDisplay.current);
+    if (refTimeout.current) clearTimeout(refTimeout.current);
+    if (refDisplay.current) clearTimeout(refDisplay.current);
     setActive(false);
   };
 

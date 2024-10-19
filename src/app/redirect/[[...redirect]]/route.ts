@@ -2,10 +2,8 @@ import { NextResponse } from "next/server";
 import { exchangeCodeForSession } from "@/lib/auth";
 // The client you created from the Server-Side Auth instructions
 
-export async function GET(
-  request: Request,
-  { params }: { params: { redirect?: string[] } },
-) {
+export async function GET(request: Request, props: { params: Promise<{ redirect?: string[] }> }) {
+  const params = await props.params;
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
 

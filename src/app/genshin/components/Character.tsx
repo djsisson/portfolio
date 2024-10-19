@@ -13,7 +13,6 @@ export default function Character({ data }: { data: Cities }) {
   const [xdown, setXdown] = useState(0);
   const [ydown, setYdown] = useState(0);
   const [characterLoading, setCharacterLoading] = useState(true);
-  const characterRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     setCharacterLoading(true);
@@ -21,8 +20,11 @@ export default function Character({ data }: { data: Cities }) {
   }, [currentCity, data]);
 
   useEffect(() => {
-    if (characterRef.current) {
-      characterRef.current!.scrollIntoView({
+    const characterRef = document.getElementById(
+      `icon-${currentCharacter.name}`,
+    )
+    if (characterRef) {
+      characterRef.scrollIntoView({
         behavior: "smooth",
         block: "center",
         inline: "center",
@@ -100,7 +102,6 @@ export default function Character({ data }: { data: Cities }) {
           setCurrentCharacter={setCurrentCharacter}
           characterLoading={characterLoading}
           setCharacterLoading={setCharacterLoading}
-          characterRef={characterRef}
         />
       </div>
     </>
