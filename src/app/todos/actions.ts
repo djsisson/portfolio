@@ -1,5 +1,5 @@
 "use server";
-import { getdb as db } from "@/db/todos/db";
+import { dbClient } from "@/db/todos/db";
 import { getUser } from "@/lib/auth-client";
 import { JWTPayload } from "jose";
 import { todos } from "@/db/todos/schema";
@@ -12,7 +12,7 @@ export async function addTodo(FormData: FormData) {
   if (!jwt) {
     return null;
   }
-  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
+  const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
     const todoList = await tx
       .insert(todos)
       .values({ title: todo, userId: jwt.sub as string })
@@ -28,8 +28,7 @@ export async function toggleTodo(id: string) {
   if (!jwt) {
     return null;
   }
-
-  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
+  const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
     const todoList = await tx
       .update(todos)
       .set({ completed: not(todos.completed) })
@@ -45,8 +44,7 @@ export async function deleteTodo(id: string) {
   if (!jwt) {
     return null;
   }
-
-  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
+  const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
     await tx.delete(todos).where(eq(todos.id, id)).execute();
   });
 
@@ -58,7 +56,7 @@ export async function listTodos() {
   if (!jwt) {
     return [] as (typeof todos.$inferSelect)[];
   }
-  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
+  const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
     const todoList = await tx
       .select()
       .from(todos)

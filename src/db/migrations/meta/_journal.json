@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1724336459981,
-      "tag": "0000_panoramic_santa_claus",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1724416077879,
-      "tag": "0001_slow_greymalkin",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1724677440465,
-      "tag": "0002_hesitant_lester",
+      "when": 1730308194751,
+      "tag": "20241030170954_petite_whistler",
       "breakpoints": true
     }
   ]

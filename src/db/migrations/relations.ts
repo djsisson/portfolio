@@ -1,35 +1,5 @@
 import { relations } from "drizzle-orm/relations";
-import { shopItems, upgrades, levels, cities, characters, elements, itemsRequiredResearch, research, researchRequiredResearch, upgradeRequiredResearch, itemsRequiredItems, researchRequiredItems, upgradeRequiredItems } from "./schema";
-
-export const upgradesRelations = relations(upgrades, ({one, many}) => ({
-	shopItem: one(shopItems, {
-		fields: [upgrades.effectItemId],
-		references: [shopItems.id]
-	}),
-	levels: many(levels),
-	upgradeRequiredResearches: many(upgradeRequiredResearch),
-	upgradeRequiredItems: many(upgradeRequiredItems),
-}));
-
-export const shopItemsRelations = relations(shopItems, ({many}) => ({
-	upgrades: many(upgrades),
-	itemsRequiredResearches: many(itemsRequiredResearch),
-	itemsRequiredItems_itemId: many(itemsRequiredItems, {
-		relationName: "itemsRequiredItems_itemId_shopItems_id"
-	}),
-	itemsRequiredItems_requiredId: many(itemsRequiredItems, {
-		relationName: "itemsRequiredItems_requiredId_shopItems_id"
-	}),
-	researchRequiredItems: many(researchRequiredItems),
-	upgradeRequiredItems: many(upgradeRequiredItems),
-}));
-
-export const levelsRelations = relations(levels, ({one}) => ({
-	upgrade: one(upgrades, {
-		fields: [levels.upgradeId],
-		references: [upgrades.id]
-	}),
-}));
+import { cities, characters, elements, upgrades, levels, messages, users, usersInAuth, tilezGames, todos, shopItems, hashtags, hashtagMessages, userFollows, itemsRequiredResearch, research, likes, researchRequiredResearch, upgradeRequiredResearch, itemsRequiredItems, researchRequiredItems, upgradeRequiredItems } from "./schema";
 
 export const charactersRelations = relations(characters, ({one}) => ({
 	city: one(cities, {
@@ -48,6 +18,116 @@ export const citiesRelations = relations(cities, ({many}) => ({
 
 export const elementsRelations = relations(elements, ({many}) => ({
 	characters: many(characters),
+}));
+
+export const levelsRelations = relations(levels, ({one}) => ({
+	upgrade: one(upgrades, {
+		fields: [levels.upgradeId],
+		references: [upgrades.id]
+	}),
+}));
+
+export const upgradesRelations = relations(upgrades, ({one, many}) => ({
+	levels: many(levels),
+	shopItem: one(shopItems, {
+		fields: [upgrades.effectItemId],
+		references: [shopItems.id]
+	}),
+	upgradeRequiredResearches: many(upgradeRequiredResearch),
+	upgradeRequiredItems: many(upgradeRequiredItems),
+}));
+
+export const messagesRelations = relations(messages, ({one, many}) => ({
+	message: one(messages, {
+		fields: [messages.parentId],
+		references: [messages.id],
+		relationName: "messages_parentId_messages_id"
+	}),
+	messages: many(messages, {
+		relationName: "messages_parentId_messages_id"
+	}),
+	user: one(users, {
+		fields: [messages.userId],
+		references: [users.id]
+	}),
+	hashtagMessages: many(hashtagMessages),
+	likes: many(likes),
+}));
+
+export const usersRelations = relations(users, ({one, many}) => ({
+	messages: many(messages),
+	usersInAuth: one(usersInAuth, {
+		fields: [users.userId],
+		references: [usersInAuth.id]
+	}),
+	userFollows_followingUserId: many(userFollows, {
+		relationName: "userFollows_followingUserId_users_id"
+	}),
+	userFollows_userId: many(userFollows, {
+		relationName: "userFollows_userId_users_id"
+	}),
+	likes: many(likes),
+}));
+
+export const tilezGamesRelations = relations(tilezGames, ({one}) => ({
+	usersInAuth: one(usersInAuth, {
+		fields: [tilezGames.userId],
+		references: [usersInAuth.id]
+	}),
+}));
+
+export const usersInAuthRelations = relations(usersInAuth, ({many}) => ({
+	tilezGames: many(tilezGames),
+	todos: many(todos),
+	users: many(users),
+}));
+
+export const todosRelations = relations(todos, ({one}) => ({
+	usersInAuth: one(usersInAuth, {
+		fields: [todos.userId],
+		references: [usersInAuth.id]
+	}),
+}));
+
+export const shopItemsRelations = relations(shopItems, ({many}) => ({
+	upgrades: many(upgrades),
+	itemsRequiredResearches: many(itemsRequiredResearch),
+	itemsRequiredItems_itemId: many(itemsRequiredItems, {
+		relationName: "itemsRequiredItems_itemId_shopItems_id"
+	}),
+	itemsRequiredItems_requiredId: many(itemsRequiredItems, {
+		relationName: "itemsRequiredItems_requiredId_shopItems_id"
+	}),
+	researchRequiredItems: many(researchRequiredItems),
+	upgradeRequiredItems: many(upgradeRequiredItems),
+}));
+
+export const hashtagMessagesRelations = relations(hashtagMessages, ({one}) => ({
+	hashtag: one(hashtags, {
+		fields: [hashtagMessages.hashtagId],
+		references: [hashtags.id]
+	}),
+	message: one(messages, {
+		fields: [hashtagMessages.messageId],
+		references: [messages.id]
+	}),
+}));
+
+export const hashtagsRelations = relations(hashtags, ({many}) => ({
+	hashtagMessages: many(hashtagMessages),
+}));
+
+export const userFollowsRelations = relations(userFollows, ({one}) => ({
+	user_followingUserId: one(users, {
+		fields: [userFollows.followingUserId],
+		references: [users.id],
+		relationName: "userFollows_followingUserId_users_id"
+	}),
+	user_userId: one(users, {
+		fields: [userFollows.userId],
+		references: [users.id],
+		relationName: "userFollows_userId_users_id"
+	}),
 }));
 
 export const itemsRequiredResearchRelations = relations(itemsRequiredResearch, ({one}) => ({
@@ -71,6 +151,17 @@ export const researchRelations = relations(research, ({many}) => ({
 	}),
 	upgradeRequiredResearches: many(upgradeRequiredResearch),
 	researchRequiredItems: many(researchRequiredItems),
+}));
+
+export const likesRelations = relations(likes, ({one}) => ({
+	message: one(messages, {
+		fields: [likes.messageId],
+		references: [messages.id]
+	}),
+	user: one(users, {
+		fields: [likes.userId],
+		references: [users.id]
+	}),
 }));
 
 export const researchRequiredResearchRelations = relations(researchRequiredResearch, ({one}) => ({

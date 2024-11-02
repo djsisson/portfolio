@@ -1,44 +1,52 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
-import { JWTPayload } from "jose";
 import { sql } from "drizzle-orm";
+import { JWTPayload } from "jose";
+
+type SupabaseToken = {
+  role?: string;
+} & JWTPayload;
 
 const connectionString = process.env.DATABASE_AUTH_URL!;
-const client = postgres(connectionString, {
-  prepare: false,
-  connect_timeout: 60,
-  idle_timeout: 10,
+const db = drizzle({
+  client: postgres(connectionString, {
+    prepare: false,
+    connect_timeout: 60,
+    idle_timeout: 10,
+  }),
+  schema,
 });
-const db = drizzle(client, { schema });
-export const getdb = (decodedJwt: JWTPayload) => {
-  return new Proxy<typeof db>(db, {
-    get(target, prop) {
-      if (prop === "transaction") {
-        return (async (transaction, ...rest) => {
-          return await target.transaction(
-            async (tx) => {
-              await tx.execute(sql`
-                          select set_config('request.jwt.claims', '${sql.raw(
-                            JSON.stringify(decodedJwt),
-                          )}', TRUE);
-                          select set_config('request.jwt.claim.sub', '${sql.raw(
-                            decodedJwt.sub ?? "",
-                          )}', TRUE);
-                          select set_config('request.jwt.claim.email', '${sql.raw(
-                            decodedJwt.email as string,
-                          )}', TRUE);
-                          select set_config('request.jwt.claim.role', '${sql.raw(
-                            decodedJwt.role as string,
-                          )}', TRUE);
-                          set local role ${sql.raw(decodedJwt.role as string)};
-                      `);
-              return await transaction(tx);
-            },
-            ...rest,
-          );
-        }) as typeof db.transaction;
-      }
-    },
-  });
-};
+export function dbClient<
+  Token extends SupabaseToken = SupabaseToken,
+>(token: Token) {
+  return {
+    db,
+    rls: (async (transaction, ...rest) => {
+      return await db.transaction(async (tx) => {
+        try {
+          await tx.execute(sql`
+            -- auth.jwt()
+            select set_config('request.jwt.claims', '${sql.raw(
+              JSON.stringify(token),
+            )}', TRUE);
+            -- auth.uid()
+            select set_config('request.jwt.claim.sub', '${sql.raw(
+              token.sub ?? "",
+            )}', TRUE);												
+            -- set local role
+            set local role ${sql.raw(token.role ?? "anon")};
+            `);
+          return await transaction(tx);
+        } finally {
+          await tx.execute(sql`
+            -- reset
+            select set_config('request.jwt.claims', NULL, TRUE);
+            select set_config('request.jwt.claim.sub', NULL, TRUE);
+            reset role;
+            `);
+        }
+      }, ...rest);
+    }) as typeof db.transaction,
+  }
+}

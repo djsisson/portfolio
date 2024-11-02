@@ -30,9 +30,12 @@ export default async function Auth({ app }: { app: string }) {
       {user ? (
         <div className="h-10 w-10 cursor-pointer">
           <DropdownMenu>
-            <DropdownMenuTrigger className="focus:outline-0">
+            <DropdownMenuTrigger className="focus:outline-0" name="user">
               <Avatar className="cursor-pointer">
-                <AvatarImage src={user?.user_metadata?.avatar_url as string} />
+                <AvatarImage
+                  src={user?.user_metadata?.avatar_url as string}
+                  alt="icon"
+                />
                 <AvatarFallback>
                   {getInitials((user?.user_metadata?.name as string) || "U")}
                 </AvatarFallback>

@@ -7,11 +7,16 @@ import {
   boolean,
   index,
   uniqueIndex,
-  varchar,
   char,
+  pgPolicy,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
-import { users } from "../auth_schema";
+import { eq, sql } from "drizzle-orm";
+import {
+  authUsers,
+  authenticatedRole,
+  authUid,
+  postgresRole,
+} from "drizzle-orm/supabase";
 
 export const tilez_games = pgTable(
   "tilez_games",
@@ -23,7 +28,7 @@ export const tilez_games = pgTable(
     game_id: text("game_id").notNull(),
     userId: uuid("user_id")
       .notNull()
-      .references(() => users.id, {
+      .references(() => authUsers.id, {
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
@@ -32,12 +37,35 @@ export const tilez_games = pgTable(
     num_moves: integer("num_moves").default(0),
     completed: boolean("completed").default(false),
   },
-  (table) => {
-    return {
-      game_id_idx: index("tilez_game_id_idx").using("btree", table.game_id),
-      user_id_idx: index("tilez_game_user_id_idx").using("btree", table.userId),
-    };
-  },
+  (table) => [
+    index("tilez_game_id_idx").using("btree", table.game_id),
+    index("tilez_game_user_id_idx").using("btree", table.userId),
+    pgPolicy("tilez_delete_policy", {
+      as: "permissive",
+      for: "delete",
+      to: authenticatedRole,
+      using: eq(table.userId, authUid),
+    }),
+    pgPolicy("tilez_insert_policy", {
+      as: "permissive",
+      for: "insert",
+      to: authenticatedRole,
+      withCheck: eq(table.userId, authUid),
+    }),
+    pgPolicy("tilez_select_policy", {
+      as: "permissive",
+      for: "select",
+      to: authenticatedRole,
+      using: eq(table.userId, authUid),
+    }),
+    pgPolicy("tilez_update_policy", {
+      as: "permissive",
+      for: "update",
+      to: authenticatedRole,
+      withCheck: eq(table.userId, authUid),
+      using: eq(table.userId, authUid),
+    }),
+  ],
 );
 
 export const tilez_words = pgTable(
@@ -51,9 +79,27 @@ export const tilez_words = pgTable(
     definition: text("definition").notNull(),
     last_checked: timestamp("last_checked", { mode: "string" }).notNull(),
   },
-  (table) => {
-    return {
-      word_idx: uniqueIndex("tilez_word_word_idx").using("btree", table.word),
-    };
-  },
+  (table) => [
+    uniqueIndex("tilez_word_word_idx").using("btree", table.word),
+    pgPolicy("tilez_delete_word_policy", {
+      as: "permissive",
+      for: "delete",
+      to: postgresRole,
+    }),
+    pgPolicy("tilez_insert_word_policy", {
+      as: "permissive",
+      for: "insert",
+      to: postgresRole,
+    }),
+    pgPolicy("tilez_select_word_policy", {
+      as: "permissive",
+      for: "select",
+      to: postgresRole,
+    }),
+    pgPolicy("tilez_update_word_policy", {
+      as: "permissive",
+      for: "update",
+      to: postgresRole,
+    }),
+  ],
 );

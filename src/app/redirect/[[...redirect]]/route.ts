@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { exchangeCodeForSession } from "@/lib/auth";
 // The client you created from the Server-Side Auth instructions
 
-export async function GET(request: Request, props: { params: Promise<{ redirect?: string[] }> }) {
+export async function GET(
+  request: Request,
+  props: { params: Promise<{ redirect?: string[] }> },
+) {
   const params = await props.params;
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams, hostname, protocol } = new URL(request.url);
   const code = searchParams.get("code");
 
   const redirectUrl = `/${params.redirect?.join("/") ?? ""}`;
@@ -16,14 +19,16 @@ export async function GET(request: Request, props: { params: Promise<{ redirect?
       const isLocalEnv = process.env.NODE_ENV === "development";
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${redirectUrl}`);
+        return NextResponse.redirect(`${protocol}//${hostname}${redirectUrl}`);
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${redirectUrl}`);
       } else {
-        return NextResponse.redirect(`${origin}${redirectUrl}`);
+        return NextResponse.redirect(`${protocol}//${hostname}${redirectUrl}`);
       }
     }
   }
   // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}${redirectUrl}?error=invalid_code`);
+  return NextResponse.redirect(
+    `${protocol}//${hostname}${redirectUrl}?error=invalid_code`,
+  );
 }

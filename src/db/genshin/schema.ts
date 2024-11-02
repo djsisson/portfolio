@@ -14,12 +14,10 @@ export const elements = pgTable(
     name: text("name").notNull(),
     colour: text("colour").notNull(),
   },
-  (table) => {
-    return {
-      elements_name_unique: unique("elements_name_unique").on(table.name),
-      elements_colour_unique: unique("elements_colour_unique").on(table.colour),
-    };
-  },
+  (table) => [
+    unique("elements_name_unique").on(table.name),
+    unique("elements_colour_unique").on(table.colour),
+  ],
 );
 
 export const characters = pgTable(
@@ -42,11 +40,11 @@ export const characters = pgTable(
       .notNull()
       .references(() => cities.id),
   },
-  (table) => {
-    return {
-      characters_name_unique: unique("characters_name_unique").on(table.name),
-    };
-  },
+  (table) => [
+    unique("characters_name_unique").on(table.name),
+    unique("characters_city_id_cities_id_fk").on(table.city_id),
+    unique("characters_element_id_elements_id_fk").on(table.element_id),
+  ],
 );
 
 export const cities = pgTable(
@@ -62,9 +60,5 @@ export const cities = pgTable(
     }),
     name: text("name").notNull(),
   },
-  (table) => {
-    return {
-      cities_name_unique: unique("cities_name_unique").on(table.name),
-    };
-  },
+  (table) => [unique("cities_name_unique").on(table.name)],
 );

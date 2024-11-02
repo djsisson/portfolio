@@ -10,14 +10,14 @@ import { loadEnvConfig } from "@next/env";
 loadEnvConfig(process.cwd(), true);
 // import * as forum_relations from "./forum/relations";
 
-const connectionString = process.env.DATABASE_STUDIO_URL;
-const client = postgres(connectionString as string, {
-  prepare: false,
-  connect_timeout: 60,
-  idle_timeout: 10,
-});
+const connectionString = process.env.DATABASE_URL!;
 
-export const db = drizzle(client, {
+export const db = drizzle({
+  client: postgres(connectionString, {
+    prepare: false,
+    connect_timeout: 60,
+    idle_timeout: 10,
+  }),
   schema: {
     ...genshin_schema,
     ...genshin_relations,

@@ -22,11 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans`}>
-        {/*<Script
+        {<Script
           strategy="afterInteractive"
           src="./data.js"
-          data-cf-beacon='{"token": "d7471a6eb8864867b7e120a5d7046876"}'
-        ></Script>*/}
+          data-cf-beacon={`'{"token": "${process.env.NEXT_PUBLIC_ANALYTICS}"}'`}
+        ></Script>}
         <ThemeProvider enableSystem={true} attribute="class">
           {children}
         </ThemeProvider>

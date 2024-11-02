@@ -8,8 +8,8 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { users as auth } from "../auth_schema";
 import { sql } from "drizzle-orm";
+import { authUsers, authenticatedRole, authUid,postgresRole } from "drizzle-orm/supabase";
 
 export const users = pgTable(
   "users",
@@ -18,7 +18,7 @@ export const users = pgTable(
       .default(sql`uuid_generate_v4()`)
       .primaryKey()
       .notNull(),
-    user_id: uuid("user_id").references(() => auth.id, {
+    user_id: uuid("user_id").references(() => authUsers.id, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),

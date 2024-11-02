@@ -4,7 +4,7 @@ import { all_words } from "../data/all_words";
 import { words } from "../data/words";
 import { filter } from "../data/filter";
 import { GameState, GameRow, GameTile } from "./GameTypes";
-import { getdb as db } from "@/db/tilez/db";
+import { dbClient } from "@/db/tilez/db";
 import { tilez_games, tilez_words } from "@/db/tilez/schema";
 import { avg, count, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -49,14 +49,17 @@ export async function NewGame(): Promise<GameState> {
   do {
     rows = words.map(
       (x) =>
-        (({
+        ({
           position: Math.floor(Math.random() * x.length) - 1,
 
-          tiles: x.map((y) => (({
-            letter: y,
-            found: false
-          }) as GameTile))
-        }) as GameRow),
+          tiles: x.map(
+            (y) =>
+              ({
+                letter: y,
+                found: false,
+              }) as GameTile,
+          ),
+        }) as GameRow,
     );
   } while (
     all_words.includes(rows.map((x) => x.tiles[x.position + 1].letter).join(""))
@@ -107,7 +110,7 @@ export async function uploadScore(game: GameState): Promise<boolean> {
   if (!jwt) {
     return false;
   }
-  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
+  const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
     const newGame = await tx
       .insert(tilez_games)
       .values({
@@ -129,7 +132,7 @@ export async function uploadScore(game: GameState): Promise<boolean> {
 async function getScore() {
   const jwt = await getUser();
   if (!jwt) return { games: 0, average: 0 };
-  const result = await db(jwt as JWTPayload).transaction(async (tx) => {
+  const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
     const scores = await tx
       .select({
         games: count(),
@@ -142,8 +145,8 @@ async function getScore() {
 }
 
 export async function getWordDefinition(word: string): Promise<string> {
-  const inDb = await db()
-    .select()
+  const inDb = await dbClient()
+    .db.select()
     .from(tilez_words)
     .where(eq(tilez_words.word, word))
     .limit(1);
@@ -167,12 +170,12 @@ export async function getWordDefinition(word: string): Promise<string> {
   } catch (error) {
   } finally {
     if (inDb.length > 0) {
-      await db()
-        .update(tilez_words)
+      await dbClient()
+        .db.update(tilez_words)
         .set({ last_checked: new Date().toISOString(), definition: definition })
         .where(eq(tilez_words.word, word));
     } else {
-      await db().insert(tilez_words).values({
+      await dbClient().db.insert(tilez_words).values({
         word: word,
         definition: definition,
         last_checked: new Date().toISOString(),

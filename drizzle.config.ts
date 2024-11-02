@@ -3,17 +3,29 @@ import { loadEnvConfig } from "@next/env";
 
 loadEnvConfig(process.cwd(), true);
 
+const base = "./src/db/";
+
 export default defineConfig({
   schema: [
-    "./src/db/asteroidz/schema.ts",
-    "./src/db/genshin/schema.ts",
-    "./src/db/todos/schema.ts",
-    "./src/db/tilez/schema.ts",
-    "./src/db/forum/schema.ts",
+    `${base}asteroidz/schema.ts`,
+    `${base}genshin/schema.ts`,
+    `${base}todos/schema.ts`,
+    `${base}tilez/schema.ts`,
+    `${base}forum/schema.ts`,
   ],
-  out: "./src/db/migrations",
+  out:  `${base}migrations`,
   dialect: "postgresql",
   schemaFilter: "public",
+  casing: "snake_case",
+  migrations: {
+    prefix: "timestamp"
+  },
+  entities:{
+    roles: {
+      provider: "supabase",
+      exclude: ["supabase_Auth_admin"]
+    }
+  },
   verbose: true,
   strict: true,
   dbCredentials: {

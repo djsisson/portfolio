@@ -116,14 +116,12 @@ export const items_required_research = pgTable(
       .references(() => research.id),
     description: text("description").notNull(),
   },
-  (table) => {
-    return {
-      items_required_research_item_id_required_id_pk: primaryKey({
-        columns: [table.item_id, table.required_id],
-        name: "items_required_research_item_id_required_id_pk",
-      }),
-    };
-  },
+  (table) => [
+    primaryKey({
+      columns: [table.item_id, table.required_id],
+      name: "items_required_research_item_id_required_id_pk",
+    }),
+  ],
 );
 
 export const research_required_research = pgTable(
@@ -137,14 +135,12 @@ export const research_required_research = pgTable(
       .references(() => research.id),
     description: text("description").notNull(),
   },
-  (table) => {
-    return {
-      research_required_research_research_id_required_id_pk: primaryKey({
-        columns: [table.research_id, table.required_id],
-        name: "research_required_research_research_id_required_id_pk",
-      }),
-    };
-  },
+  (table) => [
+    primaryKey({
+      columns: [table.research_id, table.required_id],
+      name: "research_required_research_research_id_required_id_pk",
+    }),
+  ],
 );
 
 export const upgrade_required_research = pgTable(
@@ -158,14 +154,12 @@ export const upgrade_required_research = pgTable(
       .references(() => research.id),
     description: text("description").notNull(),
   },
-  (table) => {
-    return {
-      upgrade_required_research_upgrade_id_research_id_pk: primaryKey({
-        columns: [table.upgrade_id, table.required_id],
-        name: "upgrade_required_research_upgrade_id_research_id_pk",
-      }),
-    };
-  },
+  (table) => [
+    primaryKey({
+      columns: [table.upgrade_id, table.required_id],
+      name: "upgrade_required_research_upgrade_id_research_id_pk",
+    }),
+  ],
 );
 
 export const research_required_items = pgTable(
@@ -180,14 +174,12 @@ export const research_required_items = pgTable(
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
-  (table) => {
-    return {
-      research_required_items_research_id_item_id_pk: primaryKey({
-        columns: [table.research_id, table.required_id],
-        name: "research_required_items_research_id_item_id_pk",
-      }),
-    };
-  },
+  (table) => [
+    primaryKey({
+      columns: [table.research_id, table.required_id],
+      name: "research_required_items_research_id_item_id_pk",
+    }),
+  ],
 );
 
 export const items_required_items = pgTable(
@@ -202,14 +194,12 @@ export const items_required_items = pgTable(
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
-  (table) => {
-    return {
-      items_required_items_item_id_required_id_pk: primaryKey({
-        columns: [table.item_id, table.required_id],
-        name: "items_required_items_item_id_required_id_pk",
-      }),
-    };
-  },
+  (table) => [
+    primaryKey({
+      columns: [table.item_id, table.required_id],
+      name: "items_required_items_item_id_required_id_pk",
+    }),
+  ],
 );
 
 export const upgrade_required_items = pgTable(
@@ -224,12 +214,10 @@ export const upgrade_required_items = pgTable(
     quantity: integer("quantity").notNull(),
     description: text("description").notNull(),
   },
-  (table) => {
-    return {
-      upgrade_required_items_upgrade_id_item_id_pk: primaryKey({
-        columns: [table.upgrade_id, table.required_id],
-        name: "upgrade_required_items_upgrade_id_item_id_pk",
-      }),
-    };
-  },
+  (table) => [
+    primaryKey({
+      columns: [table.upgrade_id, table.required_id],
+      name: "upgrade_required_items_upgrade_id_item_id_pk",
+    }),
+  ],
 );
