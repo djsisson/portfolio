@@ -7,8 +7,12 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
   },
   images: {
-    loader: "custom",
-    loaderFile: "./src/lib/image-loader.ts",
+    localPatterns: [
+      {
+        pathname: "/assets/**",
+        search: "",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",

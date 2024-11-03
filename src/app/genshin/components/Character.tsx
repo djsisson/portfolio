@@ -1,6 +1,6 @@
 "use client";
 import { Cities, Characters } from "../data";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Background from "./Background";
 import Profile from "./Profile";
 import CitySelector from "./City-Selector";

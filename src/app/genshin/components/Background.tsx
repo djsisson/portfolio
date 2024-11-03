@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { backgrounds } from "@/lib/imgMeta";
+import { backgrounds } from "../images";
 
 export default function Background({ currentCity }: { currentCity: string }) {
   return (
@@ -7,22 +7,11 @@ export default function Background({ currentCity }: { currentCity: string }) {
       <Image
         className={`max-w-none object-cover object-center`}
         key={currentCity}
-        src={
-          backgrounds[
-            `${currentCity.toLowerCase()}.webp` as keyof typeof backgrounds
-          ].relativePath
-        }
+        src={backgrounds[currentCity.toLowerCase() as keyof typeof backgrounds]}
         alt={currentCity}
         priority={true}
         fill={true}
-        quality={75}
-        sizes="100vw"
         placeholder="blur"
-        blurDataURL={
-          backgrounds[
-            `${currentCity.toLowerCase()}.webp` as keyof typeof backgrounds
-          ].imgBase64
-        }
       ></Image>
     </div>
   );

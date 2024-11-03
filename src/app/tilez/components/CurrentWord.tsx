@@ -196,16 +196,8 @@ export default function CurrentWord() {
           </Popover>
         </div>
       </div>
-      <div
-        className="flex cursor-pointer items-center justify-end"
-        title="Help"
-      >
-        <Badge
-          variant={"outline"}
-          className="border-muted-foreground border border-solid text-base"
-        >
-          <Help></Help>
-        </Badge>
+      <div className="flex justify-end" title="Help">
+        <Help></Help>
       </div>
     </div>
   );

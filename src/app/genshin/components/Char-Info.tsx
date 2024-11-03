@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { elements } from "@/lib/imgMeta";
+import { elements } from "../images";
 import { Characters } from "../data";
 
 export default function CharInfo({ character }: { character: Characters[0] }) {
@@ -10,20 +10,12 @@ export default function CharInfo({ character }: { character: Characters[0] }) {
           className="aspect-square object-contain opacity-50"
           src={
             elements[
-              `element_${character.element.name.toLowerCase()}.svg` as keyof typeof elements
-            ].relativePath
+              character.element.name.toLowerCase() as keyof typeof elements
+            ]
           }
           alt={character.element.name}
           fill={true}
           priority={true}
-          sizes="20vw"
-          quality={75}
-          placeholder="blur"
-          blurDataURL={
-            elements[
-              `element_${character.element.name.toLowerCase()}.svg` as keyof typeof elements
-            ].imgBase64
-          }
         />
       </div>
       <div className="bg-white/20 backdrop-blur-sm">

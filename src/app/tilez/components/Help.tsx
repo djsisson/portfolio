@@ -7,12 +7,24 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
-import { tilez } from "@/lib/imgMeta";
+import imgA from "@/../public/assets/tilez/a.webp";
+import imgB from "@/../public/assets/tilez/b.webp";
+import imgC from "@/../public/assets/tilez/c.webp";
+import { Badge } from "@/components/ui/badge";
 
 export default function Help() {
   return (
     <Dialog>
-      <DialogTrigger>?</DialogTrigger>
+      <DialogTrigger>
+        <div className="flex h-full items-center">
+          <Badge
+            variant={"outline"}
+            className="border-muted-foreground h-max cursor-pointer border border-solid text-base"
+          >
+            <div className="cursor-pointer">?</div>
+          </Badge>
+        </div>
+      </DialogTrigger>
       <DialogContent className="w-svw">
         <DialogHeader>
           <DialogTitle className="text-center underline">
@@ -23,40 +35,19 @@ export default function Help() {
 
         <div className="flex flex-row gap-2">
           <div className="flex flex-1 flex-col gap-2">
-            <Image
-              src={tilez["a.webp"].relativePath}
-              alt={"tilez blue"}
-              width={300}
-              height={100}
-              placeholder="blur"
-              blurDataURL={tilez["a.webp"].imgBase64}
-            />
+            <Image src={imgA} alt={"tilez blue"} placeholder="blur" />
             <div className="text-center">
               Align tiles to spell a word. Selected tiles are blue.
             </div>
           </div>
           <div className="flex flex-1 flex-col gap-2">
-            <Image
-              src={tilez["b.webp"].relativePath}
-              alt={"tilez green"}
-              width={300}
-              height={100}
-              placeholder="blur"
-              blurDataURL={tilez["b.webp"].imgBase64}
-            />
+            <Image src={imgB} alt={"tilez green"} placeholder="blur" />
             <div className="text-center">
               Tiles where you have found a word turn green.
             </div>
           </div>
           <div className="flex flex-1 flex-col gap-2">
-            <Image
-              src={tilez["c.webp"].relativePath}
-              alt={"completed"}
-              width={300}
-              height={100}
-              placeholder="blur"
-              blurDataURL={tilez["c.webp"].imgBase64}
-            />
+            <Image src={imgC} alt={"completed"} placeholder="blur" />
             <div className="text-center">
               Turn all the tiles green, to complete the game, can you do it in
               the least number of moves?

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { portrait } from "@/lib/imgMeta";
+import { portraits } from "../images";
 
 export default function Profile({
   currentCharacter,
@@ -22,11 +22,11 @@ export default function Profile({
         className="left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none overflow-clip object-cover opacity-0"
         style={{ inset: undefined, width: undefined, height: undefined }}
         src={
-          portrait[
-            `${currentCharacter
+          portraits[
+            currentCharacter
               .replace(" ", "_")
-              .toLowerCase()}_profile.webp` as keyof typeof portrait
-          ].relativePath
+              .toLowerCase() as keyof typeof portraits
+          ]
         }
         alt={currentCharacter}
         fill={true}
@@ -36,15 +36,7 @@ export default function Profile({
           e.currentTarget.classList.add("animate-slide-in");
           e.currentTarget.classList.remove("opacity-0");
         }}
-        sizes="100vw"
         placeholder="blur"
-        blurDataURL={
-          portrait[
-            `${currentCharacter
-              .replace(" ", "_")
-              .toLowerCase()}_profile.webp` as keyof typeof portrait
-          ].imgBase64
-        }
       />
     </div>
   );

@@ -9,7 +9,7 @@ import {
 } from "./Context";
 import VisualScore from "./VisualScore";
 import Image from "next/image";
-import { asteroidz } from "@/lib/imgMeta";
+import asteroid from "@/../public/assets/asteroidz/asteroid.webp";
 
 export type Score = {
   id: number;
@@ -139,15 +139,12 @@ const ViewPort = () => {
         }}
       >
         <Image
-          src={asteroidz["asteroid.webp"].relativePath}
+          src={asteroid}
           alt="asteroid"
           priority={true}
           className="[-webkit-user-drag:none] [user-drag:none] select-none"
           fill={true}
-          sizes="25vw"
-          quality={75}
           placeholder="blur"
-          blurDataURL={asteroidz["asteroid.webp"].imgBase64}
         />
       </div>
       {cpsValues.map((x) => {

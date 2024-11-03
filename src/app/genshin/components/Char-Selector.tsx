@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { icon } from "@/lib/imgMeta";
+import { icons } from "../images";
 import { genshinData } from "../data";
 
 export default function CharSelector({
@@ -52,11 +52,11 @@ export default function CharSelector({
             <Image
               className={`relative z-40 cursor-pointer snap-center rounded-full hover:ring-4 hover:ring-[var(--bgcolour)] ${character.name === currentCharacter && characterLoading && "grayscale-100"} ${character.name === currentCharacter && characterLoading && "animate-pulse"} ${character.name === currentCharacter && "ring-4 ring-[var(--bgcolour)]"}`}
               src={
-                icon[
-                  `${character.name
+                icons[
+                  character.name
                     .replace(" ", "_")
-                    .toLowerCase()}_icon.webp` as keyof typeof icon
-                ].relativePath
+                    .toLowerCase() as keyof typeof icons
+                ]
               }
               quality={75}
               alt={character.name}
@@ -67,16 +67,9 @@ export default function CharSelector({
               }}
               id={`icon-${character.name}`}
               fill={true}
+              sizes="10vw"
               priority={true}
-              sizes="20vw"
               placeholder="blur"
-              blurDataURL={
-                icon[
-                  `${character.name
-                    .replace(" ", "_")
-                    .toLowerCase()}_icon.webp` as keyof typeof icon
-                ].imgBase64
-              }
             />
           </div>
         ))}
