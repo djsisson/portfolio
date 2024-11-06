@@ -23,6 +23,11 @@ export default function Home() {
             Tilez
           </a>
         </li>
+        <li>
+          <a className="hover:underline" href="/forum">
+            Forum
+          </a>
+        </li>
       </ul>
     </main>
   );

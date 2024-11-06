@@ -7,7 +7,7 @@ export async function GET(
   props: { params: Promise<{ redirect?: string[] }> },
 ) {
   const params = await props.params;
-  const { searchParams, hostname, protocol } = new URL(request.url);
+  const { searchParams, hostname, protocol, port } = new URL(request.url);
   const code = searchParams.get("code");
 
   const redirectUrl = `/${params.redirect?.join("/") ?? ""}`;
@@ -19,7 +19,9 @@ export async function GET(
       const isLocalEnv = process.env.NODE_ENV === "development";
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${protocol}//${hostname}${redirectUrl}`);
+        return NextResponse.redirect(
+          `${protocol}//${hostname}:${port}${redirectUrl}`,
+        );
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${redirectUrl}`);
       } else {
