@@ -96,17 +96,8 @@ export default function Character({ data }: { data: Cities }) {
           currentCharacter={currentCharacter.name}
           handleTouchEnd={handleTouchEnd}
           handleTouchStart={handleTouchStart}
-          setCharacterLoading={setCharacterLoading}
         />
       ))}
-      {/* {currentCharacter.name && (
-        <Profile
-          currentCharacter={currentCharacter.name}
-          handleTouchEnd={handleTouchEnd}
-          handleTouchStart={handleTouchStart}
-          setCharacterLoading={setCharacterLoading}
-        />
-      )} */}
       <div className="absolute left-[35%] top-[20%] z-20 h-[30%] w-[30%] max-w-96 sm:left-[25%]">
         {currentCharacter.name && <CharInfo character={currentCharacter} />}
       </div>

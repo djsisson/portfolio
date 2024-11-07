@@ -5,18 +5,16 @@ export default function Profile({
   currentCharacter,
   handleTouchEnd,
   handleTouchStart,
-  setCharacterLoading,
   charName,
 }: {
   currentCharacter: string;
   handleTouchEnd: (e: React.TouchEvent<HTMLDivElement>) => void;
   handleTouchStart: (e: React.TouchEvent<HTMLDivElement>) => void;
-  setCharacterLoading: React.Dispatch<React.SetStateAction<boolean>>;
   charName: string;
 }) {
   return (
     <div
-      className={`absolute left-0 top-0 z-20 h-svh w-svw overflow-clip ${currentCharacter != charName && "hidden"}`}
+      className={`absolute left-0 top-0 h-svh w-svw overflow-clip ${currentCharacter != charName && "opacity-0"} ${currentCharacter == charName ? "z-20" : "z-0"}`}
     >
       <Image
         onTouchEnd={(e) => handleTouchEnd(e)}
@@ -33,11 +31,6 @@ export default function Profile({
         alt={charName}
         fill={true}
         priority={currentCharacter == charName}
-        // onLoad={(e) => {
-        //   setCharacterLoading(false);
-        //   e.currentTarget.classList.add("animate-slide-in");
-        //   e.currentTarget.classList.remove("opacity-0");
-        // }}
         placeholder="blur"
       />
     </div>
