@@ -99,7 +99,7 @@ export default function CurrentWord() {
         <div className="bg-secondary flex flex-col gap-4 rounded-lg p-4">
           <div className="text-center">Congratulations, you won!</div>
           <div className="text-center">You made {gameState.moves} moves.</div>
-          <div className="flex gap-2">
+          <div className="flex max-h-[calc(100svh-20rem)] gap-2 overflow-y-auto">
             <div className="border-secondary-foreground flex flex-col p-2">
               <div>Found words:</div>
               {gameState.found.map((x) => (

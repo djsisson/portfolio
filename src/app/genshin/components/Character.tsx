@@ -1,6 +1,6 @@
 "use client";
 import { Cities, Characters } from "../data";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Background from "./Background";
 import Profile from "./Profile";
 import CitySelector from "./City-Selector";
@@ -13,6 +13,7 @@ export default function Character({ data }: { data: Cities }) {
   const [xdown, setXdown] = useState(0);
   const [ydown, setYdown] = useState(0);
   const [characterLoading, setCharacterLoading] = useState(true);
+  const loadingTimer = useRef<NodeJS.Timeout>(null);
 
   useEffect(() => {
     setCharacterLoading(true);
@@ -22,7 +23,7 @@ export default function Character({ data }: { data: Cities }) {
   useEffect(() => {
     const characterRef = document.getElementById(
       `icon-${currentCharacter.name}`,
-    )
+    );
     if (characterRef) {
       characterRef.scrollIntoView({
         behavior: "smooth",
@@ -31,6 +32,17 @@ export default function Character({ data }: { data: Cities }) {
       });
     }
   }, [currentCharacter]);
+
+  useEffect(() => {
+    if (characterLoading) {
+      loadingTimer.current = setTimeout(() => {
+        setCharacterLoading(false);
+      }, 500);
+    }
+    return () => {
+      if (loadingTimer.current) clearTimeout(loadingTimer.current);
+    };
+  }, [characterLoading]);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     setXdown(e.targetTouches[0].clientX);
@@ -77,15 +89,25 @@ export default function Character({ data }: { data: Cities }) {
   return (
     <>
       <Background currentCity={data[currentCity].name} />
-      {currentCharacter.name && (
+      {data[currentCity].characters.map((char) => (
+        <Profile
+          key={char.name}
+          charName={char.name}
+          currentCharacter={currentCharacter.name}
+          handleTouchEnd={handleTouchEnd}
+          handleTouchStart={handleTouchStart}
+          setCharacterLoading={setCharacterLoading}
+        />
+      ))}
+      {/* {currentCharacter.name && (
         <Profile
           currentCharacter={currentCharacter.name}
           handleTouchEnd={handleTouchEnd}
           handleTouchStart={handleTouchStart}
           setCharacterLoading={setCharacterLoading}
         />
-      )}
-      <div className="absolute top-[20%] left-[35%] z-20 h-[30%] w-[30%] max-w-96 sm:left-[25%]">
+      )} */}
+      <div className="absolute left-[35%] top-[20%] z-20 h-[30%] w-[30%] max-w-96 sm:left-[25%]">
         {currentCharacter.name && <CharInfo character={currentCharacter} />}
       </div>
       <div className="flex h-full w-full flex-col justify-center">

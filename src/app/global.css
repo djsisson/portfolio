@@ -26,7 +26,7 @@
   --animate-acordian-down: animate-acordian-down 0.2s ease-out;
   --animate-acordian-up: animate-acordian-up 0.2s ease-out;
   --animate-appear-up: animate-appear-up 500ms ease-in-out;
-  --animate-slide-in: animate-slide-in 500ms ease-in-out;
+  --animate-slide-in: animate-slide-in 1000ms ease-in-out;
   --font-family-sans: var(--font-inter), sans-serif;
   --color-sidebar: hsl(var(--sidebar-background));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
