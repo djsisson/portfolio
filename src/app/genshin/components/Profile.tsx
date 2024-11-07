@@ -14,7 +14,7 @@ export default function Profile({
 }) {
   return (
     <div
-      className={`absolute left-0 top-0 h-svh w-svw overflow-clip ${currentCharacter != charName && "opacity-0"} ${currentCharacter == charName ? "z-20" : "z-0"}`}
+      className={`absolute left-0 top-0 h-svh w-svw overflow-clip ${currentCharacter == charName ? "z-20" : "z-0 hidden opacity-0"} `}
     >
       <Image
         onTouchEnd={(e) => handleTouchEnd(e)}
@@ -29,8 +29,7 @@ export default function Profile({
           ]
         }
         alt={charName}
-        fill={true}
-        priority={currentCharacter == charName}
+        priority={true}
         placeholder="blur"
       />
     </div>

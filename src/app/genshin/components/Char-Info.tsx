@@ -5,19 +5,27 @@ import { Characters } from "../data";
 export default function CharInfo({ character }: { character: Characters[0] }) {
   return (
     <div className="flex h-full flex-col">
-      <div className="absolute top-0 left-0 flex h-full w-full items-center justify-center">
-        <Image
-          className="aspect-square object-contain opacity-50"
-          src={
-            elements[
-              character.element.name.toLowerCase() as keyof typeof elements
-            ]
-          }
-          alt={character.element.name}
-          fill={true}
-          priority={true}
-        />
-      </div>
+      {Object.entries(elements).map(([key, value]) => {
+        return (
+          <div
+            key={key}
+            className={`absolute left-0 top-0 flex h-full w-full items-center justify-center ${
+              key === character.element.name.toLowerCase()
+                ? "visible"
+                : "hidden"
+            }`}
+          >
+            <Image
+              className="aspect-square object-contain opacity-50"
+              src={value}
+              alt={key}
+              fill={true}
+              priority={false}
+            />
+          </div>
+        );
+      })}
+
       <div className="bg-white/20 backdrop-blur-sm">
         <h1
           className="border-b-2 border-white/20 bg-gradient-to-b from-white to-[var(--bgcolour)] bg-clip-text p-2 font-bold text-transparent md:text-2xl lg:text-4xl"
