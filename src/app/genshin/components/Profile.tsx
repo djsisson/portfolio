@@ -21,7 +21,7 @@ export default function Profile({
         onTouchStart={(e) => handleTouchStart(e)}
         key={charName}
         quality={75}
-        className={`left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none overflow-clip object-cover ${currentCharacter == charName && "animate-slide-in"}`}
+        className={`relative left-[calc(50%-63vh)] z-0 h-svh w-auto max-w-none overflow-clip object-cover ${currentCharacter == charName && "animate-slide-in"}`}
         style={{ inset: undefined, width: undefined, height: undefined }}
         src={
           portraits[
