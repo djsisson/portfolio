@@ -30,7 +30,6 @@ export default function Profile({
         }
         alt={charName}
         priority={true}
-        placeholder="blur"
       />
     </div>
   );

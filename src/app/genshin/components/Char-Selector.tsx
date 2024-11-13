@@ -69,7 +69,6 @@ export default function CharSelector({
               fill={true}
               sizes="10vw"
               priority={true}
-              placeholder="blur"
             />
           </div>
         ))}

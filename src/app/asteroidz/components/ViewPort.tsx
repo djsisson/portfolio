@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   useGameState,
   calcdamage,
@@ -144,7 +144,6 @@ const ViewPort = () => {
           priority={true}
           className="[-webkit-user-drag:none] [user-drag:none] select-none"
           fill={true}
-          placeholder="blur"
         />
       </div>
       {cpsValues.map((x) => {

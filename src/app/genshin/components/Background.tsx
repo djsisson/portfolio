@@ -11,7 +11,6 @@ export default function Background({ currentCity }: { currentCity: string }) {
         alt={currentCity}
         priority={true}
         fill={true}
-        placeholder="blur"
       ></Image>
     </div>
   );

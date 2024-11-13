@@ -17,7 +17,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         alt="Background"
         fill={true}
         priority={true}
-        placeholder="blur"
       />
       {children}
     </div>
