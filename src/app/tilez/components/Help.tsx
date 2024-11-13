@@ -35,19 +35,19 @@ export default function Help() {
 
         <div className="flex flex-row gap-2">
           <div className="flex flex-1 flex-col gap-2">
-            <Image src={imgA} alt={"tilez blue"} placeholder="blur" />
+            <Image src={imgA} alt={"tilez blue"}  />
             <div className="text-center">
               Align tiles to spell a word. Selected tiles are blue.
             </div>
           </div>
           <div className="flex flex-1 flex-col gap-2">
-            <Image src={imgB} alt={"tilez green"} placeholder="blur" />
+            <Image src={imgB} alt={"tilez green"}  />
             <div className="text-center">
               Tiles where you have found a word turn green.
             </div>
           </div>
           <div className="flex flex-1 flex-col gap-2">
-            <Image src={imgC} alt={"completed"} placeholder="blur" />
+            <Image src={imgC} alt={"completed"}  />
             <div className="text-center">
               Turn all the tiles green, to complete the game, can you do it in
               the least number of moves?
