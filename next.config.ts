@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
   },
   images: {
+    minimumCacheTTL: 60 * 60 * 24 * 7 * 4,
     localPatterns: [
       {
         pathname: "/assets/**",
