@@ -2,14 +2,21 @@ import {
   AnyPgColumn,
   index,
   integer,
+  pgPolicy,
   pgTable,
   primaryKey,
   text,
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
-import { authUsers, authenticatedRole, authUid,postgresRole } from "drizzle-orm/supabase";
+import { eq, sql } from "drizzle-orm";
+import {
+  authUsers,
+  authenticatedRole,
+  authUid,
+  anonRole,
+  postgresRole,
+} from "drizzle-orm/supabase";
 
 export const users = pgTable(
   "users",
@@ -33,13 +40,36 @@ export const users = pgTable(
     bio: text("bio"),
     avatar: text("avatar"),
   },
-  (table) => {
-    return {
-      usernameIdx: index("users_username_idx").using("btree", table.username),
-      emailIdx: index("users_email_idx").using("btree", table.email),
-      userIdx: index("users_user_id_idx").using("btree", table.user_id),
-    };
-  },
+  (table) => [
+    index("users_username_idx").using("btree", table.username),
+    index("users_email_idx").using("btree", table.email),
+    index("users_user_id_idx").using("btree", table.user_id),
+    pgPolicy("users_delete_policy", {
+      as: "permissive",
+      for: "delete",
+      to: authenticatedRole,
+      using: eq(table.user_id, authUid),
+    }),
+    pgPolicy("users_insert_policy", {
+      as: "permissive",
+      for: "insert",
+      to: authenticatedRole,
+      withCheck: eq(table.user_id, authUid),
+    }),
+    pgPolicy("users_select_policy", {
+      as: "permissive",
+      for: "select",
+      to: anonRole,
+      using: sql`true`,
+    }),
+    pgPolicy("users_update_policy", {
+      as: "permissive",
+      for: "update",
+      to: authenticatedRole,
+      withCheck: eq(table.user_id, authUid),
+      using: eq(table.user_id, authUid),
+    }),
+  ],
 );
 
 export const messages = pgTable(
@@ -64,15 +94,35 @@ export const messages = pgTable(
       () => new Date(),
     ),
   },
-  (table) => {
-    return {
-      userIdx: index("messages_user_id_idx").using("btree", table.user_id),
-      parentIdIdx: index("messages_parent_id_idx").using(
-        "btree",
-        table.parent_id,
-      ),
-    };
-  },
+  (table) => [
+    index("messages_user_id_idx").using("btree", table.user_id),
+    index("messages_parent_id_idx").using("btree", table.parent_id),
+    pgPolicy("messages_delete_policy", {
+      as: "permissive",
+      for: "delete",
+      to: authenticatedRole,
+      using: eq(table.user_id, authUid),
+    }),
+    pgPolicy("messages_insert_policy", {
+      as: "permissive",
+      for: "insert",
+      to: authenticatedRole,
+      withCheck: eq(table.user_id, authUid),
+    }),
+    pgPolicy("messages_select_policy", {
+      as: "permissive",
+      for: "select",
+      to: anonRole,
+      using: sql`true`,
+    }),
+    pgPolicy("messages_update_policy", {
+      as: "permissive",
+      for: "update",
+      to: authenticatedRole,
+      withCheck: eq(table.user_id, authUid),
+      using: eq(table.user_id, authUid),
+    }),
+  ],
 );
 
 export const likes = pgTable(
@@ -89,14 +139,37 @@ export const likes = pgTable(
       .notNull(),
     like: integer("like").default(0).notNull(),
   },
-  (table) => {
-    return {
-      likespk: primaryKey({
-        columns: [table.user_id, table.message_id],
-        name: "likes_pk",
-      }),
-    };
-  },
+  (table) => [
+    primaryKey({
+      columns: [table.user_id, table.message_id],
+      name: "likes_pk",
+    }),
+    pgPolicy("likes_delete_policy", {
+      as: "permissive",
+      for: "delete",
+      to: authenticatedRole,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+    }),
+    pgPolicy("likes_insert_policy", {
+      as: "permissive",
+      for: "insert",
+      to: authenticatedRole,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+    }),
+    pgPolicy("likes_select_policy", {
+      as: "permissive",
+      for: "select",
+      to: anonRole,
+      using: sql`true`,
+    }),
+    pgPolicy("likes_update_policy", {
+      as: "permissive",
+      for: "update",
+      to: authenticatedRole,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+    }),
+  ],
 );
 export const hashtags = pgTable(
   "hashtags",
@@ -107,11 +180,33 @@ export const hashtags = pgTable(
       .notNull(),
     hashtag: text("hashtag").notNull(),
   },
-  (table) => {
-    return {
-      hashtagIdx: index("hashtags_hashtag_idx").using("btree", table.hashtag),
-    };
-  },
+  (table) => [
+    index("hashtags_hashtag_idx").using("btree", table.hashtag),
+    pgPolicy("hashtags_delete_policy", {
+      as: "permissive",
+      for: "delete",
+      to: postgresRole,
+      using: sql`true`,
+    }),
+    pgPolicy("hashtags_insert_policy", {
+      as: "permissive",
+      for: "insert",
+      to: postgresRole,
+      withCheck: sql`true`,
+    }),
+    pgPolicy("hashtags_select_policy", {
+      as: "permissive",
+      for: "select",
+      to: anonRole,
+      using: sql`true`,
+    }),
+    pgPolicy("hashtags_update_policy", {
+      as: "permissive",
+      for: "update",
+      to: postgresRole,
+      using: sql`true`,
+    }),
+  ],
 );
 
 export const hashtag_messages = pgTable(
@@ -130,22 +225,38 @@ export const hashtag_messages = pgTable(
       })
       .notNull(),
   },
-  (table) => {
-    return {
-      hashtagIdIdx: index("hashtag_messages_hashtag_id_idx").using(
-        "btree",
-        table.hashtag_id,
-      ),
-      messageIdIdx: index("hashtag_messages_message_id_idx").using(
-        "btree",
-        table.message_id,
-      ),
-      hashtagpk: primaryKey({
-        columns: [table.hashtag_id, table.message_id],
-        name: "hashtag_messages_pk",
-      }),
-    };
-  },
+  (table) => [
+    index("hashtag_messages_hashtag_id_idx").using("btree", table.hashtag_id),
+    index("hashtag_messages_message_id_idx").using("btree", table.message_id),
+    primaryKey({
+      columns: [table.hashtag_id, table.message_id],
+      name: "hashtag_messages_pk",
+    }),
+    pgPolicy("hashtag_messages_delete_policy", {
+      as: "permissive",
+      for: "delete",
+      to: postgresRole,
+      using: sql`true`,
+    }),
+    pgPolicy("hashtag_messages_insert_policy", {
+      as: "permissive",
+      for: "insert",
+      to: postgresRole,
+      withCheck: sql`true`,
+    }),
+    pgPolicy("hashtag_messages_select_policy", {
+      as: "permissive",
+      for: "select",
+      to: anonRole,
+      using: sql`true`,
+    }),
+    pgPolicy("hashtag_messages_update_policy", {
+      as: "permissive",
+      for: "update",
+      to: postgresRole,
+      using: sql`true`,
+    }),
+  ],
 );
 
 export const user_follows = pgTable(
@@ -158,17 +269,40 @@ export const user_follows = pgTable(
       .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" })
       .notNull(),
   },
-  (table) => {
-    return {
-      userIdx: index("user_follows_user_id_idx").using("btree", table.user_id),
-      followingUserIdx: index("user_follows_following_user_id_idx").using(
-        "btree",
-        table.following_user_id,
-      ),
-      userFollowspk: primaryKey({
-        columns: [table.user_id, table.following_user_id],
-        name: "user_follows_pk",
-      }),
-    };
-  },
+  (table) => [
+    index("user_follows_user_id_idx").using("btree", table.user_id),
+    index("user_follows_following_user_id_idx").using(
+      "btree",
+      table.following_user_id,
+    ),
+    primaryKey({
+      columns: [table.user_id, table.following_user_id],
+      name: "user_follows_pk",
+    }),
+    pgPolicy("user_follows_delete_policy", {
+      as: "permissive",
+      for: "delete",
+      to: authenticatedRole,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+    }),
+    pgPolicy("user_follows_insert_policy", {
+      as: "permissive",
+      for: "insert",
+      to: authenticatedRole,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+    }),
+    pgPolicy("user_follows_select_policy", {
+      as: "permissive",
+      for: "select",
+      to: anonRole,
+      using: sql`true`,
+    }),
+    pgPolicy("user_follows_update_policy", {
+      as: "permissive",
+      for: "update",
+      to: authenticatedRole,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+    }),
+  ],
 );
