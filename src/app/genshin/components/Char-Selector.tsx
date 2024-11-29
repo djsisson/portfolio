@@ -44,7 +44,7 @@ export default function CharSelector({
         {characters.map((character) => (
           <div
             key={character.name}
-            className={`relative z-10 aspect-square h-full rounded-full group-has-hover:grayscale-100 before:absolute before:inset-0 before:z-10 before:w-full before:rounded-full before:bg-[conic-gradient(from_135deg,var(--bgcolour),white,var(--bgcolour))] before:transition-all before:duration-1000 before:content-[''] after:absolute after:inset-0 after:z-20 after:w-full after:rounded-full after:bg-[conic-gradient(from_45deg,var(--bgcolour),white,var(--bgcolour))] after:opacity-0 after:transition-all after:duration-1000 after:content-[''] hover:grayscale-0 hover:after:opacity-100`}
+            className={`group-has-hover:grayscale-100 bg-radial-[at_25%_25%] hover:bg-radial-[at_25%_50%] relative z-10 aspect-square h-full rounded-full from-white to-[var(--bgcolour)] to-75% hover:grayscale-0`}
             style={
               { "--bgcolour": character.element.colour } as React.CSSProperties
             }
@@ -77,7 +77,7 @@ export default function CharSelector({
         className="hidden h-full items-center p-2 sm:flex"
         onClick={() => onClick("right")}
       >
-        <i className="inline-block -rotate-135 cursor-pointer border-b-4 border-l-4 border-b-black border-l-black p-3 transition duration-300 ease-in-out hover:scale-125"></i>
+        <i className="-rotate-135 inline-block cursor-pointer border-b-4 border-l-4 border-b-black border-l-black p-3 transition duration-300 ease-in-out hover:scale-125"></i>
       </div>
     </div>
   );
