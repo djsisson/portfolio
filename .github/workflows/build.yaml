@@ -21,7 +21,7 @@ jobs:
         shell: bash
 
       - name: Config Cloudflare WARP
-        working-directory: cloudflare-warp-connector/scripts
+        working-directory: scripts
         run: |
           ./cf-build-config.sh mdm.xml ${{ secrets.CLOUDFLARE_ORGANIZATION_ID }} ${{ secrets.CF_ID }} ${{ secrets.CF_SECRET }} ${{ secrets.CLOUDFLARE_WARP_TOKEN }}
           sudo mv mdm.xml /var/lib/cloudflare-warp/
