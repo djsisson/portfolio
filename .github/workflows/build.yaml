@@ -10,25 +10,34 @@ jobs:
   setup-warp:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Cloudflare WARP Connector
-        uses: wallravit/cloudflare-warp-connector@v1.0.0
-        with:
-          organization: ${{ secrets.CLOUDFLARE_ORGANIZATION_ID }}
-          cloudflare_access_client_id: ${{ secrets.CF_ID }}
-          cloudflare_client_secret: ${{ secrets.CF_SECRET }}
-          cloudflare_warp_token: ${{ secrets.CLOUDFLARE_WARP_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Check WARP Registration
-        run: warp-cli --accept-tos registration show
+      - name: Install Cloudflare WARP
+        run: |
+          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+          sudo apt update && sudo apt install cloudflare-warp
+        shell: bash
 
-      - name: Check WARP Status
-        run: warp-cli --accept-tos status
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
+      - name: Config Cloudflare WARP
+        working-directory: cloudflare-warp-connector/scripts
+        run: |
+          ./cf-build-config.sh mdm.xml ${{ secrets.CLOUDFLARE_ORGANIZATION_ID }} ${{ secrets.CF_ID }} ${{ secrets.CF_SECRET }} ${{ secrets.CLOUDFLARE_WARP_TOKEN }}
+          sudo mv mdm.xml /var/lib/cloudflare-warp/
+          sudo mkdir -p /run/dbus
+          sudo dbus-daemon --config-file=/usr/share/dbus-1/system.conf
+          sudo systemctl restart warp-svc.service
+          ./cf-warp-pre-connect.sh -m 10
+          warp-cli --accept-tos connect
+        shell: bash
+
+      - name: Validate Cloudflare WARP Config
+        run: |
+          warp-cli --accept-tos registration show
+          warp-cli --accept-tos status
+        shell: branches
+
       - name: Login to registry
         uses: docker/login-action@v3
         with:
