@@ -1,4 +1,4 @@
-import { pgTable, integer, text, unique } from "drizzle-orm/pg-core";
+import { pgTable, integer, text, unique, index } from "drizzle-orm/pg-core";
 
 export const elements = pgTable(
   "elements",
@@ -42,8 +42,11 @@ export const characters = pgTable(
   },
   (table) => [
     unique("characters_name_unique").on(table.name),
-    unique("characters_city_id_cities_id_fk").on(table.city_id),
-    unique("characters_element_id_elements_id_fk").on(table.element_id),
+    index("characters_city_id_cities_id_fk").using("btree", table.city_id),
+    index("characters_element_id_elements_id_fk").using(
+      "btree",
+      table.element_id,
+    ),
   ],
 );
 

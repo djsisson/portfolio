@@ -42,7 +42,7 @@ export function dbClient<Token extends SupabaseToken = SupabaseToken>(
               token.sub ?? "",
             )}', TRUE);												
             -- set local role
-            set local role ${sql.raw(token.role ?? "anon")};
+            set local role ${sql.raw(token.aud?.toString() ?? "anon")};
             `);
             return await transaction(tx);
           } finally {

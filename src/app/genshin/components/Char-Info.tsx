@@ -20,7 +20,7 @@ export default function CharInfo({ character }: { character: Characters[0] }) {
               src={value}
               alt={key}
               fill={true}
-              priority={false}
+              priority={true}
             />
           </div>
         );

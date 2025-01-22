@@ -17,15 +17,16 @@ const db = drizzle({
   }),
   schema,
 });
-export function dbClient<
-  Token extends SupabaseToken = SupabaseToken,
->(token: Token) {
+export function dbClient<Token extends SupabaseToken = SupabaseToken>(
+  token: Token,
+) {
   return {
     db,
     rls: (async (transaction, ...rest) => {
-      return await db.transaction(async (tx) => {
-        try {
-          await tx.execute(sql`
+      return await db.transaction(
+        async (tx) => {
+          try {
+            await tx.execute(sql`
             -- auth.jwt()
             select set_config('request.jwt.claims', '${sql.raw(
               JSON.stringify(token),
@@ -35,18 +36,20 @@ export function dbClient<
               token.sub ?? "",
             )}', TRUE);												
             -- set local role
-            set local role ${sql.raw(token.role ?? "anon")};
+            set local role ${sql.raw(token.aud?.toString() ?? "anon")};
             `);
-          return await transaction(tx);
-        } finally {
-          await tx.execute(sql`
+            return await transaction(tx);
+          } finally {
+            await tx.execute(sql`
             -- reset
             select set_config('request.jwt.claims', NULL, TRUE);
             select set_config('request.jwt.claim.sub', NULL, TRUE);
             reset role;
             `);
-        }
-      }, ...rest);
+          }
+        },
+        ...rest,
+      );
     }) as typeof db.transaction,
-  }
+  };
 }

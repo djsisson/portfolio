@@ -10,7 +10,8 @@
     "driz-gen": "yarn drizzle-kit generate",
     "driz-mig": "yarn drizzle-kit migrate",
     "seed": "yarn dlx tsx ./src/db/seed/seed.ts",
-    "blur": "yarn dlx tsx ./processImages.ts"
+    "blur": "yarn dlx tsx ./processImages.ts",
+    "test-build": "docker buildx build -t 10.0.0.2:5000/portfolio:latest --push ."
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",

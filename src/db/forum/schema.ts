@@ -148,13 +148,13 @@ export const likes = pgTable(
       as: "permissive",
       for: "delete",
       to: authenticatedRole,
-      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
     }),
     pgPolicy("likes_insert_policy", {
       as: "permissive",
       for: "insert",
       to: authenticatedRole,
-      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
     }),
     pgPolicy("likes_select_policy", {
       as: "permissive",
@@ -166,8 +166,8 @@ export const likes = pgTable(
       as: "permissive",
       for: "update",
       to: authenticatedRole,
-      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
-      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
     }),
   ],
 );
@@ -283,13 +283,13 @@ export const user_follows = pgTable(
       as: "permissive",
       for: "delete",
       to: authenticatedRole,
-      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
     }),
     pgPolicy("user_follows_insert_policy", {
       as: "permissive",
       for: "insert",
       to: authenticatedRole,
-      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
     }),
     pgPolicy("user_follows_select_policy", {
       as: "permissive",
@@ -301,8 +301,8 @@ export const user_follows = pgTable(
       as: "permissive",
       for: "update",
       to: authenticatedRole,
-      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
-      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT uid() AS uid))))`,
+      using: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
+      withCheck: sql`(user_id IN ( SELECT users.id FROM users WHERE (users.user_id = ( SELECT auth.uid() AS uid))))`,
     }),
   ],
 );

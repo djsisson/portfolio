@@ -7,7 +7,7 @@ import * as asteroidz_relations from "./asteroidz/relations";
 import * as forum_schema from "./forum/schema";
 import { loadEnvConfig } from "@next/env";
 
-loadEnvConfig(process.cwd(), true);
+loadEnvConfig(process.cwd(), false);
 // import * as forum_relations from "./forum/relations";
 
 const connectionString = process.env.DATABASE_URL!;

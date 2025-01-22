@@ -56,6 +56,7 @@ export async function listTodos() {
   if (!jwt) {
     return [] as (typeof todos.$inferSelect)[];
   }
+
   const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
     const todoList = await tx
       .select()

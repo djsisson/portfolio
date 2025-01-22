@@ -61,7 +61,7 @@ export const asteroidSeed = async (db: Transaction) => {
     .values(
       asteroidz.upgrades.map((u) => ({
         ...u,
-        effectItemId: newShopItems.find((i) => i.name === u.name)?.id!,
+        effectItemId: newShopItems.find((i) => i.name === u.effectItem)?.id!,
       })),
     )
     .returning();

@@ -45,8 +45,8 @@ const main = async () => {
     process.exit(0);
   }
   console.log("Seeding database...");
-  // await seedGenshin();
-  // await seedAsteroid();
+  await seedGenshin();
+  await seedAsteroid();
   await seedForum();
   console.log("Seeding complete");
   process.exit(0);
