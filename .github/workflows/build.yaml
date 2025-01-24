@@ -30,6 +30,7 @@ jobs:
           sudo systemctl restart warp-svc.service
           ./cf-warp-pre-connect.sh -m 10
           warp-cli --accept-tos connect
+          ip addr
         shell: bash
 
       - name: Login to registry
