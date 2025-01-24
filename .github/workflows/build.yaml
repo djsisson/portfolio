@@ -7,7 +7,7 @@ env:
   IMAGE_NAME: "portfolio"
 
 jobs:
-  setup-warp:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,20 +32,12 @@ jobs:
           warp-cli --accept-tos connect
         shell: bash
 
-      - name: Validate Cloudflare WARP Config
-        run: |
-          warp-cli --accept-tos registration show
-          warp-cli --accept-tos status
-        shell: bash
-
       - name: Login to registry
         uses: docker/login-action@v3
         with:
           registry: ${{ secrets.REGISTRY_URL }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD  }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Build image and push to registry
         uses: docker/build-push-action@v6
