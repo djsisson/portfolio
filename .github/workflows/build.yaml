@@ -13,25 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Cloudflare WARP
-        run: |
-          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
-          sudo apt update && sudo apt install cloudflare-warp
-          sudo sysctl -w net.ipv4.ip_forward=1
-        shell: bash
-
-      - name: Config Cloudflare WARP
-        working-directory: scripts
-        run: |
-          ./cf-build-config.sh mdm.xml ${{ secrets.CLOUDFLARE_ORGANIZATION_ID }} ${{ secrets.CF_ID }} ${{ secrets.CF_SECRET }} ${{ secrets.CLOUDFLARE_WARP_TOKEN }}
-          sudo mv mdm.xml /var/lib/cloudflare-warp/
-          sudo mkdir -p /run/dbus
-          sudo dbus-daemon --config-file=/usr/share/dbus-1/system.conf
-          sudo systemctl restart warp-svc.service
-          ./cf-warp-pre-connect.sh -m 10
-          warp-cli --accept-tos connect
-        shell: bash
+      - name: Setup Cloudflare WARP
+        uses: Boostport/setup-cloudflare-warp@v1
+        with:
+          organization: ${{ secrets.CLOUDFLARE_ORGANIZATION_ID }}
+          auth_client_id: ${{ secrets.CF_ID }}
+          auth_client_secret: ${{ secrets.CF_SECRET }}
 
       - name: Login to registry
         uses: docker/login-action@v3
