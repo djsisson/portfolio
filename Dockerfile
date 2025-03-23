@@ -1,6 +1,6 @@
-FROM node:22-alpine AS base
+FROM node:23-alpine AS base
 
-ENV YARN_VERSION=4.5
+ENV YARN_VERSION=4.7
 RUN corepack enable && corepack prepare yarn@${YARN_VERSION} --activate
 RUN yarn set version ${YARN_VERSION}
 RUN apk add --no-cache libc6-compat
