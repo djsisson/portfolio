@@ -1,5 +1,5 @@
 import type { MDXComponents } from "mdx/types";
-import Image, { ImageProps } from "next/image";
+import Image, { type ImageProps } from "next/image";
 
 // This file allows you to provide custom React components
 // to be used in MDX files. You can import and use any
@@ -7,19 +7,19 @@ import Image, { ImageProps } from "next/image";
 // components from other libraries, and more.
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
-  return {
-    // Allows customizing built-in components, e.g. to add styling.
-    h1: ({ children }) => (
-      <h1 style={{ color: "red", fontSize: "48px" }}>{children}</h1>
-    ),
-    h2: ({ children }) => <h2 className="p-4 text-lg font-bold">{children}</h2>,
-    img: (props) => (
-      <Image
-        sizes="100vw"
-        style={{ width: "100%", height: "auto" }}
-        {...(props as ImageProps)}
-      />
-    ),
-    ...components,
-  };
+	return {
+		// Allows customizing built-in components, e.g. to add styling.
+		h1: ({ children }) => (
+			<h1 style={{ color: "red", fontSize: "48px" }}>{children}</h1>
+		),
+		h2: ({ children }) => <h2 className="p-4 text-lg font-bold">{children}</h2>,
+		img: (props) => (
+			<Image
+				sizes="100vw"
+				style={{ width: "100%", height: "auto" }}
+				{...(props as ImageProps)}
+			/>
+		),
+		...components,
+	};
 }

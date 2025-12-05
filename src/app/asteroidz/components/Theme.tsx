@@ -28,14 +28,15 @@ const Theme = () => {
       <div className="absolute right-0 hidden min-w-fit bg-black shadow-lg group-hover:flex group-hover:flex-col">
         {themes.map((x) => {
           return (
-            <div
+            <button
               key={x}
+              type="button"
               style={{ color: x }}
               onClick={() => onClick({ colour: x })}
               className="flex cursor-pointer items-center gap-3 border-2 border-transparent p-4 text-xl hover:border-white"
             >
               {x}
-            </div>
+            </button>
           );
         })}
       </div>

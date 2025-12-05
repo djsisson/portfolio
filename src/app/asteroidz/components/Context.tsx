@@ -1,57 +1,58 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-  useEffect,
-  Dispatch,
-  useState,
+import type React from "react";
+import {
+	createContext,
+	type Dispatch,
+	useContext,
+	useEffect,
+	useReducer,
+	useState,
 } from "react";
-import { gameObject, gameState } from "../data";
+import type { gameObject, gameState } from "../data";
 
 type gameAction =
-  | {
-      type: "click";
-      value: number;
-    }
-  | {
-      type: "addCps";
-      value: number;
-    }
-  | {
-      type: "buyResearch";
-      value: string;
-    }
-  | {
-      type: "buyUpgrade";
-      value: string;
-    }
-  | {
-      type: "buyItem";
-      value: string;
-    }
-  | {
-      type: "changeTheme";
-      value: string;
-    }
-  | {
-      type: "changeName";
-      value: string;
-    }
-  | {
-      type: "loadGame";
-      payload: typeof gameState;
-    }
-  | {
-      type: "newGame";
-      payload: typeof gameState;
-    };
+	| {
+			type: "click";
+			value: number;
+	  }
+	| {
+			type: "addCps";
+			value: number;
+	  }
+	| {
+			type: "buyResearch";
+			value: string;
+	  }
+	| {
+			type: "buyUpgrade";
+			value: string;
+	  }
+	| {
+			type: "buyItem";
+			value: string;
+	  }
+	| {
+			type: "changeTheme";
+			value: string;
+	  }
+	| {
+			type: "changeName";
+			value: string;
+	  }
+	| {
+			type: "loadGame";
+			payload: typeof gameState;
+	  }
+	| {
+			type: "newGame";
+			payload: typeof gameState;
+	  };
 
 export type stats = {
-  baseValue: number;
-  critChance: number;
-  critDamage: number;
+	baseValue: number;
+	critChance: number;
+	critDamage: number;
 };
 
 const gameStateContext = createContext({} as typeof gameState);
@@ -60,278 +61,283 @@ const gameObjectContext = createContext({} as Readonly<typeof gameObject>);
 
 let g_GameObject: typeof gameObject;
 export const GameStateProvider = ({
-  children,
-  _gameState,
-  _gameObject,
+	children,
+	_gameState,
+	_gameObject,
 }: {
-  children: React.ReactNode;
-  _gameState: typeof gameState;
-  _gameObject: typeof gameObject;
+	children: React.ReactNode;
+	_gameState: typeof gameState;
+	_gameObject: typeof gameObject;
 }) => {
-  const [gameState, dispatch] = useReducer(gameStateReducer, _gameState) as [
-    typeof _gameState,
-    Dispatch<gameAction>,
-  ];
-  const [gameObject, setGameObject] = useState(_gameObject);
+	const [gameState, dispatch] = useReducer(gameStateReducer, _gameState) as [
+		typeof _gameState,
+		Dispatch<gameAction>,
+	];
+	const [gameObject, setGameObject] = useState(_gameObject);
 
-  useEffect(() => {
-    const localState = localStorage.getItem("Asteroidz");
+	useEffect(() => {
+		const localState = localStorage.getItem("Asteroidz");
 
-    if (!localState) {
-      const getGameState = async () => {
-        dispatch({ type: "loadGame", payload: _gameState });
-      };
-      getGameState();
-    } else {
-      dispatch({
-        type: "loadGame",
-        payload: JSON.parse(localState) as typeof gameState,
-      });
-    }
-  }, [_gameState]);
+		if (!localState) {
+			const getGameState = async () => {
+				dispatch({ type: "loadGame", payload: _gameState });
+			};
+			getGameState();
+		} else {
+			dispatch({
+				type: "loadGame",
+				payload: JSON.parse(localState) as typeof gameState,
+			});
+		}
+	}, [_gameState]);
 
-  useEffect(() => {
-    localStorage.setItem("Asteroidz", JSON.stringify(gameState));
-  }, [gameState]);
+	useEffect(() => {
+		localStorage.setItem("Asteroidz", JSON.stringify(gameState));
+	}, [gameState]);
 
-  useEffect(() => {
-    setGameObject(_gameObject);
-    g_GameObject = _gameObject;
-  }, [_gameObject]);
+	useEffect(() => {
+		setGameObject(_gameObject);
+		g_GameObject = _gameObject;
+	}, [_gameObject]);
 
-  return (
-    <gameStateContext.Provider value={gameState}>
-      <gameStateDispatchContext.Provider value={dispatch}>
-        <gameObjectContext.Provider value={gameObject}>
-          {children}
-        </gameObjectContext.Provider>
-      </gameStateDispatchContext.Provider>
-    </gameStateContext.Provider>
-  );
+	return (
+		<gameStateContext.Provider value={gameState}>
+			<gameStateDispatchContext.Provider value={dispatch}>
+				<gameObjectContext.Provider value={gameObject}>
+					{children}
+				</gameObjectContext.Provider>
+			</gameStateDispatchContext.Provider>
+		</gameStateContext.Provider>
+	);
 };
 
 export const useGameState = () => {
-  return useContext(gameStateContext);
+	return useContext(gameStateContext);
 };
 
 export const useGameStateDispatch = () => {
-  return useContext(gameStateDispatchContext);
+	return useContext(gameStateDispatchContext);
 };
 
 export const useGameObject = () => {
-  return useContext(gameObjectContext);
+	return useContext(gameObjectContext);
 };
 
 const buyItems = (
-  items: Omit<
-    (typeof gameObject)["research"][number]["requiredItems"][number],
-    "research"
-  >[],
-  inven = [] as (typeof gameState)["items"],
+	items: Omit<
+		(typeof gameObject)["research"][number]["requiredItems"][number],
+		"research"
+	>[],
+	inven = [] as (typeof gameState)["items"],
 ) => {
-  items.forEach((item) => {
-    const itemtoremove = inven.findIndex((x) => x.name == item.required);
-    const newInvenItem = { ...inven[itemtoremove] };
-    newInvenItem.quantity -= item.quantity;
-    inven[itemtoremove] = { ...newInvenItem };
-  });
+	items.forEach((item) => {
+		const itemtoremove = inven.findIndex((x) => x.name === item.required);
+		const newInvenItem = { ...inven[itemtoremove] };
+		newInvenItem.quantity -= item.quantity;
+		inven[itemtoremove] = { ...newInvenItem };
+	});
 };
 
 const upgradeItem = (
-  item: (typeof gameState)["items"][number],
-  stats: stats,
+	item: (typeof gameState)["items"][number],
+	stats: stats,
 ) => {
-  item.baseValue += stats.baseValue;
-  item.critChance += stats.critChance;
-  item.critDamage += stats.critDamage;
+	item.baseValue += stats.baseValue;
+	item.critChance += stats.critChance;
+	item.critDamage += stats.critDamage;
 };
 
 const averageDamage = (stats: stats) => {
-  return (
-    stats.baseValue * stats.critChance * stats.critDamage + stats.baseValue
-  );
+	return (
+		stats.baseValue * stats.critChance * stats.critDamage + stats.baseValue
+	);
 };
 export const calcdamage = (stats: stats) => {
-  let totaldamage = stats.baseValue;
-  let crit = false;
-  if (Math.random() < stats.critChance) {
-    totaldamage = totaldamage * (stats.critDamage + 1);
-    crit = true;
-  }
-  return { totaldamage, crit };
+	let totaldamage = stats.baseValue;
+	let crit = false;
+	if (Math.random() < stats.critChance) {
+		totaldamage = totaldamage * (stats.critDamage + 1);
+		crit = true;
+	}
+	return { totaldamage, crit };
 };
 
 const updateAverage = (inven = [] as (typeof gameState)["items"]): number => {
-  const newAverage = [] as stats[];
-  inven.forEach((x) => {
-    const stats = {
-      baseValue: x.baseValue,
-      critChance: x.critChance,
-      critDamage: x.critDamage,
-    };
-    if (x.name != "Click") {
-      for (let i = 0; i < x.quantity; i++) {
-        newAverage.push(stats);
-      }
-    }
-  });
-  return newAverage.reduce((i, x) => i + averageDamage(x), 0);
+	const newAverage = [] as stats[];
+	inven.forEach((x) => {
+		const stats = {
+			baseValue: x.baseValue,
+			critChance: x.critChance,
+			critDamage: x.critDamage,
+		};
+		if (x.name !== "Click") {
+			for (let i = 0; i < x.quantity; i++) {
+				newAverage.push(stats);
+			}
+		}
+	});
+	return newAverage.reduce((i, x) => i + averageDamage(x), 0);
 };
 
 const gameStateReducer = (
-  state: typeof gameState,
-  action: gameAction,
+	state: typeof gameState,
+	action: gameAction,
 ): typeof gameState => {
-  const inventory = state.items;
-  const researched = state.researched;
-  const upgrades = state.upgrades;
+	const inventory = state.items;
+	const researched = state.researched;
+	const upgrades = state.upgrades;
 
-  switch (action.type) {
-    case "click": {
-      return {
-        ...state,
-        totalClicks: state.totalClicks + 1,
-        currentScore: state.currentScore + action.value,
-      };
-    }
+	switch (action.type) {
+		case "click": {
+			return {
+				...state,
+				totalClicks: state.totalClicks + 1,
+				currentScore: state.currentScore + action.value,
+			};
+		}
 
-    case "addCps": {
-      return {
-        ...state,
-        currentScore: state.currentScore + action.value,
-      };
-    }
+		case "addCps": {
+			return {
+				...state,
+				currentScore: state.currentScore + action.value,
+			};
+		}
 
-    case "buyResearch": {
-      const updatedInventory = [...inventory];
-      const researchIndex = g_GameObject.research.find(
-        (research) => research.name === action.value,
-      )!;
-      buyItems(researchIndex.requiredItems, updatedInventory);
-      const newAverage = updateAverage(updatedInventory);
-      return {
-        ...state,
-        researched: [...researched, action.value],
-        currentScore: state.currentScore - researchIndex.cost,
-        currentAverageCps: Math.floor(newAverage * 100) / 100,
-        totalSpent: state.totalSpent + researchIndex.cost,
-        items: [...updatedInventory],
-      };
-    }
+		case "buyResearch": {
+			const updatedInventory = [...inventory];
+			const researchIndex = g_GameObject.research.find(
+				(research) => research.name === action.value,
+			);
+			if (!researchIndex) return state;
+			buyItems(researchIndex.requiredItems, updatedInventory);
+			const newAverage = updateAverage(updatedInventory);
+			return {
+				...state,
+				researched: [...researched, action.value],
+				currentScore: state.currentScore - researchIndex.cost,
+				currentAverageCps: Math.floor(newAverage * 100) / 100,
+				totalSpent: state.totalSpent + researchIndex.cost,
+				items: [...updatedInventory],
+			};
+		}
 
-    case "buyUpgrade": {
-      const updatedUpgrades = [...upgrades];
-      const updatedInventory = [...inventory];
-      const upgrade = g_GameObject.upgrades.find(
-        (upgrade) => upgrade.name === action.value,
-      )!;
-      const upgradeIndex = updatedUpgrades.findIndex(
-        (upgrade) => upgrade.name === action.value,
-      );
-      if (upgradeIndex !== -1) {
-        const updatedUpgrade = { ...updatedUpgrades[upgradeIndex] };
-        updatedUpgrade.level++;
-        updatedUpgrades[upgradeIndex] = updatedUpgrade;
-      } else {
-        updatedUpgrades.push({ name: action.value, level: 1 });
-      }
-      const currentUpgrade = updatedUpgrades.find(
-        (upgrade) => upgrade.name === action.value,
-      )!;
-      const itemIndex = updatedInventory.findIndex(
-        (item) => item.name === upgrade.effectItem,
-      );
-      if (itemIndex !== -1) {
-        const updatedInventoryItem = { ...updatedInventory[itemIndex] };
-        upgradeItem(
-          updatedInventoryItem,
-          upgrade.levels.find((level) => level.level === currentUpgrade.level)!,
-        );
-        updatedInventory[itemIndex] = updatedInventoryItem;
-      } else {
-        const { requiredItems, requiredResearch, ...newInventoryItem } =
-          g_GameObject.shopItems.find(
-            (item) => item.name === upgrade.effectItem,
-          )!;
-        upgradeItem(
-          { ...newInventoryItem, quantity: 0 },
-          upgrade.levels.find((level) => level.level === currentUpgrade.level)!,
-        );
-        updatedInventory.push({ ...newInventoryItem, quantity: 0 });
-      }
-      const clickStats = updatedInventory.find(
-        (item) => item.name === "Click",
-      )!;
-      const newAverage = updateAverage(updatedInventory);
-      return {
-        ...state,
-        currentAverageCps: Math.floor(newAverage * 100) / 100,
-        currentScore:
-          state.currentScore -
-          upgrade.levels.find((level) => level.level === currentUpgrade.level)!
-            .cost,
-        totalSpent:
-          state.totalSpent +
-          upgrade.levels.find((level) => level.level === currentUpgrade.level)!
-            .cost,
-        averageClickValue: Math.floor(averageDamage(clickStats) * 100) / 100,
-        upgrades: [...updatedUpgrades],
-        items: [...updatedInventory],
-      };
-    }
+		case "buyUpgrade": {
+			const updatedUpgrades = [...upgrades];
+			const updatedInventory = [...inventory];
+			const upgrade = g_GameObject.upgrades.find(
+				(upgrade) => upgrade.name === action.value,
+			);
+			if (!upgrade) return state;
+			const upgradeIndex = updatedUpgrades.findIndex(
+				(upgrade) => upgrade.name === action.value,
+			);
+			if (upgradeIndex !== -1) {
+				const updatedUpgrade = { ...updatedUpgrades[upgradeIndex] };
+				updatedUpgrade.level++;
+				updatedUpgrades[upgradeIndex] = updatedUpgrade;
+			} else {
+				updatedUpgrades.push({ name: action.value, level: 1 });
+			}
+			const currentUpgrade = updatedUpgrades.find(
+				(upgrade) => upgrade.name === action.value,
+			);
+			if (!currentUpgrade) return state;
+			const itemIndex = updatedInventory.findIndex(
+				(item) => item.name === upgrade.effectItem,
+			);
+			if (itemIndex !== -1) {
+				const updatedInventoryItem = { ...updatedInventory[itemIndex] };
+				const upgradeLevel = upgrade.levels.find((level) => level.level === currentUpgrade.level);
+				if (!upgradeLevel) return state;
+				upgradeItem(
+					updatedInventoryItem,
+					upgradeLevel,
+				);
+				updatedInventory[itemIndex] = updatedInventoryItem;
+			} else {
+			const shopItem = g_GameObject.shopItems.find(
+					(item) => item.name === upgrade.effectItem,
+				);
+				if (!shopItem) return state;
+				const { requiredItems: _, requiredResearch: __, ...newInventoryItem } = shopItem;
+				const upgradeLevel2 = upgrade.levels.find((level) => level.level === currentUpgrade.level);
+				if (!upgradeLevel2) return state;
+				upgradeItem(
+					{ ...newInventoryItem, quantity: 0 },
+					upgradeLevel2,
+				);
+				updatedInventory.push({ ...newInventoryItem, quantity: 0 });
+			}
+			const clickStats = updatedInventory.find(
+				(item) => item.name === "Click",
+			);
+			if (!clickStats) return state;
+			const newAverage = updateAverage(updatedInventory);
+			const cost = upgrade.levels.find((level) => level.level === currentUpgrade.level)?.cost || 0;
+			return {
+				...state,
+				currentAverageCps: Math.floor(newAverage * 100) / 100,
+				currentScore: state.currentScore - cost,
+				totalSpent: state.totalSpent + cost,
+				averageClickValue: Math.floor(averageDamage(clickStats) * 100) / 100,
+				upgrades: [...updatedUpgrades],
+				items: [...updatedInventory],
+			};
+		}
 
-    case "buyItem": {
-      const updatedInventory = [...inventory];
-      const item = g_GameObject.shopItems.find(
-        (item) => item.name === action.value,
-      )!;
-      let quantity = 1;
-      buyItems(item.requiredItems, updatedInventory);
-      const itemIndex = updatedInventory.findIndex(
-        (item) => item.name === action.value,
-      );
-      if (itemIndex !== -1) {
-        const updatedInventoryItem = { ...updatedInventory[itemIndex] };
+		case "buyItem": {
+			const updatedInventory = [...inventory];
+			const item = g_GameObject.shopItems.find(
+				(item) => item.name === action.value,
+			);
+			if (!item) return state;
+			let quantity = 1;
+			buyItems(item.requiredItems, updatedInventory);
+			const itemIndex = updatedInventory.findIndex(
+				(item) => item.name === action.value,
+			);
+			if (itemIndex !== -1) {
+				const updatedInventoryItem = { ...updatedInventory[itemIndex] };
 
-        updatedInventoryItem.quantity++;
-        quantity = updatedInventoryItem.quantity;
-        updatedInventory[itemIndex] = updatedInventoryItem;
-      } else {
-        const { requiredItems, requiredResearch, ...rest } = item;
-        updatedInventory.push({
-          ...rest,
-          quantity: 1,
-        });
-      }
-      const cost = item.cost * Math.pow(item.multiplier, quantity - 1);
-      const newAverage = updateAverage(updatedInventory);
-      return {
-        ...state,
-        currentAverageCps: Math.floor(newAverage * 100) / 100,
-        currentScore: state.currentScore - cost,
-        totalSpent: state.totalSpent + cost,
-        items: [...updatedInventory],
-      };
-    }
+				updatedInventoryItem.quantity++;
+				quantity = updatedInventoryItem.quantity;
+				updatedInventory[itemIndex] = updatedInventoryItem;
+			} else {
+				const { requiredItems: _, requiredResearch: __, ...rest } = item;
+				updatedInventory.push({
+					...rest,
+					quantity: 1,
+				});
+			}
+			const cost = item.cost * item.multiplier ** (quantity - 1);
+			const newAverage = updateAverage(updatedInventory);
+			return {
+				...state,
+				currentAverageCps: Math.floor(newAverage * 100) / 100,
+				currentScore: state.currentScore - cost,
+				totalSpent: state.totalSpent + cost,
+				items: [...updatedInventory],
+			};
+		}
 
-    case "changeTheme": {
-      return { ...state, theme: action.value };
-    }
+		case "changeTheme": {
+			return { ...state, theme: action.value };
+		}
 
-    case "changeName": {
-      return { ...state, playerName: action.value };
-    }
+		case "changeName": {
+			return { ...state, playerName: action.value };
+		}
 
-    case "loadGame": {
-      return action.payload;
-    }
+		case "loadGame": {
+			return action.payload;
+		}
 
-    case "newGame": {
-      return action.payload;
-    }
+		case "newGame": {
+			return action.payload;
+		}
 
-    default: {
-      throw new Error(`Unknown action`);
-    }
-  }
+		default: {
+			throw new Error(`Unknown action`);
+		}
+	}
 };

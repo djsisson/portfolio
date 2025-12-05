@@ -29,5 +29,5 @@ const shopItems = asteroidz.shopItems.map((i) => ({
   ),
 }));
 
-export const gameObject = { upgrades, research, shopItems }!;
+export const gameObject = { upgrades, research, shopItems };
 export const gameState = { ...asteroidz.gameState };
