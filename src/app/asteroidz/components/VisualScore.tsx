@@ -23,7 +23,7 @@ const VisualScore = ({
 
 	return (
 		<div
-			className={`absolute inline-block text-[var(--bgcolour)] opacity-0`}
+			className={`absolute inline-block text-(--bgcolour) opacity-0`}
 			style={
 				{
 					top: `calc(40% + ${x.rndTop}px)`,

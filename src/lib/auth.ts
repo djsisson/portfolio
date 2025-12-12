@@ -33,10 +33,10 @@ async function verifyJWT(jwt: string): Promise<JWTPayload | null> {
 	try {
 		const { payload } = await jwtVerify(
 			jwt,
-			new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!),
+			new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET || ""),
 		);
 		return payload as JWTPayload;
-	} catch (e) {
+	} catch {
 		return null;
 	}
 }
@@ -46,7 +46,7 @@ async function signJWT(payload: JWTPayload) {
 		.setProtectedHeader({ alg: "HS256" })
 		.setIssuedAt()
 		.setExpirationTime("1w")
-		.sign(new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET!));
+		.sign(new TextEncoder().encode(process.env.GO_TRUE_JWT_SECRET || ""));
 	return jwt;
 }
 
@@ -77,7 +77,7 @@ export async function exchangeCodeForSession(code: string) {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				apikey: process.env.SUPABASE_ANON_KEY!,
+				apikey: process.env.SUPABASE_ANON_KEY || "",
 			},
 			body: JSON.stringify({
 				auth_code: code,
@@ -116,16 +116,16 @@ export async function exchangeCodeForSession(code: string) {
 export async function signOutFromProvider(redirectTo: string) {
 	const jwt = (await cookies()).get("access_token")?.value;
 	if (jwt && (await isJWTValid(jwt))) {
-		const result = await fetch(`${process.env.INTERNAL_AUTH_URL}/logout`, {
+		await fetch(`${process.env.INTERNAL_AUTH_URL}/logout`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				apikey: process.env.SUPABASE_ANON_KEY!,
+				apikey: process.env.SUPABASE_ANON_KEY || "",
 				Authorization: `Bearer ${jwt}`,
 			},
 		});
 	}
-	cache.delete((await cookies()).get("access_token")?.value!);
+	cache.delete((await cookies()).get("access_token")?.value || "");
 	(await cookies()).delete("access_token");
 	(await cookies()).delete("refresh_token");
 	redirect(redirectTo);
@@ -140,7 +140,7 @@ export async function getUser(token: string) {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			apikey: process.env.SUPABASE_ANON_KEY!,
+			apikey: process.env.SUPABASE_ANON_KEY || "",
 			Authorization: `Bearer ${token}`,
 		},
 	})
@@ -155,7 +155,7 @@ export async function getUser(token: string) {
 			cache.delete(token);
 			return false;
 		})
-		.catch((e) => {
+		.catch(() => {
 			cache.delete(token);
 			return false;
 		});
@@ -173,7 +173,7 @@ export async function refreshToken(token: string) {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				apikey: process.env.SUPABASE_ANON_KEY!,
+				apikey: process.env.SUPABASE_ANON_KEY || "",
 			},
 			body: JSON.stringify({
 				refresh_token: refresh.refresh_token,
@@ -199,7 +199,7 @@ export async function getUserFromJWT() {
 	if (!(await cookies()).get("access_token")?.value) {
 		return null;
 	}
-	const data = await verifyJWT((await cookies()).get("access_token")?.value!);
+	const data = await verifyJWT((await cookies()).get("access_token")?.value || "");
 	return data;
 }
 

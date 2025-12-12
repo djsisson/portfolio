@@ -14,7 +14,7 @@ export const genshinData = genshin.cities.map((city) => {
           ...char,
           element: genshin.elements.find(
             (el) => el.name === char.element_name,
-          )!,
+          ) || genshin.elements[0],
         };
       }),
   };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { GameTile as GTile } from "../lib/GameTypes";
 import { useGameState, useGameStateDispatch } from "./GameContext";
 import GameTile from "./GameTile";
@@ -22,6 +22,7 @@ export default function GameRow({ rowNumber }: { rowNumber: number }) {
 	const leftArrowClick = () => {
 		const newPosition = position + 1;
 		if (!(newPosition === 0 || newPosition === -1 || newPosition === 1)) return;
+		if (!dispatch) return;
 		dispatch({
 			type: "MOVEROW",
 			payload: {
@@ -34,6 +35,7 @@ export default function GameRow({ rowNumber }: { rowNumber: number }) {
 	const RightArrowClick = () => {
 		const newPosition = position - 1;
 		if (!(newPosition === 0 || newPosition === -1 || newPosition === 1)) return;
+		if (!dispatch) return;
 		dispatch({
 			type: "MOVEROW",
 			payload: {
@@ -52,8 +54,8 @@ export default function GameRow({ rowNumber }: { rowNumber: number }) {
 				position === 0
 					? ""
 					: position === -1
-						? "translate-x-[4.5rem] md:translate-x-[5rem] lg:translate-x-[5.5rem]"
-						: "-translate-x-[4.5rem] md:-translate-x-[5rem] lg:-translate-x-[5.5rem]"
+						? "translate-x-18 md:translate-x-20 lg:translate-x-22"
+						: "-translate-x-18 md:-translate-x-20 lg:-translate-x-22"
 			}`}
 		>
 			{position !== 1 && (letters.length === 2 ? position !== 0 : true) ? (

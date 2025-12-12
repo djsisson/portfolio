@@ -12,7 +12,7 @@ export async function addTodo(FormData: FormData) {
 	if (!jwt) {
 		return null;
 	}
-	const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
+	await dbClient(jwt as JWTPayload).rls(async (tx) => {
 		const todoList = await tx
 			.insert(todos)
 			.values({ title: todo, userId: jwt.sub as string })
@@ -28,7 +28,7 @@ export async function toggleTodo(id: string) {
 	if (!jwt) {
 		return null;
 	}
-	const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
+	await dbClient(jwt as JWTPayload).rls(async (tx) => {
 		const todoList = await tx
 			.update(todos)
 			.set({ completed: not(todos.completed) })
@@ -44,7 +44,7 @@ export async function deleteTodo(id: string) {
 	if (!jwt) {
 		return null;
 	}
-	const result = await dbClient(jwt as JWTPayload).rls(async (tx) => {
+	await dbClient(jwt as JWTPayload).rls(async (tx) => {
 		await tx.delete(todos).where(eq(todos.id, id)).execute();
 	});
 

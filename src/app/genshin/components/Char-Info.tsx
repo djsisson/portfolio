@@ -28,7 +28,7 @@ export default function CharInfo({ character }: { character: Characters[0] }) {
 
 			<div className="bg-white/20 backdrop-blur-sm">
 				<h1
-					className="border-b-2 border-white/20 bg-gradient-to-b from-white to-[var(--bgcolour)] bg-clip-text p-2 font-bold text-transparent md:text-2xl lg:text-4xl"
+					className="border-b-2 border-white/20 bg-linear-to-b from-white to-(--bgcolour) bg-clip-text p-2 font-bold text-transparent md:text-2xl lg:text-4xl"
 					style={
 						{ "--bgcolour": character.element.colour } as React.CSSProperties
 					}
@@ -39,7 +39,7 @@ export default function CharInfo({ character }: { character: Characters[0] }) {
 
 			<div className="h-full overflow-y-auto bg-white/20 p-2 text-black backdrop-blur-sm">
 				{character.description.map((desc, i) => (
-					<div key={`char-${character.name}`} className="text-sm font-medium md:text-base lg:text-lg">
+					<div key={`char-${character.name}-info-${i}`} className="text-sm font-medium md:text-base lg:text-lg">
 						<p>{desc}</p>
 						{i !== character.description.length - 1 && <br />}
 					</div>

@@ -22,8 +22,8 @@ export const asteroidSeed = async (db: Transaction) => {
 	await db.insert(items_required_items).values(
 		asteroidz.item_required_items.map((i) => ({
 			...i,
-			item_id: newShopItems.find((s) => s.name === i.item)?.id!,
-			required_id: newShopItems.find((s) => s.name === i.required)?.id!,
+			item_id: newShopItems.find((s) => s.name === i.item)?.id || 0,
+			required_id: newShopItems.find((s) => s.name === i.required)?.id || 0,
 		})),
 	);
 
@@ -35,24 +35,24 @@ export const asteroidSeed = async (db: Transaction) => {
 	await db.insert(research_required_research).values(
 		asteroidz.research_required_research.map((r) => ({
 			...r,
-			research_id: researchItems.find((i) => i.name === r.research)?.id!,
-			required_id: researchItems.find((i) => i.name === r.required)?.id!,
+			research_id: researchItems.find((i) => i.name === r.research)?.id || 0,
+			required_id: researchItems.find((i) => i.name === r.required)?.id || 0,
 		})),
 	);
 
 	await db.insert(research_required_items).values(
 		asteroidz.research_required_items.map((r) => ({
 			...r,
-			research_id: researchItems.find((i) => i.name === r.research)?.id!,
-			required_id: newShopItems.find((i) => i.name === r.required)?.id!,
+			research_id: researchItems.find((i) => i.name === r.research)?.id || 0,
+			required_id: newShopItems.find((i) => i.name === r.required)?.id || 0,
 		})),
 	);
 
 	await db.insert(items_required_research).values(
 		asteroidz.item_required_research.map((i) => ({
 			...i,
-			item_id: newShopItems.find((s) => s.name === i.item)?.id!,
-			required_id: researchItems.find((s) => s.name === i.required)?.id!,
+			item_id: newShopItems.find((s) => s.name === i.item)?.id || 0,
+			required_id: researchItems.find((s) => s.name === i.required)?.id || 0,
 		})),
 	);
 
@@ -61,7 +61,7 @@ export const asteroidSeed = async (db: Transaction) => {
 		.values(
 			asteroidz.upgrades.map((u) => ({
 				...u,
-				effectItemId: newShopItems.find((i) => i.name === u.effectItem)?.id!,
+				effectItemId: newShopItems.find((i) => i.name === u.effectItem)?.id || 0,
 			})),
 		)
 		.returning();
@@ -69,15 +69,15 @@ export const asteroidSeed = async (db: Transaction) => {
 	await db.insert(upgrade_required_research).values(
 		asteroidz.upgrade_required_research.map((u) => ({
 			...u,
-			upgrade_id: upgradeItems.find((i) => i.name === u.upgrade)?.id!,
-			required_id: researchItems.find((i) => i.name === u.required)?.id!,
+			upgrade_id: upgradeItems.find((i) => i.name === u.upgrade)?.id || 0,
+			required_id: researchItems.find((i) => i.name === u.required)?.id || 0,
 		})),
 	);
 
 	await db.insert(levels).values(
 		asteroidz.levels.map((l) => ({
 			...l,
-			upgrade_id: upgradeItems.find((i) => i.name === l.upgrade_item)?.id!,
+			upgrade_id: upgradeItems.find((i) => i.name === l.upgrade_item)?.id || 0,
 		})),
 	);
 
@@ -85,14 +85,14 @@ export const asteroidSeed = async (db: Transaction) => {
 		...asteroidz.gameState,
 		upgrades: asteroidz.gameState.upgrades.map((u) => ({
 			...u,
-			id: upgradeItems.find((i) => i.name === u.name)?.id!,
+			id: upgradeItems.find((i) => i.name === u.name)?.id || 0,
 		})),
 		researched: asteroidz.gameState.researched.map(
-			(r) => researchItems.find((i) => i.name === r)?.id!,
+			(r) => researchItems.find((i) => i.name === r)?.id || 0,
 		),
 		items: asteroidz.gameState.items.map((i) => ({
 			...i,
-			id: newShopItems.find((x) => x.name === i.name)?.id!,
+			id: newShopItems.find((x) => x.name === i.name)?.id || 0,
 		})),
 	});
 };

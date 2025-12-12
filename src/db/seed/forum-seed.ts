@@ -74,7 +74,7 @@ const generateMessage = async (client: Transaction, nummsg = 100) => {
 		const msgToSend = {
 			message: `${randomMessage()} ${rndTags.join(" ")}`,
 			created:
-				faker.date.recent({ days: 365 }).toISOString().slice(0, -5) + "Z",
+				`${faker.date.recent({ days: 365 }).toISOString().slice(0, -5)}Z`,
 			user_id: icons[userId].users.id,
 		};
 		msgs.push(msgToSend);
@@ -97,7 +97,7 @@ const addMessages = async (client: Transaction) => {
 	const junction = msgIds.flatMap((x, i) =>
 		allTags[i].map((y) => ({
 			message_id: x.id,
-			hashtag_id: tagIds.find((z) => z.hashtag === y)?.id!,
+			hashtag_id: tagIds.find((z) => z.hashtag === y)?.id || "",
 		})),
 	);
 
@@ -134,7 +134,7 @@ const addComments = async (client: Transaction) => {
 	const junction = msgIds.flatMap((x, i) =>
 		allTags[i].map((y) => ({
 			message_id: x.id,
-			hashtag_id: tagIds.find((z) => z.hashtag === y)?.id!,
+			hashtag_id: tagIds.find((z) => z.hashtag === y)?.id || "",
 		})),
 	);
 

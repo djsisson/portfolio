@@ -119,7 +119,7 @@ const ViewPort = () => {
 	};
 
 	return (
-		<div className="relative col-start-3 -col-end-3 row-start-2 row-end-7 flex items-center justify-center border-5 [border-style:outset] border-[var(--bgcolour)] select-none">
+		<div className="relative col-start-3 -col-end-3 row-start-2 row-end-7 flex items-center justify-center border-5 [border-style:outset] border-(--bgcolour) select-none">
 			{clickValues.map((x) => {
 				return (
 					<VisualScore

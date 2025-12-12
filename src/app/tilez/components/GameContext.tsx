@@ -96,9 +96,7 @@ const gameStateReducer = (
 };
 
 const GameStateContext = createContext(_gameState);
-const GameStateDispatchContext = createContext<React.Dispatch<GameAction>>(
-	null!,
-);
+const GameStateDispatchContext = createContext<React.Dispatch<GameAction> | null>(null);
 export const GameStateProvider = ({
 	children,
 }: {
@@ -131,7 +129,7 @@ export const GameStateProvider = ({
 						type: "LOAD_GAME",
 						payload: loadGame,
 					});
-				} catch (e) {
+				} catch {
 					localStorage.removeItem("Tilez");
 					dispatch({
 						type: "LOAD_GAME",

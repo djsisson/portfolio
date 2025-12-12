@@ -23,7 +23,7 @@ export default async function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${inter.variable} font-sans`}>
-				<ThemeProvider enableSystem={true} attribute="class" nonce={nonce!}>
+				<ThemeProvider enableSystem={true} attribute="class" nonce={nonce || undefined}>
 					{children}
 				</ThemeProvider>
 			</body>

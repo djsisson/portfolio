@@ -33,7 +33,7 @@ export default function CurrentWord() {
 		if (!gameState.uploaded && signedIn && gameState.completed && !uploading) {
 			async function upload() {
 				const uploaded = await uploadScore(gameState);
-				if (uploaded) {
+				if (uploaded && dispatch) {
 					dispatch({ type: "UPLOADED" });
 					setUploading(false);
 				}
@@ -59,7 +59,7 @@ export default function CurrentWord() {
 			setDefinitions((x) => new Map([...x, [currentWord, result]]));
 		}
 		if (allWords.includes(currentWord)) {
-			if (!gameState.found.includes(currentWord)) {
+			if (!gameState.found.includes(currentWord) && dispatch) {
 				dispatch({
 					type: "FOUND",
 				});
@@ -95,7 +95,7 @@ export default function CurrentWord() {
 
 	return completed ? (
 		<div className="modal absolute inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
-			<div className="rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-1">
+			<div className="rounded-lg bg-linear-to-r from-pink-500 via-red-500 to-yellow-500 p-1">
 				<div className="bg-secondary flex flex-col gap-4 rounded-lg p-4">
 					<div className="text-center">Congratulations, you won!</div>
 					<div className="text-center">You made {gameState.moves} moves.</div>
@@ -162,7 +162,7 @@ export default function CurrentWord() {
 				className="flex items-center justify-center"
 			>
 				<Popover open={hoverOpen}>
-					<PopoverTrigger 
+					<PopoverTrigger
 						className="focus-within:outline-0"
 						onClick={() => setHoverOpen(!hoverOpen)}
 						onMouseEnter={() => {

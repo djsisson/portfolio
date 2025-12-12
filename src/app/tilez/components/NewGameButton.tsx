@@ -9,9 +9,10 @@ export default function NewGameButton() {
 	return (
 		<Button
 			title="New Game"
-			onClick={async () =>
-				dispatch({ type: "RESET", payload: await NewGame() })
-			}
+			onClick={async () => {
+				if (!dispatch) return;
+				dispatch({ type: "RESET", payload: await NewGame() });
+			}}
 		>
 			New Game
 		</Button>

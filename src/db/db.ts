@@ -10,7 +10,7 @@ import * as genshin_schema from "./genshin/schema";
 loadEnvConfig(process.cwd(), false);
 // import * as forum_relations from "./forum/relations";
 
-const connectionString = process.env.DATABASE_URL!;
+const connectionString = process.env.DATABASE_URL || "";
 
 export const db = drizzle({
 	client: postgres(connectionString, {

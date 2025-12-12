@@ -53,7 +53,7 @@ const UserName = () => {
 				<button
           type="button"
 					onClick={onClick}
-					className="aspect-square h-4 w-4 cursor-pointer border-b-1 border-b-transparent fill-[var(--bgcolour)] text-[var(--bgcolour)] hover:scale-105 hover:border-b-[var(--bgcolour)] md:h-7 md:w-7"
+					className="aspect-square h-4 w-4 cursor-pointer border-b border-b-transparent fill-(--bgcolour) text-(--bgcolour) hover:scale-105 hover:border-b-(--bgcolour) md:h-7 md:w-7"
 				>
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0,0,256,256">
 					<title>Show name</title>
@@ -81,7 +81,7 @@ const UserName = () => {
 				{showName ? (
 					<div className="fixed top-[10%] left-[35%] z-20 grid w-[30%] grid-cols-4 gap-4 text-black">
 						<label
-							className="fixed hidden w-[10%] text-[var(--bgcolour)]"
+							className="fixed hidden w-[10%] text-(--bgcolour)"
 							htmlFor="playername"
 						>
 							Name:
@@ -105,7 +105,7 @@ const UserName = () => {
 						<button
 							type="button"
 							onClick={() => setShowName(false)}
-							className="-col-start-2 -col-end-1 row-start-1 row-end-2 cursor-pointer rounded-md border-1 border-[var(--bgcolour)] bg-black p-2 text-white"
+							className="-col-start-2 -col-end-1 row-start-1 row-end-2 cursor-pointer rounded-md border border-(--bgcolour) bg-black p-2 text-white"
 						>
 							Ok
 						</button>

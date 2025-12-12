@@ -13,7 +13,7 @@ export default function ActiveLink({
   const activePathname = usePathname();
 
   const currentlyActive =
-    activePathname.slice(activePathname.length - pathname.length) == pathname;
+    activePathname.slice(activePathname.length - pathname.length) === pathname;
 
   return (
     <Link href={pathname}>

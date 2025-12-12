@@ -52,7 +52,7 @@ const Tooltip = ({
 			{children}
 			{active && (
 				<div
-					className={`fixed z-50 flex w-full translate-x-[-50%] flex-col flex-wrap gap-2 whitespace-nowrap text-wrap rounded-md border-2 border-white bg-black p-2 text-sm text-white backdrop-blur-sm before:absolute before:top-[100%] before:left-[50%] before:z-40 before:h-0 before:w-0 before:translate-x-[-50%] before:border-8 before:border-transparent before:border-t-white before:content-[''] after:z-40`}
+					className={`fixed z-50 flex w-full translate-x-[-50%] flex-col flex-wrap gap-2 whitespace-nowrap text-wrap rounded-md border-2 border-white bg-black p-2 text-sm text-white backdrop-blur-sm before:absolute before:top-full before:left-[50%] before:z-40 before:h-0 before:w-0 before:translate-x-[-50%] before:border-8 before:border-transparent before:border-t-white before:content-[''] after:z-40`}
 					style={
 						{
 							left: getPosition().left + getPosition().width / 2,

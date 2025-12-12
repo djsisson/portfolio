@@ -32,7 +32,7 @@ const AboutPage = () => {
 							e.stopPropagation();
 						}}
 					>
-						<div className="animate-appear-up rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-1">
+						<div className="animate-appear-up rounded-lg bg-linear-to-r from-pink-500 via-red-500 to-yellow-500 p-1">
 							<div className="bg-secondary flex flex-col gap-4 rounded-lg p-4">
 								<div className="p-10">
 									<h1>

@@ -8,7 +8,7 @@ type SupabaseToken = {
 	role?: string;
 } & JWTPayload;
 
-const connectionString = process.env.DATABASE_AUTH_URL!;
+const connectionString = process.env.DATABASE_AUTH_URL || "";
 const db = drizzle({
 	client: postgres(connectionString, {
 		prepare: false,

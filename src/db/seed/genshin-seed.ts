@@ -17,13 +17,13 @@ export const genshinSeed = async (db: Transaction) => {
 		.values(genshin.cities)
 		.returning();
 
-	const character_result = await db
+	await db
 		.insert(characters)
 		.values(
 			genshin.characters.map((c) => ({
 				...c,
-				element_id: element_result.find((e) => e.name === c.element_name)?.id!,
-				city_id: city_result.find((e) => e.name === c.city_name)?.id!,
+				element_id: element_result.find((e) => e.name === c.element_name)?.id || 0,
+				city_id: city_result.find((e) => e.name === c.city_name)?.id || 0,
 			})),
 		)
 		.returning();

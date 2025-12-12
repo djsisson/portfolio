@@ -45,13 +45,13 @@ export default function CharSelector({
 				{characters.map((character) => (
 					<div
 						key={character.name}
-						className={`relative z-10 aspect-square h-full rounded-full bg-radial-[at_25%_25%] from-white to-[var(--bgcolour)] to-75% group-has-hover:grayscale-100 hover:bg-radial-[at_25%_50%] hover:grayscale-0`}
+						className={`relative z-10 aspect-square h-full rounded-full bg-radial-[at_25%_25%] from-white to-(--bgcolour) to-75% group-has-hover:grayscale-100 hover:bg-radial-[at_25%_50%] hover:grayscale-0`}
 						style={
 							{ "--bgcolour": character.element.colour } as React.CSSProperties
 						}
 					>
 						<Image
-							className={`relative z-40 cursor-pointer snap-center rounded-full bg-transparent hover:ring-4 hover:ring-[var(--bgcolour)] ${character.name === currentCharacter && characterLoading && "grayscale-100"} ${character.name === currentCharacter && characterLoading && "animate-pulse"} ${character.name === currentCharacter && "ring-4 ring-[var(--bgcolour)]"}`}
+							className={`relative z-40 cursor-pointer snap-center rounded-full bg-transparent hover:ring-4 hover:ring-(--bgcolour) ${character.name === currentCharacter && characterLoading && "grayscale-100"} ${character.name === currentCharacter && characterLoading && "animate-pulse"} ${character.name === currentCharacter && "ring-4 ring-(--bgcolour)"}`}
 							src={
 								icons[
 									character.name

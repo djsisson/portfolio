@@ -308,5 +308,5 @@ export const gameState = {
   averageClickValue: 1,
   researched: [] as string[],
   upgrades: [] as {name: string; level: number}[],
-  items: [{ ...shopItems.find((i) => i.name === "Click")!, quantity: 1 }],
+  items: [{ ...(shopItems[0]), quantity: 1 }],
 };
